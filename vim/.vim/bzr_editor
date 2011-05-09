@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+
+EDITOR="vim -f -o"
+
+BZRTMP=""
+cleanup_exit() {
+    rm -rf "$BZRTMP"
+}   
+
+# Remove temporary files even if we get interrupted
+trap "cleanup_exit" 0 # normal exit
+trap "exit 255" 1 2 3 6 15 # HUP INT QUIT ABRT TERM
+
+BZRTMP="${TMPDIR-/tmp}/bzreditor.$RANDOM.$RANDOM.$RANDOM.$$"
+(umask 077 && mkdir "$BZRTMP") || {
+    echo "Could not create temporary directory! Exiting." 1>&2
+    exit 1
+}   
+
+(
+    egrep '^(A|C|D|M|R)' "$1" | cut -b 5- | while read changed; do
+        bzr diff "$changed" >> "$BZRTMP/diff"
+    done
+)   
+
+if [ -s "$BZRTMP/diff" ]; then
+    $EDITOR "+e $BZRTMP/diff" '+set cmdheight=2 buftype=help filetype=diff' "+vsplit $1" '+set cmdheight=1' || exit $?
+else
+    $EDITOR "$1" || exit $?
+fi  
+
+exit $?
+
