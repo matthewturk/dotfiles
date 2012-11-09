@@ -315,3 +315,5 @@ map <silent>,k <C-w>k
 map <silent>,l <C-w>l
 
 map <leader>hd :new<cr>:read !hg diff<cr>:set ft=diff buftype=nofile<CR>gg
+
+map <leader>tb :TagbarToggle<CR>
