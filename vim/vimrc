@@ -120,7 +120,7 @@ source $HOME/.vim/aspell.vim
 
 "    LineNr:  Colorize the line numbers (displayed with "set number").
 "    Turn off default underlining of line numbers:
-  hi LineNr       term=NONE cterm=NONE
+  hi LineNr       term=NONE cterm=NONE 
 
 " hi ModeMsg
 " hi MoreMsg
@@ -321,3 +321,5 @@ map <leader>tb :TagbarToggle<CR>
 call pathogen#infect()
 
 set relativenumber
+map <leader>rn :set invrelativenumber<CR>
+highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
