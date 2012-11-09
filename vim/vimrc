@@ -8,7 +8,7 @@
 " ==================================================================
 
 " First set to use 256 colors
-set t_Co=256
+"set t_Co=256
 
 " ==================================================================
 " Mind you, this file is only a setup file for *personal* use.
@@ -262,7 +262,6 @@ map ,Tyl :TlistSessionLoad .tagsession<CR>
 "map ,s <Esc>d/^-*$<CR>
 
 au BufNewFile,BufRead *.src set ft=fortran
-au BufNewFile,BufRead *.template.c set ft=c
 au BufNewFile,BufRead *.glsl set ft=c
 au BufNewFile,BufRead *.pxi set ft=pyrex
 
@@ -279,6 +278,9 @@ let g:miniBufExplSplitBelow=1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplModSelTarget = 1 
+if &diff
+  let g:miniBufExplVSplit = 0
+endif
 
 map <c-w><c-t> :WMToggle<cr>
 
