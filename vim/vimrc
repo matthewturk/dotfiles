@@ -307,6 +307,7 @@ let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
 let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
 let NERDTreeShowBookmarks=1
 map <F3> :NERDTreeToggle<CR>
+map <leader>nt :NERDTreeToggle<CR>
 " Viewport Controls
 " ie moving between split panes
 map <silent>,h <C-w>h
