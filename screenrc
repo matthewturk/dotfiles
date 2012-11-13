@@ -1,0 +1,471 @@
+# =========================================================================
+# File:               $HOME/.screenrc
+# Purpose:            Setup file for program "(GNU) screen"
+# written by:         Sven Guckes <guckes-screen@math.fu-berlin.de>
+# Last update:        Sun Aug 05 03:49:02 MEST 2001
+# Latest version:     screen-3.9.9 [010525]
+# For more info see   http://www.math.fu-berlin.de/~guckes/screen/
+# SCREEN MailingList: http://www.yahoogroups.com/group/gnu-screen/
+# =========================================================================
+#
+# Boolean variables
+#
+  autodetach            on              # default: on
+  crlf                  off             # default: off
+#  deflogin              on              # default: on
+# defsilence            off             # default: off
+  hardcopy_append       on              # default: off
+#
+# nethack               on              # default: off
+  startup_message       off             # default: on
+# termcap  xterm        'AF=\E[3%dm:AB=\E[4%dm'
+# terminfo xterm        'AF=\E[3%p1%dm:AB=\E[4%p1%dm'
+  vbell                 off             # default: ???
+#
+# =========================================================================
+# Numerical settings
+#
+  #defscrollback         1000            # default: 100
+# msgminwait            3               # default: 1
+  silencewait           15              # default: 30
+#
+# =========================================================================
+# Paths and Files (esp. programs)
+#
+# bufferfile:   The file to use for commands
+#               "readbuf" ('<') and  "writebuf" ('>'):
+ bufferfile            $HOME/.screen_exchange
+#
+# hardcopydir:  The directory which contains all hardcopies.
+# hardcopydir           ~/.hardcopy
+ #hardcopydir           ~/.screen
+#
+# shell:  Default process started in screen's windows.
+# Makes it possible to use a different shell inside screen
+# than is set as the default login shell.
+shell                 zsh
+# shell                  bash
+# shell                 ksh
+#
+# =========================================================================
+# Strings
+# =========================================================================
+#
+# ===============================
+# Hardstatus Line and sorendition
+# ===============================
+# hardstatus: Always show the window list in the last line:
+#  hardstatus alwayslastline "%w"
+#
+# This will show the current time and today's date in YYmmdd, too:
+# hardstatus alwayslastline " %c | %Y%m%d |  %w"
+#
+# This will show today's date in mmdd and the current time, too:
+ #hardstatus alwayslastline " %H %m%d %c |  %w"
+ #hardstatus alwayslastline " %H %l |  %w"
+#
+# Same as the previous - but with COLOR! :-)
+#hardstatus alwayslastline "\033[m\033[42;30m %m%d \033[m \033[42;30m%c\033[m \033[42;30m %w \033[m"
+#hardstatus alwayslastline " %m%d \033[42;30m%c\033[m \033[42;30m %w \033[m"
+#hardstatus alwayslastline " %m%d %c \033[42;30m %w \033[m"
+#
+# Colorize the "messages" and "text marking":
+# Example:  Blue bg, white fg
+  sorendition 10 99 # default!
+# sorendition 02 40 # green  on black
+# sorendition 02 34 # yellow on blue
+#
+# ============================
+# Password
+# ============================
+# password SZnBqiqMtfa6k
+#
+# =========================================================================
+# Messages
+#
+# There are two kinds of messages:  "activity" and "bell"
+# They are also the names of the commands that set the respective messages.
+# In every message there can be "meta strings" which are replaced by values.
+# A meta string starts with a percent sign and is then followed by one of the
+# following letters: aAdDmMnstwWyY  The meta strings refer to the current date
+# and time or to a window title or number:
+#   %t - title
+#   %n - number (a single % still works)
+#   %d - day
+#   %D - weekday name
+#   %m - month
+#   %M - month name
+#   %y - year (2 digit)
+#   %Y - year (4 digit)
+#   %w - hour:minutes (24h format)
+#   %W - hour:minutes (12h format)
+#   %s - seconds
+#   %a - am/pm
+#   %A - AM/PM
+# Older versions of screen used a single '%' character
+# for window titles - but since version 3.7 this is
+# obsoleted by '%n' and will vanish in future releases!
+# So please update your screenrc to meet this convention!
+#
+# =========================================================================
+# "~" stands for the "bell" character
+#
+# activity:     This message *includes* a "beep" with '~'.
+  activity              "activity in %n (%t) [%w:%s]"
+#
+# bell:         This message *includes* a "beep" with '~'.
+  bell                  "bell     in %n (%t) [%w:%s]"
+#
+# pow_detach_msg:       Message shown when session
+#                       gets power detached.
+  pow_detach_msg        "BYE"
+#
+# vbell_msg:            Message shown when the
+#                       "virtual bell" rings.
+  vbell_msg             " *beep* "
+#
+# =========================================================================
+# Key bindings
+#
+# Remove some default bindings:
+# bind k kill # default
+# bind k
+#
+# bind .  dumptermcap # default
+# bind .
+# bind ^\ quit # default
+# bind ^\
+# bind \\ ??? # default
+# bind \\
+# bind ^h ??? # default
+# bind ^h
+# bind h  hardcopy
+# bind h
+# bind \\ quit
+# bind \\ quit
+# bind K  kill
+# bind K
+# bind I  login on
+# bind I
+# bind O  login off
+bind O only
+# bind }  history
+# bind }
+#
+# NOTE: This overrides the default binding of the hardcopy command!
+#bind H screen -t HeiseTicker links www.heise.de
+#
+# paste:  default binding:
+# bind ] paste .
+# The character ']' is hard to type on german keyboards,
+# I prefer to use 'P' for "paste" because it is a letter
+# and thus available at the same position both with the
+# US keyboards and Krautboards. :-)
+  bind P paste .
+#
+  bind ~ activity       "activity in %n (%t) [%w:%s]~"
+  bind * activity       "activity in %n (%t) [%w:%s]"
+# bind ~ bell           "activity in %n (%t) [%w:%s]~"
+# bind * bell           "activity in %n (%t) [%w:%s]"
+#
+#
+# =========================================================================
+#
+#   Summary: Unbound uppercase letters
+#   which are not bound by default:
+#   BEFGIJKLNOPQRSTUVXYZ
+#
+# I am using the uppercase letters to start programs/services:
+#
+# Services:
+#
+# FTP - File Transfer "Program"
+# see also:  http://www.math.fu-berlin.de/~guckes/ncftp/
+# bind F screen -t 'ftp' 9 ncftp
+#
+# IRC - International Relay Chat
+# see also:  http://www.math.fu-berlin.de/~guckes/irc/
+# bind I screen -t 'irc'  5 irc
+# bind I screen -t 'icq'  9 micq
+#
+# LYNX - web browser
+# see also:  http://www.math.fu-berlin.de/~guckes/lynx/
+#
+# MUTT - Mail User Agent
+# window #0 - as I read news quite often.
+# see also:  http://www.math.fu-berlin.de/~guckes/mutt/
+  setenv COLORFGBG "default"
+  #bind E screen -t 'mail' 1 env COLORFGBG="default;default" TERM=xterm-color COLORTERM=rxvt mutt
+# I don't use these, but maybe I should some day ... -MJT
+# bind E screen -t 'mutt' 1 mutt
+# bind T screen -t 'thesis' 0 zsh --login $HOME/.screen/run_thesis.sh
+# bind m screen -t 'papernotes' 1 /usr/local/bin/cire -n ~/Documents/papers/paper_notes.cire
+# bind I screen -t 'iyt' 2 zsh --login $HOME/.screen/run_iyt.sh
+# bind Y screen -t 'eyt' 3 zsh --login $HOME/.screen/run_eyt.sh
+#
+# NN - newsreader
+# see also:  http://www.math.fu-berlin.de/~guckes/nn/
+#
+# SLRN - newsreader
+# see also:  http://www.math.fu-berlin.de/~guckes/slrn/
+#
+# VIM - editor
+# window #0 - as I am almost always editing.
+# http://www.math.fu-berlin.de/~guckes/vim/
+# http://www.vim.org/
+  bind V screen -t 'vim' 0 vim
+#
+#      X - a fast way to lock the current screen.
+#  bind X lockscreen
+#
+# Echo URL for home page
+# This will paste the address of my homepage to the process
+# in the current window.  very nice - saves some typing.
+# bind Y exec !!! echo -n http://www.math.fu-berlin.de/~guckes/
+#  bind Y stuff http://www.math.fu-berlin.de/~guckes/
+#
+# =========================================================================
+# EXAMPLES:
+# You can paste the values of environment variables from with SCREEN:
+# bind E stuff $EMAIL
+# bind U stuff $URL
+# bind I stuff $ICQ
+# =========================================================================
+#
+# =========================================================================
+# TEST
+# bind I login on
+# bind O login off
+# =========================================================================
+# Command list for screen-3.7.6 [981125]:
+# =========================================================================
+# A note about the notation of commands:
+# The character '|' mean the logical operator 'or'.  Therefore "on|off" means
+# "'on' or 'off'" where "on" and "off" are literal strings (sequences of
+# characters).  Btw, many commands just switch some value between "on" and
+# "off".  These commands are called "toggles".  Toggle commands can usually
+# be used without a parameter and will invert ("toggle") the value.
+# Therefore the description contains the values in square brackets,
+# thus making them "optional".
+# Words in angle brackets however are *variables*
+# which require to be replaced by a value;
+# Examples:
+# <args>        "arguments" - arguments/parameters of a Unix command.
+# <cmd>         "command" - a Unix command.
+# <key>         Any key from the keyboard,   eg 'a'.
+# <permbits>    Permission bits (see manual).
+# <string>      A sequence of characters,    eg "k1".
+# <username>    The name of a Unix username, eg "guckes".
+# <xy>          A sequence of two characters, eg "^aa" (CTRL-A and 'a').
+# And to make it even more confusing - variables can be optional, too:
+#       [<variables>]
+# Actually, this makes commands much more verstile.  :-)
+#
+# Numerical variables sometimes take
+# the (abbreviated) name of its meaning, eg
+# <n> or <num> for number, <limit> or <lines>.
+#
+# Some of the variable names are pretty informal
+# and lack a good description:
+# <crypted_pw>, <message>
+# 
+# ===============================================================
+# BEGIN of command list
+# ===============================================================
+# 
+# acladd <usernames>
+# aclchg <username> <permbits> <list>
+# acldel <username>
+# acldel does not allow a list of usernames?
+# activity <message>
+# allpartial [on|off]
+# at [identifier][#|*|%] command [args ... ]
+# autodetach [on|off]
+# autonuke [on|off]
+# bell <message>
+# bind <key> [command [args]]
+# bindkey [-d] [-m] [-a] [[-k|-t] <string> [<cmd> <args>]
+# break [<duration>]
+# bufferfile [exchange-file]
+# c1 [on|off]
+# charset <set>
+# chdir [<directory>]
+# clear
+# colon [<prefix>]
+# The manual does not tell you what the "prefix" is for.  :-(
+# command
+# console [on|off]
+#"console on" just tells me "don't know how to grab console".  :-(
+# copy
+# "copy" enters the copy mode - one of the most useful things with screen.
+# It allows you to access the current window and its scrollback buffer,
+# search for some text and copy it to the default buffer.  You can then
+# put its contents into a file or paste it into another window.  Great!
+# copy_reg [key]
+#'copy_reg' "No longer exists, use "readreg" instead!"
+# crlf [on|off]
+#'crlf' gives no visible feedback.  Bad!
+# debug on|off
+#
+# "def" commands - they set "default values" for further windows:
+# defautonuke [on|off]
+# defc1 [on|off]
+# defcharset [<set>]
+# defescape <xy>
+# defflow on|off|auto [interrupt]
+# defgr [on|off]
+# defhstatus [<status>]
+# defkanji [jis|sjis|euc]
+# deflogin [on|off]
+# defmode <mode>
+# defmonitor [on|off]
+# defobuflimit <limit>
+defscrollback 2000
+# defwrap [on|off]
+# defwritelock on|off|auto
+# defzombie <[keys>]
+#'defzombie' -> "unknown command 'defzombie'".  Not implemented, maybe?
+#
+# detach
+# digraph [<preset>]
+# dumptermcap
+# echo [-n] <message>
+# escape <xy>
+# exec [[fdpat] newcommand [args ...]]
+# I need some more examples for 'exec' - send them!
+#
+# flow [on|off|auto]
+# gr [on|off]
+# hardcopy
+# hardcopy_append [on|off]
+# hardcopydir <directory>
+# hardstatus [on|off]
+# height [<lines>]
+# help
+# history
+# info
+# ins_reg <[key>]
+# kanji jis|euc|sjis [jis|euc|sjis]
+# kill
+#
+# lastmsg
+# license
+# lockscreen
+# log [on|off]
+# logdir directory
+# logfile <filename>
+# login [on|off]
+#
+# mapdefault
+# mapnotnext
+# maptimeout <[timo>]
+# markkeys <string>
+# meta
+# monitor [on|off]
+# msgminwait <sec>
+# msgwait <sec>
+# multiuser [on|off]
+#
+# nethack [on|off]
+# next
+# number [<n>]
+# obuflimit [<limit>]
+# other
+#
+# partial [on|off]
+# password [<crypted_pw>]
+# paste [<registers> [<dest_reg>]]
+# pastefont [on|off]
+# pow_break
+# pow_detach
+# pow_detach_msg <message>
+# prev
+# print_cmd [<cmd>]
+# process [<key>]
+#
+# quit
+#
+# readbuf
+# redisplay
+# register key string
+# removebuf
+# reset
+# screen [-opts] [n] [cmd [args]]
+# scrollback num
+# select [n]
+# sessionname [name]
+# setenv [var [string]]
+# shell command
+# shelltitle title
+# silence [on|off|sec]
+# silencewait sec
+# sleep num
+# slowpaste usec
+# startup_message on|off
+# suspend
+# term term
+# termcap term terminal-tweaks [window-tweaks]
+# terminfo term terminal-tweaks [window-tweaks]
+# time
+# title [windowalias]
+# unsetenv var
+# vbell on|off
+# vbell_msg message
+# vbellwait sec
+# version
+# wall message ...
+# width [num]
+# windows
+# wrap [on|off]
+# writebuf
+# writelock [on|off|auto]
+# xoff
+# xon
+# zombie [key][key]
+# ===============================================================
+# END of command list
+# ===============================================================
+#
+# ===============================================================
+# Open windows at startup:
+# screen -t freshmeat    3 lynx http://www.freshmeat.net
+# ===============================================================
+# Briefly show the version number of the starting "screen":
+# msgwait 1
+# version
+# msgwait 2
+#
+# Welcome the user:
+# echo "welcome :-)"
+#
+# Ths DISPLAY variable keeps getting in my way.
+# usually I do not want to start programs which
+# need a DISPLAY.  Text Tools rule!  :-)
+## EOF vim: ts=8
+
+hardstatus alwayslastline "(%C) %H %l |  %?%-Lw%?%{= kY}%n*%f %t%?(%u)%?%{-}%?%+Lw%?"
+
+# All these are for 256 colors, taken from
+# http://rtlechow.com/2008/12/256-colors-in-vim-inside-screen-in-an-iterm-on-os-x-leopard/
+
+#terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+#attrcolor b ".I"
+# tell screen how to set colors. AB = background, AF=foreground
+# the first two are for other terminal emulators, just in case.
+#termcapinfo xterm "Co#256:AB=E[48;5;%dm:AF=E[38;5;%dm"
+#termcapinfo xterm-color "Co#256:AB=E[48;5;%dm:AF=E[38;5;%dm"
+#termcapinfo xterm-256color "Co#256:AB=E[48;5;%dm:AF=E[38;5;%dm"
+#term xterm-256color
+# erase background with current bg color
+#defbce "on"
+
+ # terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+# tell screen how to set colors. AB = background, AF=foreground
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+# erase background with current bg color
+defbce "on" 
+term screen-256color
+#term xterm
