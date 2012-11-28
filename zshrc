@@ -85,6 +85,20 @@ yt_lodgeit.py()
     python2.7 ${YTPATH}/scripts/yt_lodgeit.py $*
 }
 
+aks()
+{
+    keychain id_bb_dsa
+    source ~/.keychain/`uname -n`-sh
+}
+
+ilock()
+{
+    killall ssh-agent
+    i3lock
+    sleep 10
+    DISPLAY=:0.0 xset dpms force off
+}
+
 ###--------------------------------------------------
 ### aliases
 alias 'c'='cat'
