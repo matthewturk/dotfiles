@@ -16,7 +16,6 @@ export ANDROID_SDK=/home/mturk/Android/android-sdk-linux_x86
 export GOPATH=/home/mturk/Development/go
 export XUVTOP=/home/mturk/Development/chianti
 export ETS_TOOLKIT=qt4
-export ROCKSTAR_DIR=$HOME/Development/Rockstar-0.98.5/
 
 set -o vi
 

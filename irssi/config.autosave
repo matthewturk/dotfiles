@@ -7,10 +7,13 @@ servers = (
     port = "6667";
   },
   { address = "irc.dal.net"; chatnet = "DALnet"; port = "6667"; },
-  { 
-    address = "irc.freenode.net";
+  {
+    address = "chat.freenode.net";
     chatnet = "freenode";
     port = "7000";
+    use_ssl = "yes";
+    ssl_verify = "yes";
+    ssl_capath = "/etc/ssl/certs";
   },
   { address = "irc.gnome.org"; chatnet = "GIMPNet"; port = "6667"; },
   { address = "irc.ptlink.net"; chatnet = "PTlink"; port = "6667"; },
@@ -69,9 +72,6 @@ chatnets = {
     max_modes = "4";
     max_msgs = "1";
     max_whois = "1";
-    use_ssl = "yes";
-    ssl_verify = "yes";
-    ssl_capath = "/etc/ssl/certs";
   };
   GIMPNet = {
     type = "IRC";
@@ -297,5 +297,28 @@ settings = {
     awl_placement = "bottom";
     awl_display_key = "$Q%K|%n$H$C$S";
   };
-  "fe-common/core" = { theme = "agon"; };
+  "fe-common/core" = { theme = "agon"; max_command_history = "0"; };
+};
+logs = {
+  "~/enzofest.log" = { level = "ALL"; };
+  "enzo.log" = {
+    level = "ALL";
+    items = ( { type = "window"; name = "2"; } );
+  };
+  "~/.irclogs/bitbucket-%Y-%m-%d" = {
+    level = "ALL";
+    items = ( { type = "target"; name = "#bitbucket"; } );
+  };
+  "~/.irclogs/yt-%Y-%m-%d" = {
+    level = "ALL";
+    items = ( { type = "target"; name = "#yt"; } );
+  };
+  "~/.irclogs/mjturk-%Y-%m-%d" = {
+    level = "ALL";
+    items = ( { type = "target"; name = "mjturk"; } );
+  };
+  "~/.irclogs/enzo-%Y-%m-%d" = {
+    level = "ALL";
+    items = ( { type = "target"; name = "#enzo"; } );
+  };
 };
