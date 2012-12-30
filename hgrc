@@ -27,6 +27,8 @@ remotebranches=/home/mturk/yt-x86_64/src/hg-remotebranches/hg_remotebranches.py
 
 [extdiff]
 cmd.vimdiff = vimdiff
+cmd.wdiff = /home/mturk/dotfiles/cwdiff
+opts.wdiff = --diff --ab
 
 [pager] 
 pager = LESS='FSRX' less 
