@@ -265,7 +265,7 @@ au BufNewFile,BufRead *.src set ft=fortran
 au BufNewFile,BufRead *.glsl set ft=c
 au BufNewFile,BufRead *.pxi set ft=pyrex
 
-map ,h <Esc>:nohl<CR>
+map <leader>H <Esc>:nohl<cr>
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 "au FileType python source $HOME/.vim/syntax/python.vim
 set ignorecase

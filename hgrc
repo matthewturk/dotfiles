@@ -35,6 +35,7 @@ pager = LESS='FSRX' less
 nudge = push -r .
 ytin = bbforks -i -f -n yt_analysis/yt
 ytout = bbforks -o -f -n yt_analysis/yt
+gg = log --style compact --graph --limit 10
 
 [bb]
 username = MatthewTurk
@@ -42,3 +43,4 @@ default_method = ssh
 
 [web]
 style = monoblue
+cacerts = /etc/ssl/certs/ca-certificates.crt

@@ -13,7 +13,6 @@ export ARCH_PATH=$HOME/yt-x86_64/
 export LD_LIBRARY_PATH=$ARCH_PATH/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
 export PATH=$ARCH_PATH/bin:$PATH
 export ANDROID_SDK=/home/mturk/Android/android-sdk-linux_x86
-export GOPATH=/home/mturk/Development/go
 export XUVTOP=/home/mturk/Development/chianti
 export ETS_TOOLKIT=qt4
 
@@ -88,6 +87,11 @@ aks()
 {
     keychain id_bb_dsa
     source ~/.keychain/`uname -n`-sh
+}
+
+uks()
+{
+    killall ssh-agent
 }
 
 ilock()
