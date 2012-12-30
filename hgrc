@@ -1,0 +1,44 @@
+[ui]
+username = Matthew Turk <matthewturk@gmail.com>
+editor = /home/mturk/yt-x86_64/src/mercurial-2.4/hgeditor
+
+[extensions]
+hgext.churn=
+hgext.fetch=
+hgext.graphlog= 
+hgext.convert=
+hgext.transplant=
+hgext.rebase=
+hgext.mq=
+hgext.extdiff=
+hgext.purge=
+hgext.record=
+hgext.color=
+hgext.children=
+hgext.parentrevspec= 
+hgext.bookmarks=
+hgext.hgk =
+progress =
+pager=
+hgext.schemes =
+hgbb = /home/mturk/yt-x86_64/src/yt-supplemental/hgbb/hgbb.py
+config = /home/mturk/yt-x86_64/src/yt-supplemental/cedit
+remotebranches=/home/mturk/yt-x86_64/src/hg-remotebranches/hg_remotebranches.py
+
+[extdiff]
+cmd.vimdiff = vimdiff
+
+[pager] 
+pager = LESS='FSRX' less 
+
+[alias]
+nudge = push -r .
+ytin = bbforks -i -f -n yt_analysis/yt
+ytout = bbforks -o -f -n yt_analysis/yt
+
+[bb]
+username = MatthewTurk
+default_method = ssh
+
+[web]
+style = monoblue
