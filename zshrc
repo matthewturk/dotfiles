@@ -103,6 +103,11 @@ ilock()
     DISPLAY=:0.0 xset dpms force off
 }
 
+wififix()
+{
+    sudo iwconfig wlan0 power off
+}
+
 ###--------------------------------------------------
 ### aliases
 alias 'c'='cat'
