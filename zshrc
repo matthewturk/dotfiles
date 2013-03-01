@@ -15,13 +15,14 @@ export PATH=$ARCH_PATH/bin:$PATH
 export ANDROID_SDK=/home/mturk/Android/android-sdk-linux_x86
 export XUVTOP=/home/mturk/Development/chianti
 export ETS_TOOLKIT=qt4
+export GOROOT=/home/mturk/Development/go/
 
 set -o vi
 
 fpath=($fpath ~/.zshfuncs)
 path=( /usr/local/cuda/bin $path )
 
-path=( $path $GOPATH/bin )
+path=( $path $GOROOT/bin )
 
 # Variable settings
 export SVN_EDITOR=/Users/matthewturk/.vim/svn_editor

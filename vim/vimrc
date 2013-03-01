@@ -264,6 +264,7 @@ map ,Tyl :TlistSessionLoad .tagsession<CR>
 au BufNewFile,BufRead *.src set ft=fortran
 au BufNewFile,BufRead *.glsl set ft=c
 au BufNewFile,BufRead *.pxi set ft=pyrex
+au BufNewFile,BufRead *.go set ft=go
 
 map <leader>H <Esc>:nohl<cr>
 autocmd FileType python set omnifunc=pythoncomplete#Complete
@@ -323,3 +324,7 @@ call pathogen#infect()
 set relativenumber
 map <leader>rn :set invrelativenumber<CR>
 highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+
+set rtp+=$GOROOT/misc/vim
+filetype plugin indent on
+syntax on

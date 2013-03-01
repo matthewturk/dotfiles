@@ -3,6 +3,7 @@ username = Matthew Turk <matthewturk@gmail.com>
 editor = /home/mturk/yt-x86_64/src/mercurial-2.4/hgeditor
 
 [extensions]
+hggit=
 hgext.churn=
 hgext.fetch=
 hgext.graphlog= 
@@ -24,6 +25,7 @@ hgext.schemes =
 hgbb = /home/mturk/yt-x86_64/src/yt-supplemental/hgbb/hgbb.py
 config = /home/mturk/yt-x86_64/src/yt-supplemental/cedit
 remotebranches=/home/mturk/yt-x86_64/src/hg-remotebranches/hg_remotebranches.py
+evolve=/home/mturk/yt-x86_64/src/mutable-history/hgext/evolve.py
 
 [extdiff]
 cmd.vimdiff = vimdiff
