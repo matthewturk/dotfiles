@@ -46,6 +46,7 @@ READNULLCMD=less
 
 export LESSCHARSET=iso8859
 
+alias 'localweb'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = SimpleHTTPServer.SimpleHTTPRequestHandler;httpd = SocketServer.TCPServer((\"localhost\", 8000), Handler);httpd.serve_forever()"'
 alias 'quickweb'='python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"'
 
 cdp () {
