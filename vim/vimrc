@@ -264,6 +264,8 @@ map ,Tyl :TlistSessionLoad .tagsession<CR>
 au BufNewFile,BufRead *.src set ft=fortran
 au BufNewFile,BufRead *.glsl set ft=c
 au BufNewFile,BufRead *.pxi set ft=pyrex
+au BufNewFile,BufRead *.pyx set ft=cython
+au BufNewFile,BufRead *.pxd set ft=cython
 au BufNewFile,BufRead *.go set ft=go
 
 map <leader>H <Esc>:nohl<cr>
@@ -328,3 +330,5 @@ highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE gui
 set rtp+=$GOROOT/misc/vim
 filetype plugin indent on
 syntax on
+
+map <leader>dn /<<<<<<< local<CR>
