@@ -1,9 +1,9 @@
 [ui]
 username = Matthew Turk <matthewturk@gmail.com>
-editor = /home/mturk/yt-x86_64/src/mercurial-2.4/hgeditor
+editor = /home/mturk/yt-x86_64/src/mercurial-2.8/hgeditor
 
 [extensions]
-hggit=
+hggit=/home/mturk/yt-x86_64/src/hg-git/hggit
 hgext.churn=
 hgext.fetch=
 hgext.graphlog= 
@@ -22,10 +22,14 @@ hgext.hgk =
 progress =
 pager=
 hgext.schemes =
-hgbb = /home/mturk/yt-x86_64/src/yt-supplemental/hgbb/hgbb.py
+#hgbb = /home/mturk/yt-x86_64/src/yt-supplemental/hgbb/hgbb.py
 config = /home/mturk/yt-x86_64/src/yt-supplemental/cedit
 remotebranches=/home/mturk/yt-x86_64/src/hg-remotebranches/hg_remotebranches.py
 evolve=/home/mturk/yt-x86_64/src/mutable-history/hgext/evolve.py
+hgext.patchbomb=
+hgext.shelve=
+histedit=
+hgsubversion=
 
 [extdiff]
 cmd.vimdiff = vimdiff
@@ -39,7 +43,10 @@ pager = LESS='FSRX' less
 nudge = push -r .
 ytin = bbforks -i -f -n yt_analysis/yt
 ytout = bbforks -o -f -n yt_analysis/yt
+cleanup = revert --all --no-backup
 gg = log --style compact --graph --limit 10
+rdiff = diff -r "ancestor(p1(), p2())" -r "p2()"
+mdiff = diff -r "ancestor(p1(), p2())" -r "p1()"
 
 [bb]
 username = MatthewTurk
@@ -48,3 +55,5 @@ default_method = ssh
 [web]
 style = monoblue
 cacerts = /etc/ssl/certs/ca-certificates.crt
+
+%include ~/.hg_local

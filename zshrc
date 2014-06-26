@@ -10,12 +10,15 @@ export EDITOR="vim"
 
 export YT_DEST=$HOME/yt-x86_64/
 export ARCH_PATH=$HOME/yt-x86_64/
+#export ARCH_PATH=$HOME/yt-conda
 export LD_LIBRARY_PATH=$ARCH_PATH/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
 export PATH=$ARCH_PATH/bin:$PATH
 export ANDROID_SDK=/home/mturk/Android/android-sdk-linux_x86
 export XUVTOP=/home/mturk/Development/chianti
 export ETS_TOOLKIT=qt4
 export GOROOT=/home/mturk/Development/go/
+export PATH=$PATH:$HOME/Development/depot_tools/
+export NACL_SDK_ROOT=$HOME/Development/nacl_sdk/pepper_canary
 
 set -o vi
 
@@ -28,6 +31,9 @@ path=( $path $GOROOT/bin )
 export SVN_EDITOR=/Users/matthewturk/.vim/svn_editor
 export BZR_EDITOR=/Users/matthewturk/.vim/bzr_editor
 export DYLD_LIBRARY_PATH=${S2PATH}/${S2ARCH}:/usr/local/cuda/lib
+
+#export PYTHONPATH=$HOME/Development/crew/
+alias lhg='$HOME/Development/crew/hg'
 
 alias charm='/usr/bin/charm'
 
@@ -46,7 +52,10 @@ READNULLCMD=less
 
 export LESSCHARSET=iso8859
 
-alias 'quickweb'='python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"'
+alias 'localweb'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = SimpleHTTPServer.SimpleHTTPRequestHandler;httpd = SocketServer.TCPServer((\"localhost\", 8000), Handler);httpd.serve_forever()"'
+alias 'quickweb'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = SimpleHTTPServer.SimpleHTTPRequestHandler;httpd = SocketServer.TCPServer((\"localhost\", 8000), Handler);httpd.serve_forever()"'
+alias 'localweb1'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = SimpleHTTPServer.SimpleHTTPRequestHandler;httpd = SocketServer.TCPServer((\"localhost\", 8001), Handler);httpd.serve_forever()"'
+alias 'globalweb'='python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"'
 
 cdp () {
   cd "$(python -c "import os.path as _, ${1}; \
