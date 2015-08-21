@@ -469,3 +469,5 @@ termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 defbce "on" 
 term screen-256color
 #term xterm
+bind Y screen -t 'spawning' /home/mturk/dotfiles/spawn_gotty_screen.sh
+bind T screen -t 'new-spawning' /home/mturk/dotfiles/spawn_gotty_newscreen.sh

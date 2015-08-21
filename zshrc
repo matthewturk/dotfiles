@@ -16,21 +16,26 @@ export PATH=$ARCH_PATH/bin:$PATH
 export ANDROID_SDK=/home/mturk/Android/android-sdk-linux_x86
 export XUVTOP=/home/mturk/Development/chianti
 export ETS_TOOLKIT=qt4
-export GOROOT=/home/mturk/Development/go/
+export GOROOT=/usr/local/go
 export PATH=$PATH:$HOME/Development/depot_tools/
 export NACL_SDK_ROOT=$HOME/Development/nacl_sdk/pepper_canary
+export FLEETCTL_TUNNEL=141.142.204.134
+export GOPATH=$HOME/Development/go
 
 set -o vi
+
+alias bpy='/home/mturk/Development/blender-2.74-linux-glibc211-x86_64/blender --background -P'
 
 fpath=($fpath ~/.zshfuncs)
 path=( /usr/local/cuda/bin $path )
 
-path=( $path $GOROOT/bin )
+path=( $path $GOROOT/bin $GOPATH/bin )
 
 # Variable settings
 export SVN_EDITOR=/Users/matthewturk/.vim/svn_editor
 export BZR_EDITOR=/Users/matthewturk/.vim/bzr_editor
 export DYLD_LIBRARY_PATH=${S2PATH}/${S2ARCH}:/usr/local/cuda/lib
+export NACL_SDK_ROOT=$HOME/Development/nacl_sdk/pepper_canary
 
 #export PYTHONPATH=$HOME/Development/crew/
 alias lhg='$HOME/Development/crew/hg'
@@ -56,6 +61,8 @@ alias 'localweb'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = 
 alias 'quickweb'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = SimpleHTTPServer.SimpleHTTPRequestHandler;httpd = SocketServer.TCPServer((\"localhost\", 8000), Handler);httpd.serve_forever()"'
 alias 'localweb1'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = SimpleHTTPServer.SimpleHTTPRequestHandler;httpd = SocketServer.TCPServer((\"localhost\", 8001), Handler);httpd.serve_forever()"'
 alias 'globalweb'='python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"'
+alias 'gotty-screen'='/home/mturk/dotfiles/spawn_gotty_screen.sh'
+alias 'gotty-newscreen'='/home/mturk/dotfiles/spawn_gotty_newscreen.sh'
 
 cdp () {
   cd "$(python -c "import os.path as _, ${1}; \

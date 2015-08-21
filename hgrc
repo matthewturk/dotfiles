@@ -1,6 +1,7 @@
 [ui]
 username = Matthew Turk <matthewturk@gmail.com>
-editor = /home/mturk/yt-x86_64/src/mercurial-2.8/hgeditor
+editor = /home/mturk/yt-x86_64/src/mercurial-3.0/hgeditor
+merge = vimdiff
 
 [extensions]
 hggit=/home/mturk/yt-x86_64/src/hg-git/hggit
@@ -22,7 +23,7 @@ hgext.hgk =
 progress =
 pager=
 hgext.schemes =
-#hgbb = /home/mturk/yt-x86_64/src/yt-supplemental/hgbb/hgbb.py
+hgbb = /home/mturk/Development/hgbb/hgbb.py
 config = /home/mturk/yt-x86_64/src/yt-supplemental/cedit
 remotebranches=/home/mturk/yt-x86_64/src/hg-remotebranches/hg_remotebranches.py
 evolve=/home/mturk/yt-x86_64/src/mutable-history/hgext/evolve.py
@@ -38,6 +39,7 @@ opts.wdiff = --diff --ab
 
 [pager] 
 pager = LESS='FSRX' less 
+attend-ll = true
 
 [alias]
 nudge = push -r .
@@ -47,6 +49,8 @@ cleanup = revert --all --no-backup
 gg = log --style compact --graph --limit 10
 rdiff = diff -r "ancestor(p1(), p2())" -r "p2()"
 mdiff = diff -r "ancestor(p1(), p2())" -r "p1()"
+ll = log -T /home/mturk/map-cmdline.status
+ss = log -T /home/mturk/map-cmdline.status -r .
 
 [bb]
 username = MatthewTurk
