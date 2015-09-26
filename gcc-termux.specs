@@ -1,0 +1,18 @@
+# Android 5 requires position-independent executables, so we use the
+#   %{!S:X}     Substitutes X, if the -S switch is not given to GCC"
+# construct (see https://gcc.gnu.org/onlinedocs/gcc/Spec-Files.html for full reference)
+# to add -fPIE and -pie flags as appropriate.
+
+*cc1_options:
++ %{!fpie: %{!fPIE: %{!fpic: %{!fPIC: %{!fno-pic:-fPIE}}}}}
+
+*link_emulation:
+elf_i386
+
+#elf32_x86_64
+
+*dynamic_linker:
+%{mglibc:/lib/ld-linux.so.2;:%{muclibc:/lib/ld-uClibc.so.0;:/system/bin/linker}}
+
+*link:
++ %{!nopie: %{!static: %{!shared: %{!nostdlib: %{!nostartfiles: %{!fno-PIE: %{!fno-pie: -pie}}}}}}} 
