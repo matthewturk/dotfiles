@@ -8,10 +8,10 @@ export BROWSER="/usr/bin/google-chrome %s"
 export PAGER="less"
 export EDITOR="vim"
 
-export YT_DEST=$HOME/yt-x86_64/
-export ARCH_PATH=$HOME/yt-x86_64/
+export YT_DEST=$HOME/yt-conda/
+export ARCH_PATH=$HOME/yt-conda/
 #export ARCH_PATH=$HOME/yt-conda
-export LD_LIBRARY_PATH=$ARCH_PATH/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH=$ARCH_PATH/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
 export PATH=$ARCH_PATH/bin:$PATH
 export ANDROID_SDK=/home/mturk/Android/android-sdk-linux_x86
 export XUVTOP=/home/mturk/Development/chianti
@@ -25,6 +25,8 @@ export GOPATH=$HOME/Development/go
 set -o vi
 
 alias bpy='/home/mturk/Development/blender-2.74-linux-glibc211-x86_64/blender --background -P'
+alias padon='xinput set-prop 13 "Device Enabled" 1'
+alias padoff='xinput set-prop 13 "Device Enabled" 0'
 
 fpath=($fpath ~/.zshfuncs)
 path=( /usr/local/cuda/bin $path )
@@ -55,6 +57,15 @@ SAVEHIST="20000"
 DIRSTACKSIZE=30
 READNULLCMD=less
 
+###--------------------------------------------------
+### prompts
+setprompt()
+{
+    export PROMPT="[${YTNAME}]%(?..(${RED}{%?}${NO_COLOUR}%))[${YELLOW}%T${NO_COLOUR}][${CYAN}%15<...<%~${NO_COLOUR}]$ "
+}
+
+unset P
+
 export LESSCHARSET=iso8859
 
 alias 'localweb'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = SimpleHTTPServer.SimpleHTTPRequestHandler;httpd = SocketServer.TCPServer((\"localhost\", 8000), Handler);httpd.serve_forever()"'
@@ -77,6 +88,8 @@ ppbr()
     export PYTHONPATH=${PP}
     #echo "PYTHONPATH=${PYTHONPATH}"
     export YTPATH=${PP}
+    export YTNAME=$1
+    setprompt
 }
 ppbr yt
 
@@ -102,7 +115,7 @@ yt_lodgeit.py()
 
 aks()
 {
-    keychain id_bb_dsa
+    keychain id_bb_rsa
     source ~/.keychain/`uname -n`-sh
 }
 
@@ -195,13 +208,7 @@ else
     local BEGINNING_OF_LINE=""
 fi
 
-
-###--------------------------------------------------
-### prompts
-PROMPT="%(?..(${RED}{%?}${NO_COLOUR}%))[${YELLOW}%T${NO_COLOUR}][${CYAN}%15<...<%~${NO_COLOUR}]$ "
-
-unset P
-
+setprompt
 
 ### COMPLETION AND MORE
 
