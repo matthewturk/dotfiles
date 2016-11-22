@@ -4,11 +4,11 @@ editor = /home/mturk/yt-x86_64/src/mercurial-3.0/hgeditor
 merge = vimdiff
 
 [extensions]
-hggit=/home/mturk/yt-x86_64/src/hg-git/hggit
+hggit=
 hgext.churn=
-hgext.fetch=
-hgext.graphlog= 
-hgext.convert=
+#hgext.fetch=
+#hgext.graphlog= 
+#hgext.convert=
 hgext.transplant=
 hgext.rebase=
 hgext.mq=
@@ -16,21 +16,22 @@ hgext.extdiff=
 hgext.purge=
 hgext.record=
 hgext.color=
-hgext.children=
-hgext.parentrevspec= 
+#hgext.children=
+#hgext.parentrevspec= 
 hgext.bookmarks=
-hgext.hgk =
+#hgext.hgk =
 progress =
 pager=
 hgext.schemes =
 hgbb = /home/mturk/Development/hgbb/hgbb.py
-config = /home/mturk/yt-x86_64/src/yt-supplemental/cedit
+#config = /home/mturk/yt-x86_64/src/yt-supplemental/cedit
 remotebranches=/home/mturk/yt-x86_64/src/hg-remotebranches/hg_remotebranches.py
 evolve=/home/mturk/yt-x86_64/src/mutable-history/hgext/evolve.py
 hgext.patchbomb=
 hgext.shelve=
 histedit=
-hgsubversion=
+#hgsubversion=
+convert=
 
 [extdiff]
 cmd.vimdiff = vimdiff
@@ -60,4 +61,8 @@ default_method = ssh
 style = monoblue
 cacerts = /etc/ssl/certs/ca-certificates.crt
 
+[experimental]
+crecord=True
+
 %include ~/.hg_local
+

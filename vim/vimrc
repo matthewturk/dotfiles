@@ -332,3 +332,4 @@ filetype plugin indent on
 syntax on
 
 map <leader>dn /<<<<<<< local<CR>
+"set mouse=a
