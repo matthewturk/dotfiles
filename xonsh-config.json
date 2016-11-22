@@ -1,0 +1,14 @@
+{
+ "foreign_shells": [
+  {
+   "shell": "zsh"
+  }
+ ],
+ "xontribs": [
+  "mpl",
+  "prompt_ret_code",
+  "apt_tabcomplete",
+  "docker_tabcomplete",
+  "xonda"
+ ]
+}
