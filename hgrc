@@ -48,6 +48,10 @@ ytin = bbforks -i -f -n yt_analysis/yt
 ytout = bbforks -o -f -n yt_analysis/yt
 cleanup = revert --all --no-backup
 gg = log --style compact --graph --limit 10
+sl = log -Gr 'draft()' --template '{ifeq(branch,"default","","{branch} ")}{label("log.changeset", rev)} {label("grep.user", author|user)}{label("tags.normal", if(tags," {tags}"))} {label("sl.book", if(bookmarks," {bookmarks}"))}\n{desc|firstline}'
+smf = hg log -Gr 'draft()' --template="{label('changeset.{phase}', '{rev}')}:{label('changeset.{phase}', '{node|short}')} {fill(desc|firstline|strip, '80')|firstline|strip} {ifeq(branch,'default','',label('log.branch', '{branch} '))}{bookmarks % \"{label('log.bookmark', '{bookmark} ')}\"}{tags % \"{ifeq(tag,'tip','',label('log.tag', '{tag} '))}\"}{label('log.date', date|shortdate)} by {label('log.user', author|person)}\n{sub(r'^.*\n?\n?', '', '{fill(desc|firstline|strip, \"95\", \"\", sub(r\"[0-9]\", \" \", \"{rev} \"))}\n\n')}"
+vrdiff = vimdiff -r "ancestor(p1(),p2())" -r "p2()"
+vmdiff = vimdiff -r "ancestor(p1(),p2())" -r "p1()"
 rdiff = diff -r "ancestor(p1(), p2())" -r "p2()"
 mdiff = diff -r "ancestor(p1(), p2())" -r "p1()"
 ll = log -T /home/mturk/map-cmdline.status
@@ -63,6 +67,9 @@ cacerts = /etc/ssl/certs/ca-certificates.crt
 
 [experimental]
 crecord=True
+
+[color]
+sl.book = magenta bold
 
 %include ~/.hg_local
 
