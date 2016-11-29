@@ -131,7 +131,7 @@ version 6.0
 " This has become quite big - so I moved it out to another file:
 " http://www.math.fu-berlin.de/~guckes/vim/source/html.vim [980227]
 " The "expand" is necessary to evaluate "~guckes".
-  let FILE=expand("~wilco/.vim/html.vim")
+  let FILE=expand("~mturk/.vim/html.vim")
   if filereadable(FILE)
      exe "source " . FILE
   endif
