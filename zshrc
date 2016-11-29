@@ -4,15 +4,20 @@
 # Inspired by http://gott-gehabt.de/800_wer_wir_sind/thomas/Homepage/Computer/zsh/zshrc
 umask 002
 
-export BROWSER="/usr/bin/google-chrome %s"
+export BROWSER="/usr/bin/google-chrome-beta %s"
 export PAGER="less"
+export LESS="-r"
 export EDITOR="vim"
+export GPERFTOOLS=/usr
 
+export YT_DEST=$HOME/yt-x86_64/
 export YT_DEST=$HOME/yt-conda/
-export ARCH_PATH=$HOME/yt-conda/
+export YT_DEST=$HOME/conda-py2/
+export ARCH_PATH=$HOME/yt-x86_64/
 #export ARCH_PATH=$HOME/yt-conda
 #export LD_LIBRARY_PATH=$ARCH_PATH/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
-export PATH=$ARCH_PATH/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
+export PATH=$YT_DEST/bin:$PATH
 export ANDROID_SDK=/home/mturk/Android/android-sdk-linux_x86
 export XUVTOP=/home/mturk/Development/chianti
 export ETS_TOOLKIT=qt4
@@ -21,6 +26,7 @@ export PATH=$PATH:$HOME/Development/depot_tools/
 export NACL_SDK_ROOT=$HOME/Development/nacl_sdk/pepper_canary
 export FLEETCTL_TUNNEL=141.142.204.134
 export GOPATH=$HOME/Development/go
+export EMBREE_DIR=$HOME/yt-x86_64/
 
 set -o vi
 
@@ -46,7 +52,7 @@ alias charm='/usr/bin/charm'
 
 # Some virtualenv stuff
 export WORKON_HOME=$HOME/Envs
-alias venv='source $YT_DEST/bin/virtualenvwrapper.sh'
+#alias venv='source $YT_DEST/bin/virtualenvwrapper.sh'
 #source /Library/Frameworks/Python.framework/Versions/Current/bin//virtualenvwrapper_bashrc
 
 ###--------------------------------------------------
@@ -75,11 +81,18 @@ alias 'globalweb'='python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"'
 alias 'gotty-screen'='/home/mturk/dotfiles/spawn_gotty_screen.sh'
 alias 'gotty-newscreen'='/home/mturk/dotfiles/spawn_gotty_newscreen.sh'
 
+showim() {
+  /usr/bin/img2sixel ${*} | $HOME/dotfiles/sixel_screen.py | cat
+}
+
 cdp () {
   cd "$(python -c "import os.path as _, ${1}; \
     print _.dirname(_.realpath(${1}.__file__[:-1]))"
   )"
 }
+
+alias 'apy3'='source activate /home/mturk/conda-py3/'
+alias 'apy2'='source activate /home/mturk/conda-py2/'
 
 ppbr()
 {
@@ -457,3 +470,9 @@ bindkey -M viins "" vi-cmd-mode
 ###              characters on the current line.
 ###
 bindkey -M vicmd "g~" vi-oper-swap-case
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/home/mturk/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/home/mturk/google-cloud-sdk/completion.zsh.inc'
