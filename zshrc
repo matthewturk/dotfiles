@@ -4,7 +4,7 @@
 # Inspired by http://gott-gehabt.de/800_wer_wir_sind/thomas/Homepage/Computer/zsh/zshrc
 umask 002
 
-export BROWSER="/usr/bin/google-chrome %s"
+export BROWSER="/usr/bin/google-chrome-beta %s"
 export PAGER="less"
 export LESS="-r"
 export EDITOR="vim"

@@ -1,9 +1,10 @@
 {
+ "env": {
+ },
  "xontribs": [
   "mpl",
   "prompt_ret_code",
   "apt_tabcomplete",
-  "docker_tabcomplete",
-  "xonda"
+  "docker_tabcomplete"
  ]
 }
