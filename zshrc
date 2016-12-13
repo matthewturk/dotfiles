@@ -470,3 +470,9 @@ bindkey -M viins "" vi-cmd-mode
 ###              characters on the current line.
 ###
 bindkey -M vicmd "g~" vi-oper-swap-case
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/home/mturk/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/home/mturk/google-cloud-sdk/completion.zsh.inc'

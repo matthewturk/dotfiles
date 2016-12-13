@@ -43,7 +43,8 @@
 # shell:  Default process started in screen's windows.
 # Makes it possible to use a different shell inside screen
 # than is set as the default login shell.
-shell                 zsh
+# shell                 zsh
+shell                 /home/mturk/conda-py3/bin/xonsh
 # shell                  bash
 # shell                 ksh
 #
@@ -470,3 +471,5 @@ defbce "on"
 term screen-256color
 #term xterm
 bind Y screen -t 'spawning' /home/mturk/dotfiles/spawn_gotty_screen.sh
+bind X screen -t 'xonsh' /home/mturk/conda-py3/bin/xonsh
+bind Z screen -t 'zsh' /usr/bin/zsh
