@@ -1,10 +1,10 @@
 [ui]
 username = Matthew Turk <matthewturk@gmail.com>
-editor = /home/mturk/yt-x86_64/src/mercurial-3.0/hgeditor
+editor = /home/mturk/dotfiles/hgeditor
 merge = vimdiff
 
 [extensions]
-hggit=/home/mturk/yt-x86_64/src/hg-git/hggit
+hggit=
 hgext.churn=
 hgext.fetch=
 hgext.graphlog= 
@@ -23,14 +23,13 @@ hgext.hgk =
 progress =
 pager=
 hgext.schemes =
-hgbb = /home/mturk/Development/hgbb/hgbb.py
-config = /home/mturk/yt-x86_64/src/yt-supplemental/cedit
-remotebranches=/home/mturk/yt-x86_64/src/hg-remotebranches/hg_remotebranches.py
-evolve=/home/mturk/yt-x86_64/src/mutable-history/hgext/evolve.py
+hgbb = /home/mturk/dotfiles/hgbb/hgbb.py
+remotebranches=/home/mturk/dotfiles/hg-remotebranches/hg_remotebranches.py
+evolve=/home/mturk/dotfiles/mutable-history/hgext/evolve.py
 hgext.patchbomb=
 hgext.shelve=
 histedit=
-hgsubversion=
+#hgsubversion=
 
 [extdiff]
 cmd.vimdiff = vimdiff
