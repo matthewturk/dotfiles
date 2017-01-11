@@ -34,10 +34,12 @@ def _yt_env():
     return $CURYT or None
 
 aliases['ppbr'] = _ppbr
-$FORMATTER_DICT['yt_env'] = _yt_env
+#$FORMATTER_DICT['yt_env'] = _yt_env
+$PROMPT_FIELDS['yt_env'] = _yt_env
 $PROMPT="{yt_env:[{}] }" + $PROMPT
 $PROMPT=$PROMPT.replace("BOLD", "INTENSE")
 $PROMPT=$PROMPT.replace("BLUE", "CYAN")
+$UPDATE_PROMPT_ON_KEYPRESS=False
 
 $LS_COLORS='rs=0:di=01;36:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:'
 
