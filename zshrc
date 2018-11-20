@@ -4,20 +4,22 @@
 # Inspired by http://gott-gehabt.de/800_wer_wir_sind/thomas/Homepage/Computer/zsh/zshrc
 umask 002
 
+export GDK_SCALE=2.0
+
 export BROWSER="/usr/bin/google-chrome-beta %s"
 export PAGER="less"
 export LESS="-r"
 export EDITOR="vim"
-export GPERFTOOLS=/usr
+#export GPERFTOOLS=/usr
 
 export YT_DEST=$HOME/yt-x86_64/
 export YT_DEST=$HOME/yt-conda/
-export YT_DEST=$HOME/conda-py2/
+export YT_DEST=$HOME/conda-py3/
 export ARCH_PATH=$HOME/yt-x86_64/
 #export ARCH_PATH=$HOME/yt-conda
 #export LD_LIBRARY_PATH=$ARCH_PATH/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
-export PATH=$YT_DEST/bin:$PATH
+export PATH=$YT_DEST/bin:$HOME/conda-py2/bin:$PATH
 export ANDROID_SDK=/home/mturk/Android/android-sdk-linux_x86
 export XUVTOP=/home/mturk/Development/chianti
 export ETS_TOOLKIT=qt4
@@ -38,6 +40,13 @@ fpath=($fpath ~/.zshfuncs)
 path=( /usr/local/cuda/bin $path )
 
 path=( $path $GOROOT/bin $GOPATH/bin )
+
+# Now some rust and wasm stuff
+path=( $HOME/.cargo/bin $path )
+#path=( /home/mturk/emsdk-portable $path )
+#path=( /home/mturk/emsdk-portable/clang/e1.37.22_64bit $path )
+#path=( /home/mturk/emsdk-portable/node/4.1.1_64bit/bin $path )
+#path=( /home/mturk/emsdk-portable/emscripten/1.37.22 $path )
 
 # Variable settings
 export SVN_EDITOR=/Users/matthewturk/.vim/svn_editor
@@ -470,3 +479,4 @@ bindkey -M viins "" vi-cmd-mode
 ###              characters on the current line.
 ###
 bindkey -M vicmd "g~" vi-oper-swap-case
+

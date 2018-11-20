@@ -333,3 +333,7 @@ syntax on
 
 map <leader>dn /<<<<<<< local<CR>
 "set mouse=a
+"
+
+let g:notedown_enable=0
+"let g:notedown_code_match='all'

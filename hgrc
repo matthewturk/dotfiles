@@ -25,12 +25,13 @@ pager=
 hgext.schemes =
 hgbb = /home/mturk/dotfiles/hgbb/hgbb.py
 remotebranches=/home/mturk/dotfiles/hg-remotebranches/hg_remotebranches.py
-evolve=/home/mturk/dotfiles/mutable-history/hgext/evolve.py
+evolve=
 hgext.patchbomb=
 hgext.shelve=
 histedit=
 #hgsubversion=
 convert=
+hgsvn=
 
 [extdiff]
 cmd.vimdiff = vimdiff

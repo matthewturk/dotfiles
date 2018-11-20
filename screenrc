@@ -43,8 +43,8 @@
 # shell:  Default process started in screen's windows.
 # Makes it possible to use a different shell inside screen
 # than is set as the default login shell.
-# shell                 zsh
-shell                 /home/mturk/conda-py3/bin/xonsh
+shell                 zsh
+#shell                 /home/mturk/conda-py3/bin/xonsh
 # shell                  bash
 # shell                 ksh
 #
@@ -465,7 +465,7 @@ hardstatus alwayslastline "(%C) %H %l |  %?%-Lw%?%{= kY}%n*%f %t%?(%u)%?%{-}%?%+
 # allow bold colors - necessary for some reason
 attrcolor b ".I"
 # tell screen how to set colors. AB = background, AF=foreground
-termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+termcapinfo xterm 'Co#257:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 # erase background with current bg color
 defbce "on" 
 term screen-256color

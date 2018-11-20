@@ -1,0 +1,46 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "compare_volume",
+            "type": "shell",
+            "command": "${config:python.pythonPath}",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "args": [
+                "${workspaceFolder}/tests/compare_volume.py"
+            ],
+            "presentation": {
+                "echo": true,
+                "panel": "shared",
+                "focus": false
+            },
+            "dependsOn": [
+                "build"
+            ]
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "${config:python.pythonPath}",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "args": [
+                "${workspaceFolder}/setup.py",
+                "build_ext",
+                "-i",
+            ],
+            "presentation": {
+                "echo": true,
+                "panel": "shared",
+                "focus": true
+            }
+        }
+    ]
+}
