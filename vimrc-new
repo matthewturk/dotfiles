@@ -1,0 +1,138 @@
+"Using https://blog.hellojs.org/configure-vim-from-scratch-efe5cbc1c563
+"
+" Specify a directory for plugins
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+" https://vimawesome.com
+
+Plug 'tomtom/tcomment_vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'vim-scripts/xoria256.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'godlygeek/tabular'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-fugitive'
+
+"  You will load your plugin here
+"  Make sure you use single quotes
+" Initialize plugin system
+call plug#end()
+
+let mapleader = ','
+
+"
+" No NERDtree, apparently.  Use netrw.
+"
+
+" absolute width of netrw window
+let g:netrw_winsize = -28
+
+" tree-view
+let g:netrw_liststyle = 3
+
+" sort is affecting only: directories on the top, files below
+let g:netrw_sort_sequence = '[\/]$,*'
+
+" open file in previous window
+let g:netrw_browse_split = 4
+
+let g:netrw_banner = 0
+let g:netrw_altv = 1
+
+" 
+
+
+" Leader C is the prefix for code related mappîngs 
+noremap <silent> <Leader>cc :TComment<CR>
+
+" Leader F is for file related mappîngs (open, browse...) 
+nnoremap <silent> <Leader>f :CtrlP<CR>
+nnoremap <silent> <Leader>fm :CtrlPMRU<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ctrl B for buffer related mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" cycle between buffer
+nnoremap <silent> <Leader>b :CtrlPBuffer<CR> 
+"create (N)ew buffer
+nnoremap <silent> <Leader>bb :bn<CR>
+"(D)elete the current buffer
+nnoremap <silent> <Leader>bd :bdelete<CR> 
+"(U)nload the current buffer
+nnoremap <silent> <Leader>bu :bunload<CR> 
+" (L)ock the current buffer"
+nnoremap <silent> <Leader>bl :setnomodifiable<CR> 
+
+colorscheme xoria256
+
+" reloads .vimrc -- making all changes active
+map <silent> <Leader>v :source ~/.vimrc<CR>:PlugInstall<CR>:bdelete<CR>:exe ":echo 'vimrc reloaded'"<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Lightline
+
+" https://github.com/itchyny/lightline.vim
+let g:lightline = { 
+                        \ 'colorscheme': 'seoul256', 
+                        \ 'active': {
+                        \       'left': [[ 'mode', 'paste' ],
+                        \                [ 'gitbranch', 'syntastic', 'readonly', 'filename', 'modified'] ]
+                        \ },
+                        \ 'component_function' : {
+                        \       'gitbranch': 'FugitiveStatusline',
+                        \       'syntastic': 'SyntasticStatuslineFlag'
+                        \ },
+                        \ }
+set laststatus=2                                 " vim-lightline
+set noshowmode                                   " vim-lightline
+
+"set statusline+=%{FugitiveStatusline()}
+"set statusline+=%#warningmsg#                                   "syntastic
+"set statusline+=%{SyntasticStatuslineFlag()}                    "syntastic
+"set statusline+=%*                                              "syntastic
+
+let g:syntastic_always_populate_loc_list = 1                    "syntastic
+let g:syntastic_auto_loc_list = 1                               "syntastic
+let g:syntastic_check_on_open = 1                               "syntastic
+let g:syntastic_check_on_wq = 0                                 "syntastic
+
+vnoremap <silent> <Leader>cee    :Tabularize /=<CR>
+vnoremap <silent> <Leader>cet    :Tabularize /#<CR>
+vnoremap <silent> <Leader>ce     :Tabularize /
+
+" make backspaces delete sensibly
+set backspace=indent,eol,start
+
+set smartcase
+set ignorecase
+
+set backupdir=~/.vim/tmp/                   " for the backup files
+set directory=~/.vim/tmp/                   " for the swap files
+
+" Let's turn on some highlight searching
+
+ set t_kb=
+ set t_kD=[3~
+ set hls
+ set is
+map <leader>H <Esc>:nohl<cr>
+
+map <leader>oc :w !xclip<cr>
+map <leader>op :r!xclip -o<cr>
+
+" Turn on relative numbering, but make it easy to switch around
+
+set number
+set relativenumber
+map <leader>rn :set invrelativenumber<CR>
+map <leader>rN :set invnumber<CR>
+
+map <silent>,h <C-w>h
+map <silent>,j <C-w>j
+map <silent>,k <C-w>k
+map <silent>,l <C-w>l
