@@ -13,10 +13,13 @@ Plug 'vim-scripts/xoria256.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'vim-syntastic/syntastic'
+"Plug 'vim-syntastic/syntastic'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdtree'
+Plug 'vimwiki/vimwiki'
+Plug 'gabrielelana/vim-markdown'
 
 "  You will load your plugin here
 "  Make sure you use single quotes
@@ -24,10 +27,6 @@ Plug 'tpope/vim-fugitive'
 call plug#end()
 
 let mapleader = ','
-
-"
-" No NERDtree, apparently.  Use netrw.
-"
 
 " absolute width of netrw window
 let g:netrw_winsize = -28
@@ -85,9 +84,9 @@ let g:lightline = {
                         \ },
                         \ 'component_function' : {
                         \       'gitbranch': 'FugitiveStatusline',
-                        \       'syntastic': 'SyntasticStatuslineFlag'
                         \ },
                         \ }
+"                        \       'syntastic': 'SyntasticStatuslineFlag'
 set laststatus=2                                 " vim-lightline
 set noshowmode                                   " vim-lightline
 
@@ -96,10 +95,10 @@ set noshowmode                                   " vim-lightline
 "set statusline+=%{SyntasticStatuslineFlag()}                    "syntastic
 "set statusline+=%*                                              "syntastic
 
-let g:syntastic_always_populate_loc_list = 1                    "syntastic
-let g:syntastic_auto_loc_list = 1                               "syntastic
-let g:syntastic_check_on_open = 1                               "syntastic
-let g:syntastic_check_on_wq = 0                                 "syntastic
+"let g:syntastic_always_populate_loc_list = 1                    "syntastic
+"let g:syntastic_auto_loc_list = 1                               "syntastic
+"let g:syntastic_check_on_open = 1                               "syntastic
+"let g:syntastic_check_on_wq = 0                                 "syntastic
 
 vnoremap <silent> <Leader>cee    :Tabularize /=<CR>
 vnoremap <silent> <Leader>cet    :Tabularize /#<CR>
@@ -136,3 +135,8 @@ map <silent>,h <C-w>h
 map <silent>,j <C-w>j
 map <silent>,k <C-w>k
 map <silent>,l <C-w>l
+
+" Hate the beeping!
+set visualbell
+
+map <leader>cd "=strftime("%c")<CR>P
