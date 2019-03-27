@@ -8,18 +8,34 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'tomtom/tcomment_vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'altercation/vim-colors-solarized'
-Plug 'vim-scripts/xoria256.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'editorconfig/editorconfig-vim'
-"Plug 'vim-syntastic/syntastic'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'vimwiki/vimwiki'
 Plug 'gabrielelana/vim-markdown'
+Plug 'airblade/vim-gitgutter'
+Plug 'mattn/calendar-vim'
+
+" Colors
+Plug 'altercation/vim-colors-solarized'
+Plug 'vim-scripts/xoria256.vim'
+Plug 'sjl/badwolf'
+Plug 'flazz/vim-colorschemes'
+
+" Have to install both fzf and fzf.vim
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+" Python stuff
+" Looks like python-mode needs a vim with python compiled in
+"Plug 'python-mode/python-mode', { 'branch': 'develop' }
+"Plug 'vim-syntastic/syntastic'
+" Seems like on debian, python2, etc, this is tricky
+"Plug 'python-rope/ropevim'
 
 "  You will load your plugin here
 "  Make sure you use single quotes
@@ -67,7 +83,10 @@ nnoremap <silent> <Leader>bu :bunload<CR>
 " (L)ock the current buffer"
 nnoremap <silent> <Leader>bl :setnomodifiable<CR> 
 
-colorscheme xoria256
+set background=dark
+"colorscheme xoria256
+"colorscheme badwolf
+colorscheme Monokai
 
 " reloads .vimrc -- making all changes active
 map <silent> <Leader>v :source ~/.vimrc<CR>:PlugInstall<CR>:bdelete<CR>:exe ":echo 'vimrc reloaded'"<CR>
@@ -140,3 +159,57 @@ map <silent>,l <C-w>l
 set visualbell
 
 map <leader>cd "=strftime("%c")<CR>P
+
+" Default gitgutter arguments
+nmap ]c <Plug>GitGutterNextHunk
+nmap [c <Plug>GitGutterPrevHunk
+nmap <Leader>hs <Plug>GitGutterStageHunk
+nmap <Leader>hu <Plug>GitGutterUndoHunk
+" Set up some highlights here -- default is invisible!
+"highlight link GitGutterAdd DiffAdd
+"highlight link GitGutterDelete DiffDelete
+"highlight link GitGutterChange DiffChange
+highlight GitGutterAdd    ctermfg=2
+highlight GitGutterChange ctermfg=3
+highlight GitGutterDelete ctermfg=1 
+
+" NERDTree - map ctrl-O
+
+map <C-o> :NERDTreeToggle<CR>
+
+" Fuzzy-finding
+
+map ; :Files<CR>
+
+" Tabs: https://vim.fandom.com/wiki/Using_tab_pages
+
+" This seems to work to have ctrl-arrows move left and right, but there is
+" disagreeing info that suggests one should use other ways of specifying them.
+
+nnoremap <ESC>[C :tabprevious<CR>
+nnoremap <ESC>[D :tabnext<CR>
+
+" Some vimwiki tips from https://blog.mague.com/?p=602
+
+" vimwiki stuff "
+" Run multiple wikis " -- disabled here
+"let g:vimwiki_list = [
+"                        \{'path': '~/Documents/VimWiki/personal.wiki'},
+"                        \{'path': '~/Documents/VimWiki/tech.wiki'}
+"                \]
+au BufRead,BufNewFile *.wiki set filetype=vimwiki
+autocmd FileType vimwiki map <Leader>d :VimwikiMakeDiaryNote<CR>
+function! ToggleCalendar()
+  execute ":Calendar"
+  if exists("g:calendar_open")
+    if g:calendar_open == 1
+      execute "q"
+      unlet g:calendar_open
+    else
+      g:calendar_open = 1
+    end
+  else
+    let g:calendar_open = 1
+  end
+endfunction
+autocmd FileType vimwiki map <Leader>c :call ToggleCalendar()<CR>
