@@ -30,6 +30,9 @@ Plug 'flazz/vim-colorschemes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+" HTML
+Plug 'mattn/emmet-vim'
+
 " Python stuff
 " Looks like python-mode needs a vim with python compiled in
 "Plug 'python-mode/python-mode', { 'branch': 'develop' }
@@ -158,8 +161,9 @@ map <silent>,l <C-w>l
 " Hate the beeping!
 set visualbell
 
-map <leader>cd "=strftime("%c")<CR>P
-
+map <leader>ct "=strftime("%c")<CR>P
+map <leader>cd "=strftime("%Y-%m-%d")<CR>P
+"
 " Default gitgutter arguments
 nmap ]c <Plug>GitGutterNextHunk
 nmap [c <Plug>GitGutterPrevHunk
@@ -176,6 +180,8 @@ highlight GitGutterDelete ctermfg=1
 " NERDTree - map ctrl-O
 
 map <C-o> :NERDTreeToggle<CR>
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="v"
 
 " Fuzzy-finding
 
@@ -213,3 +219,12 @@ function! ToggleCalendar()
   end
 endfunction
 autocmd FileType vimwiki map <Leader>c :call ToggleCalendar()<CR>
+
+" Emmet stuff: https://github.com/mattn/emmet-vim
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+
+" Some nice globals.  Always tab 4 spaces.
+set expandtab
+set tabstop=4
+set shiftwidth=4
