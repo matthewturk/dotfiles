@@ -480,3 +480,5 @@ bindkey -M viins "" vi-cmd-mode
 ###
 bindkey -M vicmd "g~" vi-oper-swap-case
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
