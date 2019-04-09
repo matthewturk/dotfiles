@@ -33,6 +33,11 @@ Plug 'junegunn/fzf.vim'
 " HTML
 Plug 'mattn/emmet-vim'
 
+" Rust
+Plug 'racer-rust/vim-racer'
+Plug 'rust-lang/rust.vim'
+Plug 'w0rp/ale'
+
 " Python stuff
 " Looks like python-mode needs a vim with python compiled in
 "Plug 'python-mode/python-mode', { 'branch': 'develop' }
@@ -228,3 +233,28 @@ autocmd FileType html,css EmmetInstall
 set expandtab
 set tabstop=4
 set shiftwidth=4
+
+" This is based on:
+" https://medium.com/@rajasekar3eg/rust-for-python-developers-environment-setup-6752315a61bd
+" 
+" rustup commands:
+" 
+"   rustup component add rustfmt
+"   rustup component add rls rust-analysis rust-src
+"   cargo +nightly install racer
+
+let g:racer_cmd = "~/.cargo/bin/racer" 
+let g:racer_experimental_completer = 1
+let g:ale_python_auto_pipenv=1
+let b:ale_linters = {
+ \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+ \ }"
+
+" Racer commands
+
+" Note also that racer maps C-x C-o to the smart autocomplete
+
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
