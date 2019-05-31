@@ -33,6 +33,9 @@ Plug 'junegunn/fzf.vim'
 " HTML
 Plug 'mattn/emmet-vim'
 
+" Syntax
+Plug 'ibab/vim-snakemake'
+
 " Rust
 Plug 'racer-rust/vim-racer'
 Plug 'rust-lang/rust.vim'
