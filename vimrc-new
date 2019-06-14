@@ -35,11 +35,15 @@ Plug 'mattn/emmet-vim'
 
 " Syntax
 Plug 'ibab/vim-snakemake'
+Plug 'leafgarland/typescript-vim'
 
 " Rust
 Plug 'racer-rust/vim-racer'
 Plug 'rust-lang/rust.vim'
 Plug 'w0rp/ale'
+
+" tmux
+Plug 'christoomey/vim-tmux-navigator'
 
 " Python stuff
 " Looks like python-mode needs a vim with python compiled in
@@ -261,3 +265,13 @@ au FileType rust nmap gd <Plug>(rust-def)
 au FileType rust nmap gs <Plug>(rust-def-split)
 au FileType rust nmap gx <Plug>(rust-def-vertical)
 au FileType rust nmap <leader>gd <Plug>(rust-doc)
+
+" tmux navigator
+"
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
