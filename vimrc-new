@@ -25,6 +25,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'vim-scripts/xoria256.vim'
 Plug 'sjl/badwolf'
 Plug 'flazz/vim-colorschemes'
+Plug 'srcery-colors/srcery-vim'
 
 " Have to install both fzf and fzf.vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -40,7 +41,7 @@ Plug 'leafgarland/typescript-vim'
 " Rust
 Plug 'racer-rust/vim-racer'
 Plug 'rust-lang/rust.vim'
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
@@ -51,6 +52,9 @@ Plug 'christoomey/vim-tmux-navigator'
 "Plug 'vim-syntastic/syntastic'
 " Seems like on debian, python2, etc, this is tricky
 "Plug 'python-rope/ropevim'
+
+" Termux
+Plug 'benmills/vimux'
 
 "  You will load your plugin here
 "  Make sure you use single quotes
@@ -252,10 +256,10 @@ set shiftwidth=4
 
 let g:racer_cmd = "~/.cargo/bin/racer" 
 let g:racer_experimental_completer = 1
-let g:ale_python_auto_pipenv=1
-let b:ale_linters = {
- \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
- \ }"
+"let g:ale_python_auto_pipenv=1
+"let b:ale_linters = {
+ "\ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+ "\ }"
 
 " Racer commands
 
@@ -275,3 +279,25 @@ nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
+
+function! WrapForTmux(s)
+  if !exists('$TMUX')
+    return a:s
+  endif
+
+  let tmux_start = "\<Esc>Ptmux;"
+  let tmux_end = "\<Esc>\\"
+
+  return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
+endfunction
+
+let &t_SI .= WrapForTmux("\<Esc>[?2004h")
+let &t_EI .= WrapForTmux("\<Esc>[?2004l")
+
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()

@@ -28,13 +28,15 @@ export PATH=$PATH:$HOME/Development/depot_tools/
 export NACL_SDK_ROOT=$HOME/Development/nacl_sdk/pepper_canary
 export FLEETCTL_TUNNEL=141.142.204.134
 export GOPATH=$HOME/Development/go
-export EMBREE_DIR=$HOME/yt-x86_64/
+export EMBREE_DIR=$HOME/conda-py3/
+export TWEEGO_PATH=$HOME/documents/twine/story-formats/
 
 set -o vi
 
 alias bpy='/home/mturk/Development/blender-2.74-linux-glibc211-x86_64/blender --background -P'
 alias padon='xinput set-prop 13 "Device Enabled" 1'
 alias padoff='xinput set-prop 13 "Device Enabled" 0'
+alias open="garcon-url-handler"
 
 fpath=($fpath ~/.zshfuncs)
 path=( /usr/local/cuda/bin $path )
@@ -137,7 +139,7 @@ yt_lodgeit.py()
 
 aks()
 {
-    keychain id_bb_rsa
+    keychain id_rsa_dev
     source ~/.keychain/`uname -n`-sh
 }
 
@@ -482,3 +484,19 @@ bindkey -M vicmd "g~" vi-oper-swap-case
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/matthewturk/conda-py3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/matthewturk/conda-py3/etc/profile.d/conda.sh" ]; then
+        . "/home/matthewturk/conda-py3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/matthewturk/conda-py3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

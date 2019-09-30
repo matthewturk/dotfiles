@@ -1,6 +1,6 @@
 [ui]
 username = Matthew Turk <matthewturk@gmail.com>
-editor = /home/mturk/dotfiles/hgeditor
+editor = /home/matthewturk/dotfiles/hgeditor
 merge = vimdiff
 
 [extensions]
@@ -23,19 +23,19 @@ hgext.bookmarks=
 progress =
 pager=
 hgext.schemes =
-hgbb = /home/mturk/dotfiles/hgbb/hgbb.py
-remotebranches=/home/mturk/dotfiles/hg-remotebranches/hg_remotebranches.py
+hgbb = /home/matthewturk/dotfiles/hgbb/hgbb.py
+remotebranches=/home/matthewturk/dotfiles/hg-remotebranches/hg_remotebranches.py
 evolve=
 hgext.patchbomb=
 hgext.shelve=
 histedit=
 #hgsubversion=
 convert=
-hgsvn=
+#hgsvn=
 
 [extdiff]
 cmd.vimdiff = vimdiff
-cmd.wdiff = /home/mturk/dotfiles/cwdiff
+cmd.wdiff = /home/matthewturk/dotfiles/cwdiff
 opts.wdiff = --diff --ab
 
 [pager] 
@@ -54,8 +54,8 @@ vrdiff = vimdiff -r "ancestor(p1(),p2())" -r "p2()"
 vmdiff = vimdiff -r "ancestor(p1(),p2())" -r "p1()"
 rdiff = diff -r "ancestor(p1(), p2())" -r "p2()"
 mdiff = diff -r "ancestor(p1(), p2())" -r "p1()"
-ll = log -T /home/mturk/map-cmdline.status
-ss = log -T /home/mturk/map-cmdline.status -r .
+ll = log -T /home/matthewturk/map-cmdline.status
+ss = log -T /home/matthewturk/map-cmdline.status -r .
 
 [bb]
 username = MatthewTurk
