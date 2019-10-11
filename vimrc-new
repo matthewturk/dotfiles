@@ -37,6 +37,10 @@ Plug 'mattn/emmet-vim'
 " Syntax
 Plug 'ibab/vim-snakemake'
 Plug 'leafgarland/typescript-vim'
+Plug 'ycm-core/YouCompleteMe', { 'do': './install.py' }
+
+" Typescript
+Plug 'Quramy/tsuquyomi'
 
 " Rust
 Plug 'racer-rust/vim-racer'
@@ -301,3 +305,7 @@ function! XTermPasteBegin()
 endfunction
 
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+" Some options for YCM
+" http://ycm-core.github.io/YouCompleteMe/#options
+let g:ycm_filetype_whitelist = {'typescript': 1}
