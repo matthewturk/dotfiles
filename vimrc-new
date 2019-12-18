@@ -33,6 +33,7 @@ Plug 'junegunn/fzf.vim'
 
 " HTML
 Plug 'mattn/emmet-vim'
+Plug 'evanleck/vim-svelte'
 
 " Syntax
 Plug 'ibab/vim-snakemake'
@@ -56,6 +57,7 @@ Plug 'christoomey/vim-tmux-navigator'
 "Plug 'vim-syntastic/syntastic'
 " Seems like on debian, python2, etc, this is tricky
 "Plug 'python-rope/ropevim'
+"Plug 'psf/black'
 
 " Termux
 Plug 'benmills/vimux'
@@ -82,8 +84,10 @@ let g:netrw_browse_split = 4
 let g:netrw_banner = 0
 let g:netrw_altv = 1
 
-" 
-
+" svelte options
+let g:svelte_indent_script = 0
+let g:svelte_indent_style = 0
+autocmd FileType svelte :EmmetInstall
 
 " Leader C is the prefix for code related mappîngs 
 noremap <silent> <Leader>cc :TComment<CR>
@@ -309,3 +313,7 @@ inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 " Some options for YCM
 " http://ycm-core.github.io/YouCompleteMe/#options
 let g:ycm_filetype_whitelist = {'typescript': 1}
+"set completeopt-=preview
+"let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
