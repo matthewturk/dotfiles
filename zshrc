@@ -4,67 +4,29 @@
 # Inspired by http://gott-gehabt.de/800_wer_wir_sind/thomas/Homepage/Computer/zsh/zshrc
 umask 002
 
-export GDK_SCALE=2.0
+if [ `hostname` = turnipseed ]; then
+    export GDK_SCALE=1.0
+else
+    export GDK_SCALE=2.0
+fi
 
 export BROWSER="/usr/bin/google-chrome-beta %s"
 export PAGER="less"
 export LESS="-r"
 export EDITOR="vim"
-#export GPERFTOOLS=/usr
 
-export YT_DEST=$HOME/yt-x86_64/
-export YT_DEST=$HOME/yt-conda/
-export YT_DEST=$HOME/conda-py3/
+export CONDA_BASE=$HOME/conda-py3/
 export ARCH_PATH=$HOME/yt-x86_64/
-#export ARCH_PATH=$HOME/yt-conda
-#export LD_LIBRARY_PATH=$ARCH_PATH/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
-export PATH=$YT_DEST/bin:$HOME/conda-py2/bin:$PATH
-export ANDROID_SDK=/home/mturk/Android/android-sdk-linux_x86
-export XUVTOP=/home/mturk/Development/chianti
-export ETS_TOOLKIT=qt4
-export GOROOT=/usr/local/go
-export PATH=$PATH:$HOME/Development/depot_tools/
-export NACL_SDK_ROOT=$HOME/Development/nacl_sdk/pepper_canary
-export FLEETCTL_TUNNEL=141.142.204.134
 export GOPATH=$HOME/Development/go
 export EMBREE_DIR=$HOME/conda-py3/
 export TWEEGO_PATH=$HOME/documents/twine/story-formats/
 
 set -o vi
 
-alias bpy='/home/mturk/Development/blender-2.74-linux-glibc211-x86_64/blender --background -P'
-alias padon='xinput set-prop 13 "Device Enabled" 1'
-alias padoff='xinput set-prop 13 "Device Enabled" 0'
 alias open="garcon-url-handler"
 
 fpath=($fpath ~/.zshfuncs)
-path=( /usr/local/cuda/bin $path )
-
-path=( $path $GOROOT/bin $GOPATH/bin )
-
-# Now some rust and wasm stuff
 path=( $HOME/.cargo/bin $path )
-#path=( /home/mturk/emsdk-portable $path )
-#path=( /home/mturk/emsdk-portable/clang/e1.37.22_64bit $path )
-#path=( /home/mturk/emsdk-portable/node/4.1.1_64bit/bin $path )
-#path=( /home/mturk/emsdk-portable/emscripten/1.37.22 $path )
-
-# Variable settings
-export SVN_EDITOR=/Users/matthewturk/.vim/svn_editor
-export BZR_EDITOR=/Users/matthewturk/.vim/bzr_editor
-export DYLD_LIBRARY_PATH=${S2PATH}/${S2ARCH}:/usr/local/cuda/lib
-export NACL_SDK_ROOT=$HOME/Development/nacl_sdk/pepper_canary
-
-#export PYTHONPATH=$HOME/Development/crew/
-alias lhg='$HOME/Development/crew/hg'
-
-alias charm='/usr/bin/charm'
-
-# Some virtualenv stuff
-export WORKON_HOME=$HOME/Envs
-#alias venv='source $YT_DEST/bin/virtualenvwrapper.sh'
-#source /Library/Frameworks/Python.framework/Versions/Current/bin//virtualenvwrapper_bashrc
 
 ###--------------------------------------------------
 ### history
@@ -89,21 +51,6 @@ alias 'localweb'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = 
 alias 'quickweb'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = SimpleHTTPServer.SimpleHTTPRequestHandler;httpd = SocketServer.TCPServer((\"localhost\", 8000), Handler);httpd.serve_forever()"'
 alias 'localweb1'='python2.7 -c "import SimpleHTTPServer, SocketServer;Handler = SimpleHTTPServer.SimpleHTTPRequestHandler;httpd = SocketServer.TCPServer((\"localhost\", 8001), Handler);httpd.serve_forever()"'
 alias 'globalweb'='python -c "import SimpleHTTPServer;SimpleHTTPServer.test()"'
-alias 'gotty-screen'='/home/mturk/dotfiles/spawn_gotty_screen.sh'
-alias 'gotty-newscreen'='/home/mturk/dotfiles/spawn_gotty_newscreen.sh'
-
-showim() {
-  /usr/bin/img2sixel ${*} | $HOME/dotfiles/sixel_screen.py | cat
-}
-
-cdp () {
-  cd "$(python -c "import os.path as _, ${1}; \
-    print _.dirname(_.realpath(${1}.__file__[:-1]))"
-  )"
-}
-
-alias 'apy3'='source activate /home/mturk/conda-py3/'
-alias 'apy2'='source activate /home/mturk/conda-py2/'
 
 ppbr()
 {
@@ -117,26 +64,6 @@ ppbr()
 }
 ppbr yt
 
-cyt()
-{
-    [ -f ${YTPATH}/yt/utilities/command_line.py ] && python2.7 ${YTPATH}/yt/utilities/command_line.py $*
-}
-
-pdbyt()
-{
-    [ -f ${YTPATH}/yt/utilities/command_line.py ] && python2.7 -m pdb ${YTPATH}/yt/utilities/command_line.py $*
-}
-
-iyt()
-{
-    python2.7 ${YTPATH}/scripts/iyt
-}
-
-yt_lodgeit.py()
-{
-    python2.7 ${YTPATH}/scripts/yt_lodgeit.py $*
-}
-
 aks()
 {
     keychain id_rsa_dev
@@ -148,18 +75,6 @@ uks()
     killall ssh-agent
 }
 
-ilock()
-{
-    killall ssh-agent
-    i3lock
-    sleep 10
-    DISPLAY=:0.0 xset dpms force off
-}
-
-wififix()
-{
-    sudo iwconfig wlan0 power off
-}
 
 ###--------------------------------------------------
 ### aliases
@@ -177,7 +92,6 @@ alias 'popd'='podp;dirs -v'
 alias 'd'='dirs -v'
 alias 'j'='jobs -lp'
 alias 'h'='fc -ldD -40'
-alias 'svdiff'='$HOME/.vim/svn_vimdiff.sh'
 
 ###--------------------------------------------------
 ### options
@@ -487,14 +401,14 @@ bindkey -M vicmd "g~" vi-oper-swap-case
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/matthewturk/conda-py3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('$HOME/conda-py3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/matthewturk/conda-py3/etc/profile.d/conda.sh" ]; then
-        . "/home/matthewturk/conda-py3/etc/profile.d/conda.sh"
+    if [ -f "$HOME/conda-py3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/conda-py3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/matthewturk/conda-py3/bin:$PATH"
+        export PATH="$HOME/conda-py3/bin:$PATH"
     fi
 fi
 unset __conda_setup
