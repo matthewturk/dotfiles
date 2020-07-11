@@ -1,4 +1,4 @@
-"Using https://blog.hellojs.org/configure-vim-from-scratch-efe5cbc1c563
+"Using https://blog.hellojs.org/configure-vim-from-scratch-efe6cbc1c563
 "
 " Specify a directory for plugins
 " - Avoid using standard Vim directory names like 'plugin'
@@ -26,6 +26,7 @@ Plug 'vim-scripts/xoria256.vim'
 Plug 'sjl/badwolf'
 Plug 'flazz/vim-colorschemes'
 Plug 'srcery-colors/srcery-vim'
+Plug 'jaredgorski/spacecamp'
 
 " Have to install both fzf and fzf.vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -50,6 +51,9 @@ Plug 'rust-lang/rust.vim'
 
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
+
+" javascript etc formatting
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 " Python stuff
 " Looks like python-mode needs a vim with python compiled in
@@ -114,6 +118,8 @@ set background=dark
 "colorscheme xoria256
 "colorscheme badwolf
 colorscheme Monokai
+colorscheme spacecamp
+colorscheme spacecamp_lite
 
 " reloads .vimrc -- making all changes active
 map <silent> <Leader>v :source ~/.vimrc<CR>:PlugInstall<CR>:bdelete<CR>:exe ":echo 'vimrc reloaded'"<CR>
@@ -247,6 +253,7 @@ autocmd FileType vimwiki map <Leader>c :call ToggleCalendar()<CR>
 " Emmet stuff: https://github.com/mattn/emmet-vim
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
+autocmd FileType markdown EmmetInstall
 
 " Some nice globals.  Always tab 4 spaces.
 set expandtab
@@ -317,3 +324,5 @@ let g:ycm_filetype_whitelist = {'typescript': 1}
 "let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
+
+au BufRead,BufNewFile *.ksy set filetype=yaml
