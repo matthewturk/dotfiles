@@ -33,7 +33,7 @@ Plug 'junegunn/fzf.vim'
 
 " HTML
 Plug 'mattn/emmet-vim'
-Plug 'evanleck/vim-svelte'
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
 
 " Syntax
 Plug 'ibab/vim-snakemake'
@@ -57,7 +57,8 @@ Plug 'christoomey/vim-tmux-navigator'
 "Plug 'vim-syntastic/syntastic'
 " Seems like on debian, python2, etc, this is tricky
 "Plug 'python-rope/ropevim'
-"Plug 'psf/black'
+Plug 'psf/black'
+
 
 " Termux
 Plug 'benmills/vimux'
@@ -317,3 +318,5 @@ let g:ycm_filetype_whitelist = {'typescript': 1}
 "let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
+
+noremap <silent> <Leader>bb :Black<CR>
