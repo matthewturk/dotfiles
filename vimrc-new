@@ -16,7 +16,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'vimwiki/vimwiki'
-Plug 'gabrielelana/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/calendar-vim'
 
@@ -26,10 +26,15 @@ Plug 'vim-scripts/xoria256.vim'
 Plug 'sjl/badwolf'
 Plug 'flazz/vim-colorschemes'
 Plug 'srcery-colors/srcery-vim'
+Plug 'bignimbus/pop-punk.vim'
 
 " Have to install both fzf and fzf.vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
+" Misc
+Plug 'mattn/webapi-vim'
+Plug 'mattn/gist-vim'
 
 " HTML
 Plug 'mattn/emmet-vim'
@@ -39,6 +44,7 @@ Plug 'evanleck/vim-svelte'
 Plug 'ibab/vim-snakemake'
 Plug 'leafgarland/typescript-vim'
 Plug 'ycm-core/YouCompleteMe', { 'do': './install.py' }
+Plug 'JuliaEditorSupport/julia-vim'
 
 " Typescript
 Plug 'Quramy/tsuquyomi'
@@ -88,6 +94,7 @@ let g:netrw_altv = 1
 let g:svelte_indent_script = 0
 let g:svelte_indent_style = 0
 autocmd FileType svelte :EmmetInstall
+autocmd FileType markdown :EmmetInstall
 
 " Leader C is the prefix for code related mappîngs 
 noremap <silent> <Leader>cc :TComment<CR>
@@ -227,6 +234,7 @@ nnoremap <ESC>[D :tabnext<CR>
 "                        \{'path': '~/Documents/VimWiki/personal.wiki'},
 "                        \{'path': '~/Documents/VimWiki/tech.wiki'}
 "                \]
+let g:vimwiki_global_ext=0
 au BufRead,BufNewFile *.wiki set filetype=vimwiki
 autocmd FileType vimwiki map <Leader>d :VimwikiMakeDiaryNote<CR>
 function! ToggleCalendar()
@@ -317,3 +325,12 @@ let g:ycm_filetype_whitelist = {'typescript': 1}
 "let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
+
+" Set markdown stuff
+
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+autocmd FileType markdown setlocal spell spelllang=en_us
+let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_fenced_languages=['python=python', 'bash=sh', 'javascript=javascript']
+
+au BufRead,BufNewFile *.pxi set filetype=pyrex
