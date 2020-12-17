@@ -1,4 +1,4 @@
-"Using https://blog.hellojs.org/configure-vim-from-scratch-efe5cbc1c563
+"Using https://blog.hellojs.org/configure-vim-from-scratch-efe6cbc1c563
 "
 " Specify a directory for plugins
 " - Avoid using standard Vim directory names like 'plugin'
@@ -27,6 +27,7 @@ Plug 'sjl/badwolf'
 Plug 'flazz/vim-colorschemes'
 Plug 'srcery-colors/srcery-vim'
 Plug 'bignimbus/pop-punk.vim'
+Plug 'jaredgorski/spacecamp'
 
 " Have to install both fzf and fzf.vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -38,7 +39,7 @@ Plug 'mattn/gist-vim'
 
 " HTML
 Plug 'mattn/emmet-vim'
-Plug 'evanleck/vim-svelte'
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
 
 " Syntax
 Plug 'ibab/vim-snakemake'
@@ -57,13 +58,17 @@ Plug 'rust-lang/rust.vim'
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
 
+" javascript etc formatting
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+
 " Python stuff
 " Looks like python-mode needs a vim with python compiled in
 "Plug 'python-mode/python-mode', { 'branch': 'develop' }
 "Plug 'vim-syntastic/syntastic'
 " Seems like on debian, python2, etc, this is tricky
 "Plug 'python-rope/ropevim'
-"Plug 'psf/black'
+Plug 'psf/black'
+
 
 " Termux
 Plug 'benmills/vimux'
@@ -121,6 +126,8 @@ set background=dark
 "colorscheme xoria256
 "colorscheme badwolf
 colorscheme Monokai
+colorscheme spacecamp
+colorscheme spacecamp_lite
 
 " reloads .vimrc -- making all changes active
 map <silent> <Leader>v :source ~/.vimrc<CR>:PlugInstall<CR>:bdelete<CR>:exe ":echo 'vimrc reloaded'"<CR>
@@ -255,6 +262,7 @@ autocmd FileType vimwiki map <Leader>c :call ToggleCalendar()<CR>
 " Emmet stuff: https://github.com/mattn/emmet-vim
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
+autocmd FileType markdown EmmetInstall
 
 " Some nice globals.  Always tab 4 spaces.
 set expandtab
@@ -334,3 +342,6 @@ let g:vim_markdown_folding_disabled=1
 let g:vim_markdown_fenced_languages=['python=python', 'bash=sh', 'javascript=javascript']
 
 au BufRead,BufNewFile *.pxi set filetype=pyrex
+
+noremap <silent> <Leader>bb :Black<CR>
+au BufRead,BufNewFile *.ksy set filetype=yaml

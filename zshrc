@@ -4,11 +4,12 @@
 # Inspired by http://gott-gehabt.de/800_wer_wir_sind/thomas/Homepage/Computer/zsh/zshrc
 umask 002
 
-if [ `hostname` = turnipseed ]; then
-    export GDK_SCALE=1.0
-else
-    export GDK_SCALE=2.0
-fi
+# Skipping this for now; seems not to be necessary on any systems anymore
+#if [ `hostname` = turnipseed ]; then
+#    export GDK_SCALE=1.0
+#else
+#    export GDK_SCALE=2.0
+#fi
 
 export BROWSER="/usr/bin/google-chrome-beta %s"
 export PAGER="less"
