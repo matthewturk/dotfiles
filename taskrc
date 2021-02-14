@@ -38,7 +38,7 @@ uda.priority.default=Sometime
 #color.uda.priority.Next=color12
 #color.uda.priority.Sometime=color14
 #color.uda.priority.Later=color13
-color.uda.priority.Today=color009
+color.uda.priority.Today=color9
 color.uda.priority.Next=color255
 color.uda.priority.Sometime=color250
 color.uda.priority.Later=color245
@@ -49,3 +49,14 @@ urgency.uda.priority.Sometime.coefficient=1.8
 urgency.uda.priority.Later.coefficient=1.0
 
 include ~/.task/server.cfg
+context.class=project:teaching
+context.coding=project:yt or project:cis or project:eht
+context.fun=project:hobby or project:home
+context.fast=+short
+context.work=project.not:hobby and project.not:home
+uda.reviewed.type=date
+uda.reviewed.label=Reviewed
+report._reviewed.description=Tasksh review report.  Adjust the filter to your needs.
+report._reviewed.columns=uuid
+report._reviewed.sort=reviewed+,modified+
+report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )
