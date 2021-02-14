@@ -17,10 +17,10 @@ data.location=~/.task
 #include /usr/share/taskwarrior/light-16.theme
 #include /usr/share/taskwarrior/light-256.theme
 #include /usr/share/taskwarrior/dark-16.theme
-include /usr/share/taskwarrior/dark-256.theme
+#include /usr/share/taskwarrior/dark-256.theme
 #include /usr/share/taskwarrior/dark-red-256.theme
 #include /usr/share/taskwarrior/dark-green-256.theme
-#include /usr/share/taskwarrior/dark-blue-256.theme
+include /usr/share/taskwarrior/dark-blue-256.theme
 #include /usr/share/taskwarrior/dark-violets-256.theme
 #include /usr/share/taskwarrior/dark-yellow-green.theme
 #include /usr/share/taskwarrior/dark-gray-256.theme
@@ -30,23 +30,17 @@ include /usr/share/taskwarrior/dark-256.theme
 #include /usr/share/taskwarrior/no-color.theme
 
 # Set up some priorities
+#color.uda.priority.H=color255
+#color.uda.priority.L=color245
+#color.uda.priority.M=color250
+
 uda.priority.label=Priority
 uda.priority.type=string
-uda.priority.values=Today,Next,Sometime,Later
-uda.priority.default=Sometime
-#color.uda.priority.Today=color11
-#color.uda.priority.Next=color12
-#color.uda.priority.Sometime=color14
-#color.uda.priority.Later=color13
-color.uda.priority.Today=color9
-color.uda.priority.Next=color255
-color.uda.priority.Sometime=color250
-color.uda.priority.Later=color245
+uda.priority.values=H,M,L,
 
-urgency.uda.priority.Today.coefficient=6.0
-urgency.uda.priority.Next.coefficient=3.9
-urgency.uda.priority.Sometime.coefficient=1.8
-urgency.uda.priority.Later.coefficient=1.0
+urgency.uda.priority.H.coefficient=6.0
+urgency.uda.priority.L.coefficient=1.8
+urgency.uda.priority.M.coefficient=3.9
 
 include ~/.task/server.cfg
 context.class=project:teaching
@@ -60,3 +54,4 @@ report._reviewed.description=Tasksh review report.  Adjust the filter to your ne
 report._reviewed.columns=uuid
 report._reviewed.sort=reviewed+,modified+
 report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )
+context.simwg=project:simwg
