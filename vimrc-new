@@ -20,6 +20,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/calendar-vim'
 
+Plug 'fholgado/minibufexpl.vim'
+
 " Colors
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-scripts/xoria256.vim'
@@ -348,3 +350,14 @@ au BufRead,BufNewFile *.pxi set filetype=pyrex
 
 noremap <silent> <Leader>bb :Black<CR>
 au BufRead,BufNewFile *.ksy set filetype=yaml
+
+" MiniBufExplorer
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs = 1
+let g:miniBufExplModSelTarget = 1
+let g:miniBufExplVSplit = 20
+let g:miniBufExplBRSplit = 1
+noremap <silent> <
+
+noremap <silent> <Leader>mb :MBEToggle<cr>

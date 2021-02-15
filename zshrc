@@ -11,7 +11,7 @@ umask 002
 #    export GDK_SCALE=2.0
 #fi
 
-export BROWSER="/usr/bin/google-chrome-beta %s"
+export BROWSER="/usr/bin/google-chrome %s"
 export PAGER="less"
 export LESS="-r"
 export EDITOR="vim"
