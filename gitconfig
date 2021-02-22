@@ -1,0 +1,7 @@
+[user]
+	name = Matthew Turk
+	email = matthewturk@gmail.com
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
