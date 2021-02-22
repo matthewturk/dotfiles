@@ -17,9 +17,7 @@ export LESS="-r"
 export EDITOR="vim"
 
 export CONDA_BASE=$HOME/conda-py3/
-export ARCH_PATH=$HOME/yt-x86_64/
 export GOPATH=$HOME/Development/go
-export EMBREE_DIR=$HOME/conda-py3/
 export TWEEGO_PATH=$HOME/documents/twine/story-formats/
 
 set -o vi
@@ -27,7 +25,7 @@ set -o vi
 alias open="garcon-url-handler"
 
 fpath=($fpath ~/.zshfuncs)
-path=( $HOME/.cargo/bin $path )
+path=( $HOME/.cargo/bin $path $GOPATH/bin )
 
 ###--------------------------------------------------
 ### history
@@ -67,7 +65,7 @@ ppbr yt
 
 aks()
 {
-    keychain id_rsa_dev
+    keychain id_rsa_`uname -n`
     source ~/.keychain/`uname -n`-sh
 }
 
