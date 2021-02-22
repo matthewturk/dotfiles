@@ -30,6 +30,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'srcery-colors/srcery-vim'
 Plug 'bignimbus/pop-punk.vim'
 Plug 'jaredgorski/spacecamp'
+Plug 'cocopon/iceberg.vim'
 
 " Have to install both fzf and fzf.vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -131,8 +132,9 @@ set background=dark
 "colorscheme xoria256
 "colorscheme badwolf
 colorscheme Monokai
-colorscheme spacecamp
-colorscheme spacecamp_lite
+"colorscheme spacecamp
+"colorscheme spacecamp_lite
+colorscheme iceberg
 
 " reloads .vimrc -- making all changes active
 map <silent> <Leader>v :source ~/.vimrc<CR>:PlugInstall<CR>:bdelete<CR>:exe ":echo 'vimrc reloaded'"<CR>
