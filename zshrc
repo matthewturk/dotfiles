@@ -25,7 +25,7 @@ set -o vi
 alias open="garcon-url-handler"
 
 fpath=($fpath ~/.zshfuncs)
-path=( $HOME/.cargo/bin $path $GOPATH/bin )
+path=( $HOME/.cargo/bin $HOME/.local/bin $path $GOPATH/bin )
 
 ###--------------------------------------------------
 ### history
