@@ -35,6 +35,13 @@ SAVEHIST="20000"
 DIRSTACKSIZE=30
 READNULLCMD=less
 
+update_gh() {
+    fn="gh_${1}_linux_amd64.deb"
+    wget "https://github.com/cli/cli/releases/download/v$1/${fn}"
+    sudo dpkg -i ${fn}
+    rm ${fn}
+}
+
 ###--------------------------------------------------
 ### prompts
 setprompt()
