@@ -1,7 +1,16 @@
 [user]
 	name = Matthew Turk
 	email = matthewturk@gmail.com
+[core]
+	deltaBaseCacheLimit = 1G
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 [init]
 	defaultBranch = main
+[github]
+	user = matthewturk
 [pull]
 	rebase = false
