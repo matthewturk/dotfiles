@@ -1,15 +1,23 @@
 #!/bin/zsh
 
-type="$(echo -e 'pr\nissue' | rofi -dmenu)"
+if [ $# -eq 0 ]
+then
+    echo "Please supply a list of repositories."
+    exit 0;
+fi
 
-repos="yt-project/yt
-yt-project/yt_idv
-yt-project/widgyts"
+type="$(echo -e 'pr\nissue\nnew issue' | rofi -dmenu -p 'Explore' )"
+[ -z "$type" ] && exit 0;
 
-repo="$(echo -e $repos | rofi -dmenu)"
+repo="$(rofi -dmenu -p 'Repository' -i -input $1)"
 [ -z "$repo" ] && exit 0;
 
-id="$(gh -R$repo $type list -L100 | rofi -dmenu | cut -f1)"
-[ -z "$id" ] && exit 0;
-
-gh -R"$repo" $type view -w "$id"
+if [ "$type" = "new issue" ]
+then
+    gh -R$repo issue create -w
+else
+    id="$(gh -R$repo $type list -L100 | rofi -dmenu | cut -f1)"
+    [ -z "$id" ] && exit 0;
+    
+    gh -R"$repo" $type view -w "$id"
+fi
