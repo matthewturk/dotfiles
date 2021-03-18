@@ -17,8 +17,10 @@ then
     google-chrome https://github.com/${repo}/issues/new
 elif [ "$type" = "new issue" ]
 then
-    title=$(echo "" | rofi -dmenu -p "Issue Title")
-    body=$(echo "" | rofi -dmenu -p "Body of issue")
+    title=$(echo "" | rofi -dmenu -theme-str 'listview { enabled: false;}' -p "Issue Title")
+    [ -z "$title" ] && exit 0;
+    body=$(echo "" | rofi -dmenu -theme-str 'listview { enabled: false;}' -p "Body of issue")
+    [ -z "$body" ] && exit 0;
     gh -R"$repo" issue create -b "${body}" -t "${title}" -w
 else
     id="$(gh -R$repo $type list -L100 | rofi -dmenu | cut -f1)"
