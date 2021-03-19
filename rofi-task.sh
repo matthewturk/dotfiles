@@ -15,4 +15,10 @@ fi
 ACTION=$(printf "done\nedit\nstart\nstop" | rofi -no-auto-select -i -dmenu -p "Action")
 [ -z "$ACTION" ] && echo "Cancelled." && exit
 
-gnome-terminal --title taskwin --hide-menubar -- /usr/bin/task "${ID}" "${ACTION}"
+if [ "$ACTION" = "edit" ]
+then
+    gnome-terminal --title taskwin --hide-menubar -- /usr/bin/task "${ID}" "${ACTION}"
+else
+    RESULT=$(/usr/bin/task "${ID}" "${ACTION}")
+    rofi -e "$RESULT"
+fi
