@@ -6,7 +6,7 @@ then
     exit 0;
 fi
 
-type="$(echo -e 'pr\nissue\nnew issue\nnew issue web' | rofi -dmenu -p 'Explore' )"
+type="$(echo -e 'pr\nissue\nnew issue\nvisit\nnew issue web' | rofi -dmenu -p 'Explore' )"
 [ -z "$type" ] && exit 0;
 
 repo="$(rofi -dmenu -p 'Repository' -i -input $1)"
@@ -15,6 +15,9 @@ repo="$(rofi -dmenu -p 'Repository' -i -input $1)"
 if [ "$type" = "new issue web" ]
 then
     google-chrome https://github.com/${repo}/issues/new
+elif [ "$type" = "visit" ]
+then
+    gh repo view -w "$repo"
 elif [ "$type" = "new issue" ]
 then
     title=$(echo "" | rofi -dmenu -theme-str 'listview { enabled: false;}' -p "Issue Title")
