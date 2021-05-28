@@ -396,3 +396,5 @@ function! CompleteBibKeys(findstart, base)
 endfunction
 
 au Filetype tex set omnifunc=CompleteBibKeys
+
+autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path %
