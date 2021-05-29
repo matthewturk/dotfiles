@@ -217,6 +217,7 @@ workspace 3 output DP-1
 assign [instance="slack"] 3
 assign [instance="signal"] 3
 assign [instance="crx_mdpkiolbdkhdjpekfbkbmhigcaggjagi"] 3
+assign [instance="Discord"] 3
 assign [window_role="pop-up"] output DP-1
 
 for_window [class="vol_render" instance="vol_render"] floating enable
