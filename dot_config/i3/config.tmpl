@@ -194,14 +194,14 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         #status_command i3status
-        output {{ .primary }}
+        output {{ .displays.primary }}
         status_command py3status -c ~/.config/i3status/config
         tray_output DP-1
 }
 
 bar {
         #status_command i3status
-        output {{ .secondary }}
+        output {{ .displays.secondary }}
         status_command py3status -c ~/.config/i3status/config_left
 }
 
