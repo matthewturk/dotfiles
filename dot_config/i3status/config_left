@@ -1,0 +1,70 @@
+# i3status configuration file.
+# see "man i3status" for documentation.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+general {
+    colors = true
+    interval = 5
+}
+
+order += "playerctlbar main"
+order += "headsetcontrol main"
+order += "disk /"
+order += "disk /home"
+#order += "ethernet _first_"
+#order += "static_string charge"
+order += "volume default"
+order += "tztime local"
+
+ethernet _first_ {
+        # if you use %speed, i3status requires root privileges
+        format_up = "E: %ip (%speed)"
+        format_down = "E: down"
+}
+
+netdata _first_ {
+    nic = "enp6s0"
+    format = '[LAN(Kb): {down}↓ {up}↑]'
+
+}
+
+disk "/" {
+        format = "root: %avail"
+}
+
+disk "/home" {
+        format = "home: %avail"
+}
+
+playerctlbar main {
+}
+
+headsetcontrol main {
+}
+
+tztime local {
+        format = "%Y-%m-%d %I:%M:%S %p"
+}
+
+static_string charge {
+    # Doesn't quite work because it doesn't refresh
+    format = shell(echo "🔋%" `headsetcontrol -cb`, str) 
+}
+
+volume "default" {
+    format = " ♪: %volume"
+    format_muted = "♪: muted (%volume)"
+    
+    #device = "pulse:bluez_sink.CC_98_8B_1F_A6_55.a2dp_sink"
+    #on_click 3 = "exec pactl set-sink-mute bluez_sink.CC_98_8B_1F_A6_55.a2dp_sink toggle"
+    #on_click 4 = "exec pactl set-sink-volume bluez_sink.CC_98_8B_1F_A6_55.a2dp_sink +5%"
+    #on_click 5 = "exec pactl set-sink-volume bluez_sink.CC_98_8B_1F_A6_55.a2dp_sink -5%"
+    device = "default"
+    on_click 3 = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    on_click 4 = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%"
+    on_click 5 = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%"
+}
