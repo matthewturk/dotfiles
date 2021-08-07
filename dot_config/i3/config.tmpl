@@ -194,14 +194,14 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         #status_command i3status
-        output primary
+        output {{ .displays.primary }}
         status_command py3status -c ~/.config/i3status/config
-        tray_output DP-1
+        tray_output {{ .displays.secondary }}
 }
 
 bar {
         #status_command i3status
-        output DP-1
+        output {{ .displays.secondary }}
         status_command py3status -c ~/.config/i3status/config_left
 }
 
@@ -246,7 +246,9 @@ bindsym $mod+Shift+m exec eog ~/Downloads/cheatsheets-[12].png
 bindsym --release $mod+Shift+s exec gnome-screenshot -ca
 
 bindsym $mod+Shift+y exec ~/.config/rofi/gh-repo-script.sh ~/.config/rofi/repos.txt
+bindsym $mod+Shift+u exec ~/.config/rofi/hass-controls.sh
 
 bindsym $mod+Prior exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym $mod+Next exec pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindsym $mod+Home exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+exec --no-startup-id /usr/bin/setxkbmap -option "caps:escape"
