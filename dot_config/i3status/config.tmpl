@@ -35,12 +35,12 @@ playerctlbar main {
 
 cpu_temperature 0 {
         format = "T: %degrees °C"
-        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon0/temp2_input"
+        path = "{{- .cputemp.primary }}"
 }
 
 cpu_temperature 1 {
         format = "T: %degrees °C"
-        path = "/sys/devices/platform/coretemp.1/hwmon/hwmon1/temp2_input"
+        path = "{{- .cputemp.primary }}"
 }
 
 battery all {
