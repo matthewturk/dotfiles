@@ -252,3 +252,5 @@ bindsym $mod+Prior exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym $mod+Next exec pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindsym $mod+Home exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 exec --no-startup-id /usr/bin/setxkbmap -option "caps:escape"
+
+for_window [class="zoom", title="Chat"] floating enable
