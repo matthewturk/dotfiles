@@ -42,6 +42,15 @@ update_gh() {
     rm ${fn}
 }
 
+goto() {
+  if [ "$1" = "." ]; then
+    pwd >> "$HOME/.config/goto"
+  else
+    cd "$(cat $HOME/.config/goto | sort | fzf)"
+    ls
+  fi
+}
+
 ###--------------------------------------------------
 ### prompts
 setprompt()
