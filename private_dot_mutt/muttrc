@@ -22,3 +22,13 @@ unset mark_old
 unset beep_new
 
 set sidebar_visible
+
+set realname="Matthew Turk"
+set sort=reverse-last-date
+set meta_key=yes
+set nomark_old # Don't mark as old
+
+bind browser <return> view-file
+
+set status_chars  = " *%A"
+set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
