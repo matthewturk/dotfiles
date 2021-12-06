@@ -1,8 +1,8 @@
 IMAPAccount uiuc
 Host outlook.office365.com
 Port 993
-User {{ (index (lastpass 2971987286) 0).user | quote }}
-PassCmd "lpass show 2971987286 |
+User {{ (index (lastpass "2971987286") 0).username | quote }}
+PassCmd "lpass show 2971987286 --password"
 SSLType STARTTLS
 SSLVersions TLSv1.2
 CertificateFile /etc/ssl/certs/ca-certificates.crt
