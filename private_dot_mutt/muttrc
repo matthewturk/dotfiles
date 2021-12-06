@@ -1,6 +1,9 @@
 # paths
 
-set folder = "~/Mail/uiuc"
+#set folder = "~/Mail/uiuc"
+set imap_user = "`lpass show 2971987286 --user`"
+set imap_pass = "`lpass show 2971987286 --password`"
+set folder = imaps://mjturk\@illinois.edu@outlook.office365.com/
 set header_cache = "~/.mutt/cache/headers"
 set message_cachedir = "~/.mutt/cache/bodies"
 set certificate_file = "/etc/ssl/certs/ca-certificates.crt"
@@ -33,3 +36,5 @@ bind browser <return> view-file
 
 set status_chars  = " *%A"
 set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+
+source ~/.mutt/colors
