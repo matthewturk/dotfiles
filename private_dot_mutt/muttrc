@@ -24,7 +24,8 @@ unset beep_new
 set sidebar_visible
 
 set realname="Matthew Turk"
-set sort=reverse-last-date
+set sort=threads
+set sort_aux = reverse-last-date-received
 set meta_key=yes
 set nomark_old # Don't mark as old
 
