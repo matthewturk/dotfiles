@@ -3,6 +3,21 @@ Host outlook.office365.com
 Port 993
 User {{ (index (lastpass "2971987286") 0).username | quote }}
 PassCmd "lpass show 2971987286 --password"
-SSLType STARTTLS
+SSLType IMAPS
 SSLVersions TLSv1.2
 CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore uiuc-remote
+Account uiuc
+
+MaildirStore uiuc-local
+SubFolders Verbatim
+Path ~/Mail/uiuc/
+Inbox ~/Mail/uiuc/Inbox/
+
+Channel uiuc-inbox
+Master :uiuc-remote:
+Slave :uiuc-local:
+#Patterns 
+Create Both
+Expunge Both
