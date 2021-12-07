@@ -1,0 +1,43 @@
+color attachment  color109 default
+color bold        color229 default
+color error       color167 default
+color hdrdefault  color246 default
+color indicator   color235 color66
+color markers     color243 default
+color normal      color223 default
+color quoted      color250 default
+color quoted1     color108 default
+color quoted2     color250 default
+color quoted3     color108 default
+color quoted4     color250 default
+color quoted5     color108 default
+color search      default color208
+color signature   color108 default
+color tilde       color243 default
+color tree        color142 default
+color underline   color223 color239
+
+color sidebar_divider    color250 default
+color sidebar_new        color142 default
+
+color index color142 default ~N
+color index color108 default ~O
+color index color109 default ~P
+color index color214 default ~F
+color index color175 default ~Q
+color index color167 default ~=
+color index default color223 ~T
+color index default color167 ~D
+
+color header color214 default "^From:"
+color header color109 default "^To:"
+color header color142 default "^Subject:"
+color header color108 default "^X-Spam-Status:"
+color header color108 default "^Received:"
+
+color body color208 default "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+color body color208 default "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
+color body default color214 "[;:]-*[)>(<lt;|]"
+color body color229 default "\\*[- A-Za-z]+\\*"
+
+color compose header            color223 default
