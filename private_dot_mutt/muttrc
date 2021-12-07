@@ -15,6 +15,7 @@ set wait_key = no
 set mbox_type = Maildir
 set timeout = 3
 set mail_check = 0
+
 unset delete
 set quit
 set thorough_search
