@@ -1,9 +1,11 @@
 # paths
 
+source "~/.mutt/lang_en_US"
+
 #set folder = "~/Mail/uiuc"
 set imap_user = "`lpass show 2971987286 --user`"
 set imap_pass = "`lpass show 2971987286 --password`"
-set folder = imaps://mjturk\@illinois.edu@outlook.office365.com/
+set folder = imaps://outlook.office365.com/
 set header_cache = "~/.mutt/cache/headers"
 set message_cachedir = "~/.mutt/cache/bodies"
 set certificate_file = "/etc/ssl/certs/ca-certificates.crt"
@@ -16,7 +18,6 @@ set mbox_type = Maildir
 set timeout = 3
 set mail_check = 0
 
-unset delete
 set quit
 set thorough_search
 set mail_check_stats
@@ -28,6 +29,7 @@ unset beep_new
 set sidebar_visible
 
 set realname="Matthew Turk"
+set from="$imap_user"
 set sort=threads
 set sort_aux = reverse-last-date-received
 set meta_key=yes
@@ -45,3 +47,40 @@ source ~/.mutt/colors
 # Encryption method: STARTTLS
 set smtp_pass = $imap_pass
 set smtp_url  = "smtp://$imap_user@smtp.office365.com:587/"
+set ssl_force_tls = yes
+set smtp_authenticators="login"
+
+# Setup some folders
+
+set postponed= +$my_drafts_noquote
+set record= +$my_sent_noquote
+set trash= +$my_trash_noquote
+mailboxes
+
+set imap_check_subscribed="yes"
+set imap_list_subscribed="yes"
+set timeout=15
+set mail_check=90
+set imap_keepalive=180
+set imap_idle
+
+set smart_wrap="yes"
+alternative_order text/plain
+auto_view text/html
+
+bind    index   G   imap-fetch-mail
+bind    index   g   noop
+macro   index   gi "<change-folder>=INBOX<enter>"       "Go to Inbox"
+macro   index   gs "<change-folder>=$my_sent<enter>"    "Go to Sent"
+macro   index   gd "<change-folder>=$my_drafts<enter>"  "Go to Drafts"
+macro   index   gt "<change-folder>=$my_trash<enter>"   "Go to Trash"
+macro   index   ga "<change-folder>=$my_trash<enter>"   "Go to Archive"
+
+bind    index   <up>        previous-entry
+bind    index   <down>      next-entry
+bind    index   <delete>    delete-message
+bind    index   -           collapse-thread
+bind    index   _           collapse-all
+
+bind    index   x           tag-thread
+macro   index   e           "<tag-prefix><delete-message>" "Archive Selected"
