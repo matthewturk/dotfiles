@@ -1,0 +1,154 @@
+wtf:
+  colors:
+    border:
+      focusable: darkslateblue
+      focused: orange
+      normal: gray
+  grid:
+    columns: [36, 36, 36, 36, 90]
+    rows: [12, 12, 12, 4, 4, 90]
+  refreshInterval: 1
+  mods:
+    clocks:
+      colors:
+        rows:
+          even: "lightblue"
+          odd: "white"
+      enabled: true
+      locations:
+        Champaign: "America/Chicago"
+        Edinburgh: "Europe/London"
+      position:
+        top: 0
+        left: 1
+        height: 1
+        width: 1
+      refreshInterval: 15
+      sort: "alphabetical"
+      title: "Clocks"
+      type: "clocks"
+      timeFormat: "3:04PM"
+    digitalclock:
+      color: blue
+      enabled: true
+      font: digitalfont
+      hourFormat: 12
+      position:
+        top: 0
+        left: 2
+        height: 1
+        width: 1
+      refreshInterval: 1
+      type: "digitalclock"
+    feedreader:
+      enabled: false
+      feeds:
+      - http://wtfutil.com/blog/index.xml
+      feedLimit: 10
+      position:
+        top: 1
+        left: 1
+        width: 2
+        height: 1
+      updateInterval: 14400
+    ipinfo:
+      colors:
+        name: "lightblue"
+        value: "white"
+      enabled: true
+      position:
+        top: 2
+        left: 1
+        height: 1
+        width: 1
+      refreshInterval: 150
+    github:
+      enabled: true
+      enableStatus: true
+      position:
+        top: 1
+        left: 1
+        height: 1
+        width: 2
+      refreshInterval: 300
+      repositories:
+        - "yt-project/yt"
+        - "data-exp-lab/widgyts"
+        - "cropsinsilico/hothouse"
+      username: "matthewturk"
+    gcal:
+      position:
+        top: 2
+        left: 2
+        height: 1
+        width: 1
+      colors:
+        title: "red"
+        eventTime: "lightblue"
+        description: "yellow"
+        past: "gray"
+      calendarReadLevel: "reader"
+      conflictIcon: "🚨"
+      currentIcon: "💥"
+      displayResponseStatus: true
+      email: "matthewturk@gmail.com"
+      enabled: true
+      eventCount: 15
+      hourFormat: "12"
+      multiCalendar: true
+      refreshInterval: 300
+      secretFile: "~/.config/wtf/gcal_credentials.json"
+      timezone: "America/Chicago"
+      withLocation: true
+    resourceusage:
+      enabled: true
+      cpuCombined: true
+      position:
+        top: 0
+        left: 0
+        height: 1
+        width: 1
+      refreshInterval: 5
+    todo:
+      enabled: true
+      filename: "todo.yml"
+      position:
+        top: 1
+        left: 0
+        height: 1
+        width: 1
+    weather:
+      cityids: 
+      - 4887158
+      refreshInterval: 300
+      tempUnit: F
+      useEmoji: true
+      enabled: true
+      position:
+        top: 2
+        left: 0
+        height: 1
+        width: 1
+    textfile:
+      enabled: false
+      filePath: "~/.config/wtf/config.yml"
+      format: true
+      position:
+        top: 0
+        left: 0
+        height: 4
+        width: 1
+      refreshInterval: 30
+      wrapText: false
+    uptime:
+      args: [""]
+      cmd: "uptime"
+      enabled: true
+      position:
+        top: 3
+        left: 1
+        height: 1
+        width: 2
+      refreshInterval: 30
+      type: cmdrunner
+
