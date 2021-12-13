@@ -84,3 +84,5 @@ bind    index   _           collapse-all
 
 bind    index   x           tag-thread
 macro   index   e           "<tag-prefix><delete-message>" "Archive Selected"
+
+set mailcap_path = ~/.mutt/mailcap
