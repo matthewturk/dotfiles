@@ -5,8 +5,8 @@ wtf:
       focused: orange
       normal: gray
   grid:
-    columns: [36, 36, 36, 36, 90]
-    rows: [12, 12, 12, 4, 4, 90]
+    columns: [36, 36, 36, 36, -1]
+    rows: [12, 12, 12, 4, 4, -1]
   refreshInterval: 1
   mods:
     clocks:
@@ -66,40 +66,16 @@ wtf:
       enabled: true
       enableStatus: true
       position:
-        top: 1
-        left: 1
+        top: 5
+        left: 0
         height: 1
-        width: 2
+        width: 6
       refreshInterval: 300
       repositories:
         - "yt-project/yt"
         - "data-exp-lab/widgyts"
         - "cropsinsilico/hothouse"
       username: "matthewturk"
-    gcal:
-      position:
-        top: 2
-        left: 2
-        height: 1
-        width: 1
-      colors:
-        title: "red"
-        eventTime: "lightblue"
-        description: "yellow"
-        past: "gray"
-      calendarReadLevel: "reader"
-      conflictIcon: "🚨"
-      currentIcon: "💥"
-      displayResponseStatus: true
-      email: "matthewturk@gmail.com"
-      enabled: true
-      eventCount: 15
-      hourFormat: "12"
-      multiCalendar: true
-      refreshInterval: 300
-      secretFile: "~/.config/wtf/gcal_credentials.json"
-      timezone: "America/Chicago"
-      withLocation: true
     resourceusage:
       enabled: true
       cpuCombined: true
@@ -109,14 +85,6 @@ wtf:
         height: 1
         width: 1
       refreshInterval: 5
-    todo:
-      enabled: true
-      filename: "todo.yml"
-      position:
-        top: 1
-        left: 0
-        height: 1
-        width: 1
     weather:
       cityids: 
       - 4887158
@@ -141,7 +109,7 @@ wtf:
       refreshInterval: 30
       wrapText: false
     uptime:
-      args: [""]
+      args: []
       cmd: "uptime"
       enabled: true
       position:
