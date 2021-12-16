@@ -1,0 +1,14 @@
+  - title: My Pull Requests
+    repos:
+      - yt-project/yt
+    filters: author:@me
+  - title: Needs My Review
+    repos:
+      - yt-project/yt
+    filters: assignee:@me
+  - title: Subscribed
+    repos:
+      - yt-project/yt_idv
+      - yt-project/widgyts
+      - yt-project/yt
+    filters: -author:@me
