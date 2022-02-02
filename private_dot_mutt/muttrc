@@ -82,6 +82,9 @@ bind    index   <delete>    delete-message
 bind    index   -           collapse-thread
 bind    index   _           collapse-all
 
+bind    pager   b           previous-page
+bind    pager   f           next-page
+
 bind    index   x           tag-thread
 macro   index   e           "<tag-prefix><delete-message>" "Archive Selected"
 
