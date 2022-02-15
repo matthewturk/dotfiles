@@ -1,0 +1,4 @@
+[".mutt/colors-gruvbox-shuber.muttrc"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/shuber2/mutt-gruvbox/master/colors-gruvbox-shuber.muttrc"
+    refreshPeriod = "168h"
