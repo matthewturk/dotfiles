@@ -7,6 +7,7 @@ umask 002
 # Skipping this for now; seems not to be necessary on any systems anymore
 #if [ `hostname` = turnipseed ]; then
 #    export GDK_SCALE=1.0
+    export QT_XCB_GL_INTEGRATION=xcb_egl
 #else
 #    export GDK_SCALE=2.0
 #fi
