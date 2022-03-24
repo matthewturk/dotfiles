@@ -91,5 +91,20 @@ macro   index   e           "<tag-prefix><delete-message>" "Archive Selected"
 
 set mailcap_path = ~/.mutt/mailcap
 
+
+# See https://neomutt.org/feature/cond-date
+#
+# The default index_format is:
+#       '%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s'
+#
+# We replace the date field '%{%b %d}', giving:
+set index_format='%4C %Z %<[y?%<[m?%<[d?%[%H:%M ]&%[%a %d]>&%[%b %d]>&%[%m/%y ]> %-15.15L (%?l?%4l&%4c?) %s'
+# Test  Date Range  Format String  Example
+# --------------------------------------------
+# %[d   Today       %[%H:%M ]      12:34
+# %[m   This month  %[%a %d]       Thu 12
+# %[y   This year   %[%b %d]       Dec 10
+#  —    Older       %[%m/%y ]      06/15
+
 source ~/.mutt/aliases
 set alias_file=~/.mutt/aliases
