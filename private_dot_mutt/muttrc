@@ -89,6 +89,8 @@ bind    pager   f           next-page
 bind    index   x           tag-thread
 macro   index   e           "<tag-prefix><delete-message>" "Archive Selected"
 
+bind    index,pager   \CO           sidebar-toggle-visible "Toggle Sidebar Visible"
+
 set mailcap_path = ~/.mutt/mailcap
 
 
