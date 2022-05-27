@@ -64,9 +64,9 @@ volume "default" {
     #on_click 4 = "exec pactl set-sink-volume bluez_sink.CC_98_8B_1F_A6_55.a2dp_sink +5%"
     #on_click 5 = "exec pactl set-sink-volume bluez_sink.CC_98_8B_1F_A6_55.a2dp_sink -5%"
     device = "default"
-    on_click 1 = "exec ~/.local/bin/mypa {{- .audio.primary }}"
+    on_click 1 = "exec ~/.local/bin/mypa {{ .audio.primary }}"
     on_click 2 = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle"
-    on_click 3 = "exec ~/.local/bin/mypa {{- .audio.secondary }}"
+    on_click 3 = "exec ~/.local/bin/mypa {{ .audio.secondary }}"
     on_click 4 = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%"
     on_click 5 = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%"
 }
