@@ -82,7 +82,7 @@ ppbr yt
 
 aks()
 {
-    keychain id_{{- ssh.key_filename }}
+    keychain {{- ssh.key_filename }}
     source ~/.keychain/`uname -n`-sh
 }
 
