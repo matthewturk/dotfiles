@@ -1,0 +1,35 @@
+# Some configuration info is available at:
+# https://raw.githubusercontent.com/tmcdonell/config-alacritty/master/alacritty.yml
+window:
+  decorations: None
+  startup_mode: Maximized
+  opacity: 1.0
+
+scrolling:
+  history: 0
+font:
+  size: 14.0
+bell:
+  duration: 0
+
+mouse:
+  hide_when_typing: true
+
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+
+  # When set to `true`, selected text will be copied to the primary clipboard.
+  save_to_clipboard: false
+
+cursor:
+  # Cursor style
+  #
+  # Values for 'style':
+  #   - ▇ Block
+  #   - _ Underline
+  #   - | Beam
+  style: Block
+
+  # If this is `true`, the cursor will be rendered as a hollow box when the
+  # window is not focused.
+  unfocused_hollow: true
