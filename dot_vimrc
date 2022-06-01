@@ -39,6 +39,7 @@ Plug 'srcery-colors/srcery-vim'
 Plug 'bignimbus/pop-punk.vim'
 Plug 'jaredgorski/spacecamp'
 Plug 'cocopon/iceberg.vim'
+Plug 'letorbi/vim-colors-modern-borland'
 
 " Have to install both fzf and fzf.vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
