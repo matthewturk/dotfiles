@@ -49,7 +49,10 @@ source ~/.mutt/colors-gruvbox-shuber.muttrc
 set smtp_pass = $imap_pass
 set smtp_url  = "smtp://$imap_user@smtp.office365.com:587/"
 set ssl_force_tls = yes
-set smtp_authenticators="login"
+set imap_authenticators = "xoauth2"
+set imap_oauth_refresh_command = "~/.local/bin/mutt_oauth2.py ~/.mutt/tmp/TOKEN_FILENAME"
+set smtp_authenticators=${imap_authenticators}
+set smtp_oauth_refresh_command = ${imap_oauth_refresh_command}
 
 # Setup some folders
 
