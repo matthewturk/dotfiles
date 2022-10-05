@@ -1,0 +1,47 @@
+#!/usr/bin/python
+
+# https://github.com/funkey/unproof
+# The following two settings ensure that URLs are shown unscrambled in mutt's pager and that URLs are unscrambled before editing a mail for replying:
+# set display_filter='/path/to/unproofpoint'                                                                                                                                                                
+# set editor='/path/to/unproofpoint %s; vim %s'
+
+import fileinput
+import re
+import shutil
+import sys
+import tempfile
+
+
+def unescape(url):
+
+    return url.replace('*', '#')
+
+
+def replace_re(match):
+
+    escaped_url = unescape(match.group(1))
+    return escaped_url
+
+
+if __name__ == "__main__":
+
+    for line in fileinput.input():
+
+        if fileinput.isfirstline():
+            if fileinput.isstdin():
+                tmpfile = None
+                out = sys.stdout
+            else:
+                _, tmpfile = tempfile.mkstemp()
+                target = fileinput.filename()
+                out = open(tmpfile, 'w')
+
+        unproofed = re.sub(
+            r'https://urldefense.com/.*?/__(.*?)__;.*?\$',
+            replace_re,
+            line)
+
+        out.write(unproofed)
+
+    if tmpfile is not None:
+        shutil.move(tmpfile, target)
