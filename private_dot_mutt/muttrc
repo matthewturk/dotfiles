@@ -112,7 +112,7 @@ set index_format='%4C %Z %<[y?%<[m?%<[d?%[%H:%M ]&%[%a %d]>&%[%b %d]>&%[%m/%y ]>
 #  —    Older       %[%m/%y ]      06/15
 
 set display_filter='~/.local/bin/unproofpoint'
-set editor='~/.local/bin/unproofpoint %s; vim %s
+set editor='~/.local/bin/unproofpoint %s; vim %s'
 
 source ~/.mutt/aliases
 set alias_file=~/.mutt/aliases

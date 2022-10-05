@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # https://github.com/funkey/unproof
 # The following two settings ensure that URLs are shown unscrambled in mutt's pager and that URLs are unscrambled before editing a mail for replying:
