@@ -68,6 +68,7 @@ set timeout=15
 set mail_check=90
 set imap_keepalive=180
 set imap_idle
+set imap_deflate="yes"
 
 set smart_wrap="yes"
 alternative_order text/plain
