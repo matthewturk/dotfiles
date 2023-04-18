@@ -411,3 +411,6 @@ autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path %
 " I type :W way too often, and want to have it "write" rather than call the
 " fzf Windows command.
 command W write
+
+" enzo names its files .C
+au BufRead,BufNewFile *.C set filetype=cpp
