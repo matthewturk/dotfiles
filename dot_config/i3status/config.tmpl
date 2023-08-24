@@ -11,8 +11,12 @@ general {
         interval = 5
 }
 
-order += "pomodoro"
-order += "taskwarrior"
+#order += "pomodoro"
+#order += "taskwarrior"
+order += "playerctlbar main"
+order += "headsetcontrol main"
+order += "disk /"
+order += "disk /home"
 order += "net_rate"
 order += "load"
 order += "cpu_temperature 0"
@@ -26,6 +30,20 @@ pomodoro {
 
 taskwarrior {
   filter = "+ACTIVE"
+}
+
+playerctlbar main {
+}
+
+headsetcontrol main {
+}
+
+disk "/" {
+        format = "root: %avail"
+}
+
+disk "/home" {
+        format = "home: %avail"
 }
 
 net_rate {
