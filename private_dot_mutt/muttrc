@@ -60,7 +60,6 @@ set smtp_oauth_refresh_command = ${imap_oauth_refresh_command}
 set postponed= +$my_drafts_noquote
 set record= +$my_sent_noquote
 set trash= +$my_trash_noquote
-mailboxes
 
 set imap_check_subscribed="yes"
 set imap_list_subscribed="yes"
@@ -95,6 +94,9 @@ bind    index   x           tag-thread
 macro   index   e           "<tag-prefix><delete-message>" "Archive Selected"
 
 bind    index,pager   \CO           sidebar-toggle-visible
+bind    index   \CP         sidebar-prev
+bind    index   \CN         sidebar-next
+bind    index   \C <enter>   sidebar-open
 
 set mailcap_path = ~/.mutt/mailcap
 
@@ -119,7 +121,14 @@ source ~/.mutt/aliases
 set alias_file=~/.mutt/aliases
 
 # Eternal September
-set news_server=news.eternal-september.org
+set news_server="news://news.eternal-september.org"
 set nntp_user="`lpass show 8628485982867322757 --user`"
 set nntp_pass="`lpass show 8628485982867322757 --password`"
+set nntp_poll = 60
 set nntp_authenticators=user
+set catchup_newsgroup = ask-no
+set nntp_listgroup = yes
+set nntp_load_description = yes
+set news_cache_dir="~/.mutt/news/"
+
+#set folder="$news_server"
