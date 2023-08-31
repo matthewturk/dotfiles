@@ -117,3 +117,9 @@ set display_filter = '$HOME/.local/bin/unproofpoint'
 
 source ~/.mutt/aliases
 set alias_file=~/.mutt/aliases
+
+# Eternal September
+set news_server=news.eternal-september.org
+set nntp_user="`lpass show 8628485982867322757 --user`"
+set nntp_pass="`lpass show 8628485982867322757 --password`"
+set nntp_authenticators=user
