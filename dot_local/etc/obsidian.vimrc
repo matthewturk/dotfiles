@@ -49,11 +49,11 @@ map \bq :blockquote
 exmap runblocks obcommand execute-code:run-all-code-blocks-in-file
 map \ex :runblocks
 
-exmap splithorizontal obcommand editor:split-horizontal
+exmap splithorizontal obcommand workspace:split-horizontal
 map \sp :splithorizontal
 
-exmap splitvertical obcommand editor:split-vertical
+exmap splitvertical obcommand workspace:split-vertical
 map \vs :splitvertical
 
-exmap movetonewwindow obcommand editor:move-to-new-window
+exmap movetonewwindow obcommand workspace:move-to-new-window
 map \! :movetonewwindow
