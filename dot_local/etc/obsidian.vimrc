@@ -50,12 +50,13 @@ exmap runblocks obcommand execute-code:run-all-code-blocks-in-file
 map \ex :runblocks
 
 exmap splithorizontal obcommand workspace:split-horizontal
+exmap sp splithorizontal
 map \sp :splithorizontal
-nmap sp :splithoriztonal
 
 exmap splitvertical obcommand workspace:split-vertical
+exmap vs splitvertical
 map \vs :splitvertical
-nmap vs :splitvertical
 
 exmap movetonewwindow obcommand workspace:move-to-new-window
+exmap ! movetonewwindow
 map \! :movetonewwindow
