@@ -60,3 +60,6 @@ map \vs :splitvertical
 exmap movetonewwindow obcommand workspace:move-to-new-window
 exmap ! movetonewwindow
 map \! :movetonewwindow
+
+exmap switcher obcommand switcher:open
+map ; :switcher
