@@ -51,9 +51,11 @@ map \ex :runblocks
 
 exmap splithorizontal obcommand workspace:split-horizontal
 map \sp :splithorizontal
+nmap sp :splithoriztonal
 
 exmap splitvertical obcommand workspace:split-vertical
 map \vs :splitvertical
+nmap vs :splitvertical
 
 exmap movetonewwindow obcommand workspace:move-to-new-window
 map \! :movetonewwindow
