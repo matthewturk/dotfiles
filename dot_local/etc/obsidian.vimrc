@@ -63,3 +63,14 @@ map \! :movetonewwindow
 
 exmap switcher obcommand switcher:open
 map ; :switcher
+
+" A few ways to improve usability on my laptop keyboard
+exmap tabnext obcommand workspace:next-tab
+map gt :tabnext
+
+exmap tabprev obcommand workspace:previous-tab
+map gT :tabprev
+
+map <A-p> :pasteinto
+
+exmap close obcommand workspace:close
