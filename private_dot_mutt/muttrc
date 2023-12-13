@@ -41,8 +41,8 @@ set status_chars  = " *%A"
 set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
 
 #source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
-#source ~/.mutt/colors-gruvbox-shuber.muttrc
-source ~/.mutt/mutt-colors-neonwolf-256.muttrc
+source ~/.mutt/colors-gruvbox-shuber.muttrc
+#source ~/.mutt/mutt-colors-neonwolf-256.muttrc
 
 # Server name: smtp.office365.com
 # Port: 587
