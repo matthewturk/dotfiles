@@ -414,3 +414,7 @@ command W write
 
 " enzo names its files .C
 au BufRead,BufNewFile *.C set filetype=cpp
+
+" https://vi.stackexchange.com/questions/475/how-to-save-a-file-for-which-i-have-no-write-permissions
+" 'Super duper write this, for real!!'
+cnoremap w!! w !sudo tee %
