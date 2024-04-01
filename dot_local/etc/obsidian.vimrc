@@ -73,4 +73,6 @@ map gT :tabprev
 
 map <A-p> :pasteinto
 
+map \ssc :%s/[‘’]/'/g
+
 exmap close obcommand workspace:close
