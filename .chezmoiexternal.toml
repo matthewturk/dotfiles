@@ -2,3 +2,7 @@
     type = "file"
     url = "https://raw.githubusercontent.com/shuber2/mutt-gruvbox/master/colors-gruvbox-shuber.muttrc"
     refreshPeriod = "168h"
+[".local/share/pandoc/templates/"]
+    type = "git-repo"
+    url = "https://github.com/jvsteiner/pandoc-obsidian-templates.git"
+    refreshPeriod = "168h"
