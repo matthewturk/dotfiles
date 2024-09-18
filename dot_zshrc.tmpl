@@ -54,12 +54,12 @@ goto() {
 
 ###--------------------------------------------------
 ### prompts
-setprompt()
-{
-    export PROMPT="[${YTNAME}]%(?..(${RED}{%?}${NO_COLOUR}%))[${YELLOW}%T${NO_COLOUR}][${CYAN}%15<...<%~${NO_COLOUR}]$ "
-}
-
-unset P
+#setprompt()
+#{
+#    export PROMPT="[${YTNAME}]%(?..(${RED}{%?}${NO_COLOUR}%))[${YELLOW}%T${NO_COLOUR}][${CYAN}%15<...<%~${NO_COLOUR}]$ "
+#}
+#
+#unset P
 
 export LESSCHARSET=iso8859
 
@@ -71,7 +71,7 @@ ppbr()
     #echo "PYTHONPATH=${PYTHONPATH}"
     export YTPATH=${PP}
     export YTNAME=$1
-    setprompt
+    #setprompt
 }
 ppbr yt
 
@@ -157,7 +157,7 @@ else
     local BEGINNING_OF_LINE=""
 fi
 
-setprompt
+#setprompt
 
 ### COMPLETION AND MORE
 
@@ -424,7 +424,7 @@ antigen bundle command-not-found
 antigen bundle zsh-users/zsh-syntax-highlighting
 
 # Load the theme.
-# antigen theme robbyrussell
+antigen theme crunch
 
 # Tell Antigen that you're done.
 antigen apply
