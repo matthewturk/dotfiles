@@ -437,6 +437,10 @@ antigen apply
 
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+ZSH_THEME_CONDA_PREFIX='conda:%F{green}'
+ZSH_THEME_CONDA_SUFFIX='%f'
+RPROMPT='$(conda_prompt_info)'
+
 ### End zsh stuff
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
