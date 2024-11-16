@@ -6,3 +6,7 @@
     type = "git-repo"
     url = "https://github.com/jvsteiner/pandoc-obsidian-templates.git"
     refreshPeriod = "168h"
+[".config/vifm/colors/"]
+    type = "git-repo"
+    url = "https://github.com/vifm/vifm-colors/"
+    refreshPeriod = "168h"
