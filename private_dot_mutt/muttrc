@@ -26,7 +26,7 @@ unset move
 unset mark_old
 unset beep_new
 
-set sidebar_visible
+set nosidebar_visible
 
 set realname="Matthew Turk"
 set from="$imap_user"
@@ -41,8 +41,12 @@ set status_chars  = " *%A"
 set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
 
 #source ~/.mutt/mutt-colors-solarized-dark-256.muttrc
+#source ~/.mutt/mutt-colors-solarized-light-256.muttrc
 #source ~/.mutt/colors-gruvbox-shuber.muttrc
-source ~/.mutt/mutt-colors-neonwolf-256.muttrc
+#source ~/.mutt/mutt-colors-neonwolf-256.muttrc
+#source ~/.mutt/vombatidae.neomuttrc
+#source ~/.mutt/zenburn.neomuttrc
+source ~/.mutt/monokai.muttrc
 
 # Server name: smtp.office365.com
 # Port: 587
