@@ -16,7 +16,7 @@
 # ======================================================================
 
 color   normal            default         default
-color   index_number      brightblack     default
+color   index_number      cyan            default
 color   index_date        magenta         default
 color   index_flags       yellow          default        .
 color   index_collapsed   cyan            default
