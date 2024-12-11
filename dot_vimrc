@@ -6,6 +6,12 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+if exists('g:vscode')
+    " VSCode extension
+else
+    " ordinary Neovim
+endif
+
 "Using https://blog.hellojs.org/configure-vim-from-scratch-efe6cbc1c563
 "
 " Specify a directory for plugins
