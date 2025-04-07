@@ -27,6 +27,12 @@ alias open="garcon-url-handler"
 
 alias vv="kitty +kitten icat"
 
+# We just say 'left' here because it wraps around and we don't expect to have
+# more than two.
+alias i31="i3-msg 'workspace 1; move workspace to output left'"
+alias i32="i3-msg 'workspace 2; move workspace to output left'"
+alias i33="i3-msg 'workspace 3; move workspace to output left'"
+
 fpath=($fpath ~/.zshfuncs)
 path=( $HOME/.cargo/bin $HOME/.local/bin $path $GOPATH/bin )
 
