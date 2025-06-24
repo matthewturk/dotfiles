@@ -21,6 +21,10 @@ export CONDA_BASE=$HOME/pyforge/
 export GOPATH=$HOME/Development/go
 export TWEEGO_PATH=$HOME/Documents/twine/story-formats/
 
+# I feel weird adding this -- I don't know why I didn't have any
+# other LD_LIBRARY_PATH bits!
+export LD_LIBRARY_PATH=$HOME/.local/lib/
+
 set -o vi
 
 alias open="garcon-url-handler"
