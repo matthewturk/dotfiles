@@ -17,7 +17,7 @@ export PAGER="less"
 export LESS="-r"
 export EDITOR="vim"
 
-export CONDA_BASE=$HOME/conda-py3/
+#export CONDA_BASE=$HOME/conda-py3/
 export GOPATH=$HOME/Development/go
 export TWEEGO_PATH=$HOME/Documents/twine/story-formats/
 
@@ -453,19 +453,19 @@ RPROMPT='$(conda_prompt_info)'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/conda-py3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/conda-py3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/conda-py3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/conda-py3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+# # >>> conda initialize >>>
+# # !! Contents within this block are managed by 'conda init' !!
+# __conda_setup="$('$HOME/conda-py3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "$HOME/conda-py3/etc/profile.d/conda.sh" ]; then
+#         . "$HOME/conda-py3/etc/profile.d/conda.sh"
+#     else
+#         export PATH="$HOME/conda-py3/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
+# # <<< conda initialize <<<
 
 bindkey -v
