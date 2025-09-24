@@ -481,4 +481,8 @@ if [ -f "$HOME/pyforge/etc/profile.d/conda.sh" ]; then
 fi
 # <<< mamba/conda initialize <<<
 
+# Wasmer
+export WASMER_DIR="/home/mturk/.wasmer"
+[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
+
 bindkey -v
