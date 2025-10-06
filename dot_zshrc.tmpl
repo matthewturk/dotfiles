@@ -38,7 +38,14 @@ alias i32="i3-msg 'workspace 2; move workspace to output left'"
 alias i33="i3-msg 'workspace 3; move workspace to output left'"
 
 fpath=($fpath ~/.zshfuncs)
-path=( $HOME/.cargo/bin $HOME/.local/bin $path $GOPATH/bin )
+path=( $HOME/.cargo/bin $HOME/.local/bin $path $GOPATH/bin $HOME/perl5/bin )
+
+# Perl stuff
+
+export PERL5LIB="$HOME/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"
+export PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"
+export PERL_MB_OPT="--install_base \"/$HOME/perl5\""
+export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"
 
 ###--------------------------------------------------
 ### history
@@ -486,9 +493,3 @@ unset __mamba_setup
 # <<< mamba initialize <<<
 
 bindkey -v
-
-PATH="$HOME/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="$HOME/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/mturk/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
