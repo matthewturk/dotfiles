@@ -235,7 +235,7 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
         \ gpicview %c,
         \ {View in shotwell}
         \ shotwell,
-fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp},<image/*>
+fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp},<image/*> \
     kitty +icat --silent --transfer-mode=stream --place=%pwx%ph@%pxx%py %c %N \
     %pc \
     kitty icat --clear --silent %pd
