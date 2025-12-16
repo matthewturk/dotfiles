@@ -46,7 +46,8 @@ set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)
 #source ~/.mutt/mutt-colors-neonwolf-256.muttrc
 #source ~/.mutt/vombatidae.neomuttrc
 #source ~/.mutt/zenburn.neomuttrc
-source ~/.mutt/monokai.muttrc
+#source ~/.mutt/monokai.muttrc
+source ~/.mutt/ayu-dark-256.neomuttrc
 
 # Server name: smtp.office365.com
 # Port: 587
