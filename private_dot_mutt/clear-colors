@@ -1,0 +1,14 @@
+# Remove all pattern-based coloring
+uncolor index *
+uncolor header *
+uncolor body *
+
+# Explicitly reset common UI elements to 'default' 
+# so the previous theme's colors don't bleed through
+color normal      default default
+color indicator   default default
+color status      default default
+color error       default default
+color message     default default
+color sidebar_divider default default
+color sidebar_new     default default
