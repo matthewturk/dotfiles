@@ -97,6 +97,9 @@ Plug 'benmills/vimux'
 " Nerd Font Stuff
 Plug 'ryanoasis/vim-devicons'
 
+" For some voice stuff
+Plug 'nvim-lua/plenary.nvim' " Useful for asynchronous jobs
+
 "  You will load your plugin here
 "  Make sure you use single quotes
 " Initialize plugin system
