@@ -490,6 +490,12 @@ else
     alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
 fi
 unset __mamba_setup
+
+# conda activation compatibility
+if [ -f "$MAMBA_ROOT_PREFIX/etc/profile.d/conda.sh" ]; then
+    . "$MAMBA_ROOT_PREFIX/etc/profile.d/conda.sh"
+fi
+
 # <<< mamba initialize <<<
 
 bindkey -v
