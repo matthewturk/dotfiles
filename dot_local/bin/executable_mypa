@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Updated for PipeWire/Ubuntu 24.04
-# Supports both Zenity (Legacy) and Rofi (Modern)
+# Modern Audio Controller for PipeWire / Ubuntu 24.04
+# Functions: list, gui, rofi, next, prev, mute, up, down
 
 function list_sinks() {
   pactl list sinks | grep -E 'Sink #|Name:|Description:'
@@ -9,60 +9,74 @@ function list_sinks() {
 
 function switch_sink() {
   local target="$1"
-  echo "Switching default to: $target"
-  pactl set-default-sink "$target" || { echo "Failed to set default"; return 1; }
+  [ -z "$target" ] && return 1
 
-  echo "Moving existing application streams..."
+  pactl set-default-sink "$target" || return 1
+
+  # Move all current streams to the new sink
   pactl list sink-inputs short | awk '{print $1}' | while read -r id; do
-    pactl move-sink-input "$id" "$target"
+    pactl move-sink-input "$id" "$target" 2>/dev/null
   done
   
-  # Optional: Send a desktop notification
-  local desc=$(pactl list sinks | grep -A 20 "Name: $target" | grep "Description:" | cut -d: -f2- | xargs)
-  notify-send "Audio Output Switched" "Active Device: $desc" -i audio-speakers
+  # Desktop Notification
+  local desc=$(pactl list sinks | grep -A 20 "Name: $target" | grep "Description:" | head -n 1 | cut -d: -f2- | xargs)
+  notify-send "Audio Output" "$desc" -i audio-speakers -t 2000 -h string:x-canonical-private-synchronous:audio-switch
+}
+
+function cycle_sink() {
+  local direction="$1"
+  local current=$(pactl get-default-sink)
+  mapfile -t sinks < <(pactl list sinks short | awk '{print $2}')
+  local total=${#sinks[@]}
+  
+  local current_idx=-1
+  for i in "${!sinks[@]}"; do
+    if [[ "${sinks[$i]}" == "$current" ]]; then
+      current_idx=$i
+      break
+    fi
+  done
+
+  if [ "$direction" == "next" ]; then
+    local new_idx=$(( (current_idx + 1) % total ))
+  else
+    local new_idx=$(( (current_idx - 1 + total) % total ))
+  fi
+
+  switch_sink "${sinks[$new_idx]}"
 }
 
 function switch_rofi() {
-  # Get list of sinks: Name and Description
-  # Format: "Description | Name"
-  local options=$(pactl list sinks | awk -F': ' '
-    /Name:/ {name=$2} 
-    /Description:/ {print $2 " | " name}
-  ')
-
-  # Show rofi menu
-  local selection=$(echo "$options" | rofi -dmenu -i -p "Select Audio Output" -l 10)
-
+  local options=$(pactl list sinks | awk -F': ' '/Name:/ {name=$2} /Description:/ {print $2 " | " name}')
+  local selection=$(echo "$options" | rofi -dmenu -i -p "Output" -l 10)
   if [ -n "$selection" ]; then
-    # Extract the Name (everything after the last '|')
     local target_name=$(echo "$selection" | awk -F ' | ' '{print $NF}')
     switch_sink "$target_name"
   fi
 }
 
-function switch_zenity() {
-  current_sink=$(pactl get-default-sink)
-  mapfile -t sink_data < <(pactl list sinks | grep -E 'Name:|Description:' | sed 's/^[[:space:]]*//')
-  zen_pars=("--list" "--radiolist" "--column" "Select" "--column" "Name" "--column" "Description")
-
-  for ((i=0; i<${#sink_data[@]}; i+=2)); do
-    name="${sink_data[$i]#Name: }"
-    desc="${sink_data[$i+1]#Description: }"
-    [[ "$name" == "$current_sink" ]] && zen_pars+=("TRUE" "$name" "$desc") || zen_pars+=("FALSE" "$name" "$desc")
-  done
-
-  new_sink=$(zenity "${zen_pars[@]}" --width=600 --height=300 --title="Select Audio Output" 2>/dev/null)
-  [ -n "$new_sink" ] && switch_sink "$new_sink"
+# New helper functions for your i3status clicks
+function toggle_mute() {
+  pactl set-sink-mute @DEFAULT_SINK@ toggle
+  local is_muted=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')
+  notify-send "Audio" "Mute: $is_muted" -t 1000 -h string:x-canonical-private-synchronous:audio-volume
 }
 
-function help_me() {
-  echo "Usage: $0 [rofi|gui|list|<sink name>]"
+function change_volume() {
+  pactl set-sink-volume @DEFAULT_SINK@ "$1"
+  local vol=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '[0-9]+(?=%)' | head -1)
+  notify-send "Volume" "${vol}%" -h int:value:"$vol" -t 1000 -h string:x-canonical-private-synchronous:audio-volume
 }
 
 case "${1:-}" in
   ""|list) list_sinks        ;;
+  next)    cycle_sink "next" ;;
+  prev)    cycle_sink "prev" ;;
+  mute)    toggle_mute       ;;
+  up)      change_volume "+5%" ;;
+  down)    change_volume "-5%" ;;
   rofi)    switch_rofi       ;;
-  gui)     switch_zenity     ;;
-  help)    help_me           ;;
+  gui)     # Re-using rofi as preferred gui, fallback to zenity logic if needed
+           switch_rofi       ;;
   *)       switch_sink "$1"  ;;
 esac
