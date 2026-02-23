@@ -1,99 +1,68 @@
 #!/usr/bin/env bash
 
-# Originally by mpapis on GitHub, obtained on 20220524 from
-# https://github.com/mpapis/home_dotfiles/tree/master/bin
+# Updated for PipeWire/Ubuntu 24.04
+# Supports both Zenity (Legacy) and Rofi (Modern)
 
-function list_sinks()
-{
-  pacmd list-sinks | grep -E 'index:|name:'
+function list_sinks() {
+  pactl list sinks | grep -E 'Sink #|Name:|Description:'
 }
 
-function switch_sink_default()
-{
-  echo switching default
-  pacmd set-default-sink $1 || echo failed
+function switch_sink() {
+  local target="$1"
+  echo "Switching default to: $target"
+  pactl set-default-sink "$target" || { echo "Failed to set default"; return 1; }
+
+  echo "Moving existing application streams..."
+  pactl list sink-inputs short | awk '{print $1}' | while read -r id; do
+    pactl move-sink-input "$id" "$target"
+  done
+  
+  # Optional: Send a desktop notification
+  local desc=$(pactl list sinks | grep -A 20 "Name: $target" | grep "Description:" | cut -d: -f2- | xargs)
+  notify-send "Audio Output Switched" "Active Device: $desc" -i audio-speakers
 }
 
-function switch_sink_applications()
-{
-  echo switching applications
-  pacmd list-sink-inputs |
-    awk '/index:/{print $2}' |
-    xargs -r -I{} pacmd move-sink-input {} $1 ||
-      echo failed
+function switch_rofi() {
+  # Get list of sinks: Name and Description
+  # Format: "Description | Name"
+  local options=$(pactl list sinks | awk -F': ' '
+    /Name:/ {name=$2} 
+    /Description:/ {print $2 " | " name}
+  ')
+
+  # Show rofi menu
+  local selection=$(echo "$options" | rofi -dmenu -i -p "Select Audio Output" -l 10)
+
+  if [ -n "$selection" ]; then
+    # Extract the Name (everything after the last '|')
+    local target_name=$(echo "$selection" | awk -F ' | ' '{print $NF}')
+    switch_sink "$target_name"
+  fi
 }
 
-function switch_sink_kmix_master()
-{
-  qdbus org.kde.kmix >/dev/null 2>&1 || return 0 # kmix not found
+function switch_zenity() {
+  current_sink=$(pactl get-default-sink)
+  mapfile -t sink_data < <(pactl list sinks | grep -E 'Name:|Description:' | sed 's/^[[:space:]]*//')
+  zen_pars=("--list" "--radiolist" "--column" "Select" "--column" "Name" "--column" "Description")
 
-  typeset name mixer
-  # get the device name in pulseaudio
-  name="$(
-    pacmd list-sinks | awk -v search=$1 '
-      /index:/{found=$2}
-      /* index:/{found=$3}
-      /name:/&&found==search{print $2}
-    '
-  )"
-  # format device name to a name in kmix
-  name="${name#<}"
-  name="${name%>}"
-  name="${name//[.-]/_}"
-  # grab full path in kmix dbus
-  mixer="$( qdbus org.kde.kmix | \grep "/${name}$" )"
-  mixer="${mixer#/Mixers/}"
-  mixer="${mixer%/*}"
-  # get the kmix ids
-  name="$( qdbus org.kde.kmix "/Mixers/${mixer}/${name}" org.kde.KMix.Control.id)"
-  mixer="$(qdbus org.kde.kmix "/Mixers/${mixer}"         org.kde.KMix.Mixer.id  )"
-  echo "set master channel in kmix"
-  qdbus org.kde.kmix /Mixers org.kde.KMix.MixSet.setCurrentMaster "$mixer" "$name" >/dev/null || echo failed
+  for ((i=0; i<${#sink_data[@]}; i+=2)); do
+    name="${sink_data[$i]#Name: }"
+    desc="${sink_data[$i+1]#Description: }"
+    [[ "$name" == "$current_sink" ]] && zen_pars+=("TRUE" "$name" "$desc") || zen_pars+=("FALSE" "$name" "$desc")
+  done
+
+  new_sink=$(zenity "${zen_pars[@]}" --width=600 --height=300 --title="Select Audio Output" 2>/dev/null)
+  [ -n "$new_sink" ] && switch_sink "$new_sink"
 }
 
-function switch_sink()
-{
-  switch_sink_default      "$@"
-  switch_sink_applications "$@"
-  #switch_sink_kmix_master  "$@"
-}
-
-# Use a zenity gui to switch audio outputs
-function switch_gui()
-{
-# get current output id, all output ids and the sink names
-   current_id=$(pacmd list-sinks | egrep '\* index:' | egrep -o '[0-9]+$')
-   ids=( $(pacmd list-sinks | egrep 'index:' | egrep -o '[0-9]+$' | tr '\n' ' ') )
-   names=( $(pacmd list-sinks | egrep 'name:' | egrep -o '\..*>$' | tr -d '>' | tr '\n' ' ') )
-
-   zen_pars="--list --radiolist --column '' --column 'ID' --column 'Sink_name'"
-
-# construct the zenity command
-   for i in "${!ids[@]}"
-   do
-      if [ ${ids[$i]} = $current_id ]; then
-         zen_pars="$zen_pars TRUE"
-      else
-         zen_pars="$zen_pars FALSE"
-      fi
-      zen_pars="$zen_pars ${ids[$i]} ${names[$i]}"
-   done
-
-# change the audio sink with the switch_sink function
-   new_sink_id=$(zenity $zen_pars || echo "")
-   if [ -n $new_sink_id ]; then
-      switch_sink $new_sink_id
-   fi
-}
-
-function help_me()
-{
-  echo "Usage: $0 [gui|list|<sink name to switch to>]"
+function help_me() {
+  echo "Usage: $0 [rofi|gui|list|<sink name>]"
 }
 
 case "${1:-}" in
-  (""|list) list_sinks       ;;
-  ([0-9]*)  switch_sink "$@" ;;
-  (gui)     switch_gui       ;;
-  (*)       help_me          ;;
+  ""|list) list_sinks        ;;
+  rofi)    switch_rofi       ;;
+  gui)     switch_zenity     ;;
+  help)    help_me           ;;
+  *)       switch_sink "$1"  ;;
 esac
