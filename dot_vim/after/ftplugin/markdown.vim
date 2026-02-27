@@ -7,9 +7,13 @@ nnoremap <buffer> ]] /^---$<CR>zz
 nnoremap <buffer> [[ ?^---$<CR>zz
 
 " 2. Slide Selection Text Object ('as' = A Slide)
-" Usage: 'das' (delete slide), 'vas' (select slide), 'yas' (yank slide)
-xnoremap <buffer> as :<C-u>silent! ?^---$?+1<CR>V/^\(---$\)\\|\(\%$\)/-1<CR>
-onoremap <buffer> as :<C-u>silent! ?^---$?+1<CR>V/^\(---$\)\\|\(\%$\)/-1<CR>
+" 'is' = Inner Slide (Content only, no delimiters)
+xdnoremap <buffer> is :<C-u>silent! ?^---$?+1<CR>V/^\(---$\)\\|\(\%$\)/-1<CR>
+onoremap <buffer> is :<C-u>silent! ?^---$?+1<CR>V/^\(---$\)\\|\(\%$\)/-1<CR>
+
+" 'as' = A Slide (Content + Delimiters)
+xdnoremap <buffer> as :<C-u>silent! ?^---$?+0<CR>V/^\(---$\)\\|\(\%$\)/+0<CR>
+onoremap <buffer> as :<C-u>silent! ?^---$?+0<CR>V/^\(---$\)\\|\(\%$\)/+0<CR>
 
 " 3. Slide Movement (Move entire slide up/down)
 " Move current slide DOWN
