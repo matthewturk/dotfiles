@@ -268,3 +268,7 @@ exec --no-startup-id syncthing-gtk -m
 {{- end}}
 
 for_window [class="zoom" title="Chat"] floating enable
+
+# Start the Gnome Keyring daemon
+exec --no-startup-id dbus-update-activation-environment --all
+exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
