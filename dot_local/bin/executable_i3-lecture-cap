@@ -1,0 +1,91 @@
+#!/bin/bash
+# Dependencies: maim, slop, imagemagick (v6), pngquant
+
+# --- 1. Metadata and Directory Setup ---
+BASE_ASSETS="$HOME/temp/screenshot_scraper/assets"
+mkdir -p "$BASE_ASSETS"
+
+read -p "Enter sequence name (leave blank for auto-name): " SEQ_NAME
+
+if [ -z "$SEQ_NAME" ]; then
+    LAST_NUM=$(ls "$BASE_ASSETS" 2>/dev/null | grep -Po '(?<=^sequence_)\d+' | sort -n | tail -1)
+    if [ -z "$LAST_NUM" ]; then
+        NEXT_NUM=1
+    else
+        NEXT_NUM=$((10#$LAST_NUM + 1))
+    fi
+    SEQ_NAME=$(printf "sequence_%03d" $NEXT_NUM)
+    echo "--> Using auto-name: $SEQ_NAME"
+fi
+
+DIR="$BASE_ASSETS/$SEQ_NAME"
+DIST_DIR="$DIR/dist"
+mkdir -p "$DIST_DIR"
+
+# --- 2. Interactive Region Selection ---
+echo "--> Click and drag to select your capture region..."
+GEOM=$(slop -f "%g")
+WIDTH=$(echo $GEOM | cut -d'x' -f1)
+HEIGHT=$(echo $GEOM | cut -d'x' -f2 | cut -d'+' -f1)
+
+if [ -z "$GEOM" ]; then echo "Selection cancelled."; exit 1; fi
+
+# --- 3. The Capture Loop ---
+echo "--> Capture Mode: [Enter] to snap, [q] then [Enter] to finish."
+COUNT=1
+TMP_DIR=$(mktemp -d)
+
+while true; do
+    read -r -p "Frame $(printf %03d $COUNT) ready: " INPUT
+    if [[ "$INPUT" == "q" ]]; then break; fi
+
+    FILENAME="$TMP_DIR/frame_$(printf %03d $COUNT).png"
+    maim -g "$GEOM" -u "$FILENAME"
+    echo "    Snapped frame $COUNT"
+    ((COUNT++))
+done
+
+# --- 4. Delta Processing & Compression ---
+echo "--> Computing transparency deltas..."
+FRAMES=($(ls "$TMP_DIR"/*.png | sort))
+BASE_PATH="${FRAMES[0]}"
+BASE_NAME="base.png"
+
+cp "$BASE_PATH" "$DIST_DIR/$BASE_NAME"
+
+for (( i=1; i<${#FRAMES[@]}; i++ )); do
+    CUR_NAME="delta_$(printf %03d $i).png"
+    # Use v6 composite command
+    composite "$BASE_PATH" "${FRAMES[$i]}" -compose ChangeMask "$DIST_DIR/$CUR_NAME"
+    echo "    Generated $CUR_NAME"
+done
+
+echo "--> Compressing for GitHub..."
+pngquant --ext .png --force "$DIST_DIR"/*.png
+
+# --- 5. Reveal.js HTML Generation (Relative Paths) ---
+HTML_SNIPPET="$DIR/snippet.html"
+# This defines the path reveal.js expects on the server
+REL_PATH="assets/$SEQ_NAME/dist"
+
+{
+    echo ""
+    echo "<section>"
+    echo "  <div style=\"position: relative; width: ${WIDTH}px; height: ${HEIGHT}px; margin: auto;\">"
+    echo "    <img src=\"$REL_PATH/$BASE_NAME\" style=\"position: absolute; top: 0; left: 0; margin: 0;\">"
+    
+    for (( i=1; i<${#FRAMES[@]}; i++ )); do
+        CUR_NAME="delta_$(printf %03d $i).png"
+        echo "    <img src=\"$REL_PATH/$CUR_NAME\" class=\"fragment\" data-fragment-index=\"$i\" style=\"position: absolute; top: 0; left: 0; margin: 0;\">"
+    done
+    
+    echo "  </div>"
+    echo "</section>"
+} > "$HTML_SNIPPET"
+
+rm -rf "$TMP_DIR"
+
+echo "------------------------------------------------"
+echo "Success! Images in: $DIST_DIR"
+echo "Relative Reveal.js snippet saved to: $HTML_SNIPPET"
+read -p "Press Enter to close this window..."
