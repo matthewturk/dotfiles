@@ -273,3 +273,9 @@ for_window [class="zoom" title="Chat"] floating enable
 exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
 exec --no-startup-id dbus-update-activation-environment --all
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+
+# Start the lecture capture tool in a floating terminal
+bindsym $mod+Shift+s exec i3-sensible-terminal -t "Lecture-Capture-Studio" -e /path/to/i3-lecture-cap
+
+# Force the capture terminal to stay floating and on top
+for_window [title="Lecture-Capture-Studio"] floating enable, sticky enable, border pixel 2
