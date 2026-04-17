@@ -243,7 +243,7 @@ bindsym --release $mod+t exec --no-startup-id ~/.config/rofi/rofi-task.sh
 bindsym $mod+Shift+t exec gnome-terminal --title taskwin --geometry 120x30 --hide-menubar -- zsh -c /usr/bin/vit
 #bindsym $mod+Shift+d exec task $(task ls | awk 'NR==4  { print $1 }') done
 for_window [title="vimwiki"] floating disable
-bindsym $mod+Shift+w exec gnome-terminal --title vimwiki --hide-menubar -- vim -c VimwikiIndex
+#bindsym $mod+Shift+w exec gnome-terminal --title vimwiki --hide-menubar -- vim -c VimwikiIndex
 
 for_window [title="cheatsheets-[12]"] floating enable
 bindsym $mod+Shift+m exec eog ~/Downloads/cheatsheets-[12].png
@@ -275,7 +275,7 @@ exec --no-startup-id dbus-update-activation-environment --all
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 
 # Start the lecture capture tool in a floating terminal
-bindsym $mod+Shift+s exec i3-sensible-terminal -t "Lecture-Capture-Studio" -e /path/to/i3-lecture-cap
+bindsym $mod+Shift+w exec i3-sensible-terminal -t "Lecture-Capture-Studio" -e /path/to/i3-lecture-cap
 
 # Force the capture terminal to stay floating and on top
 for_window [title="Lecture-Capture-Studio"] floating enable, sticky enable, border pixel 2
