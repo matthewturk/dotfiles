@@ -277,5 +277,4 @@ exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agen
 # Start the lecture capture tool in a floating terminal
 bindsym $mod+Shift+w exec i3-sensible-terminal -t "Lecture-Capture-Studio" -e $HOME/.local/bin/screenshot_scraper.sh
 
-# Force the capture terminal to stay floating and on top
-for_window [title="Lecture-Capture-Studio"] floating enable, sticky enable, border pixel 2
+for_window [title="Lecture-Capture-Studio"] floating enable, sticky enable, border pixel 2, resize set 600 400, move position 20 20
