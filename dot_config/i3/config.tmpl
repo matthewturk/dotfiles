@@ -237,12 +237,12 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
-for_window [title="taskwin"] floating enable
+#for_window [title="taskwin"] floating enable
 #bindsym $mod+Shift+t exec gnome-terminal --title taskwin --geometry 100x30 --hide-menubar -- sh ~/.config/i3/display_tasks.sh
-bindsym --release $mod+t exec --no-startup-id ~/.config/rofi/rofi-task.sh
-bindsym $mod+Shift+t exec gnome-terminal --title taskwin --geometry 120x30 --hide-menubar -- zsh -c /usr/bin/vit
+#bindsym --release $mod+t exec --no-startup-id ~/.config/rofi/rofi-task.sh
+#bindsym $mod+Shift+t exec gnome-terminal --title taskwin --geometry 120x30 --hide-menubar -- zsh -c /usr/bin/vit
 #bindsym $mod+Shift+d exec task $(task ls | awk 'NR==4  { print $1 }') done
-for_window [title="vimwiki"] floating disable
+#for_window [title="vimwiki"] floating disable
 #bindsym $mod+Shift+w exec gnome-terminal --title vimwiki --hide-menubar -- vim -c VimwikiIndex
 
 for_window [title="cheatsheets-[12]"] floating enable
@@ -275,7 +275,7 @@ exec --no-startup-id dbus-update-activation-environment --all
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 
 # Launch xterm with a specific name/instance
-bindsym $mod+Shift+s exec xterm -name "lecture_studio" -title "Lecture-Capture-Studio" -e $HOME/bin/i3-lecture-cap
+bindsym $mod+Shift+w exec xterm -name "lecture_studio" -title "Lecture-Capture-Studio" -e $HOME/bin/i3-lecture-cap
 
 # Match the 'name' (instance) for floating and sizing
 for_window [instance="lecture_studio"] floating enable, sticky enable, border pixel 2, resize set 600 400, move position 20 20
