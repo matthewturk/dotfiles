@@ -1,13 +1,15 @@
+# Start with a clean Ubuntu base managed by MS for devcontainers
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04
 
-# 1. Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+# Avoid the debconf noise we saw earlier
+ENV DEBIAN_FRONTEND=noninteractive
 
-# 2. Create a persistent virtual environment in a standard location
-ENV VIRTUAL_ENV=/home/vscode/venv
-RUN uv venv $VIRTUAL_ENV
+# Install only the "glue" system libraries
+# build-essential is usually good to have for npm native modules
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libgl1-mesa-glx \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# 3. Force this venv to be the primary path for EVERYTHING
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
+# The features in your json will handle uv, node, etc. after this builds.
 USER vscode
