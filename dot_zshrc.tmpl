@@ -105,6 +105,39 @@ uks()
     killall ssh-agent
 }
 
+devcode() {
+    (
+        # 1. Environment Variable Logic
+        if [ "$DESKTOP_SESSION" = "i3" ]; then
+            export DESKTOP_SESSION="xfce"
+        fi
+
+        # 2. Check for Git and offer Symlink
+        if [ -d ".git" ] && [ ! -e ".devcontainer" ]; then
+            if [ -d "$HOME/.dev-env" ]; then
+                echo -n ".devcontainer not found. Symlink to ~/.dev-env? (y/n): "
+                read -r answer
+                if [ "$answer" = "y" ]; then
+                    ln -s "$HOME/.dev-env" .devcontainer
+                    # Add to local exclude if not already there
+                    grep -qxF ".devcontainer" .git/info/exclude || echo ".devcontainer" >> .git/info/exclude
+                    echo "Symlink created and added to .git/info/exclude."
+                fi
+            fi
+        fi
+
+        # 3. Determine Launch Method
+        # Checks if devcontainer.json exists in .devcontainer/ or the current dir
+        if [ -f ".devcontainer/devcontainer.json" ] || [ -f "devcontainer.json" ]; then
+            echo "Opening in Dev Container..."
+            local hex_path=$(printf "$(pwd)" | xxd -p | tr -d '\n')
+            code-insiders --folder-uri "vscode-remote://dev-container+$hex_path"
+        else
+            echo "No devcontainer.json found. Opening in code-insiders..."
+            code-insiders .
+        fi
+    )
+}
 
 ###--------------------------------------------------
 ### aliases
