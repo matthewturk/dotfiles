@@ -4,6 +4,9 @@
         "dockerfile": "${localEnv:HOME}/.dev-env/Dockerfile",
         "context": ".."
     },
+    "runArgs": [
+        "--network=host"
+    ],
     "features": {
         "ghcr.io/devcontainers-extra/features/uv:1": "latest",
         "ghcr.io/devcontainers/features/node:1": "lts",
