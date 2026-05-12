@@ -2,7 +2,7 @@
     "name": "Universal Dev Environment",
     "build": { 
         "dockerfile": "${localEnv:HOME}/.dev-env/Dockerfile",
-        "context": ".."
+        "context": "."
     },
     "runArgs": [
         "--network=host"
