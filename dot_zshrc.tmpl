@@ -62,6 +62,21 @@ update_gh() {
     rm ${fn}
 }
 
+qa() {
+  local input="$1"
+  # If no argument is provided, prompt for input
+  if [ -z "$input" ]; then
+    echo -n "Enter content: "
+    read input
+  fi
+  # Escape existing double quotes in the input so they don't break the JSON
+  # 'sed' replaces " with \"
+  local escaped_input=$(echo "$input" | sed 's/"/\\"/g')
+  # Execute the command with the properly escaped JSON
+  obsidian quickadd:run id=23d47dc0-1cf9-40d6-9041-80ddeefa85c7 vars="{\"entry_content\": \"$escaped_input\"}"
+
+}
+
 goto() {
   if [ "$1" = "." ]; then
     pwd >> "$HOME/.config/goto"
