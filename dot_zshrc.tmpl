@@ -77,6 +77,77 @@ qa() {
 
 }
 
+make_movie() {
+    # 1. Gather User Input
+    print -n "Enter start frame number (e.g., 1): "
+    read start_frame
+    print -n "Enter end frame number (e.g., 150): "
+    read end_frame
+    print -n "Enter output filename (e.g., timelapse.mp4): "
+    read output_name
+    print -n "Enter source directory [Default: /tmp]: "
+    read src_dir
+
+    # Default to /tmp if user just hits Enter
+    src_dir="${src_dir:-/tmp}"
+
+    # Ensure output has .mp4 extension
+    if [[ "$output_name" != *.mp4 ]]; then
+        output_name="${output_name}.mp4"
+    fi
+
+    # 2. Setup Temporary Workspace
+    local staging_dir=$(mktemp -d -t ffmpeg_staging.XXXXXX)
+    print "\nCreating temporary workspace at: $staging_dir"
+
+    # 3. Copy and Rename Frames
+    print "Staging frames..."
+    local count=1
+    local copied=0
+
+    # Loop through the user's defined frame range
+    for (( i=start_frame; i<=end_frame; i++ )); do
+        # This handles standard 3-digit zero padding (001, 002, etc.)
+        # Adjust "%03d" if your source files use a different padding length
+        local frame_name=$(printf "frame%03d.png" $i)
+        local source_path="${src_dir}/${frame_name}"
+
+        if [[ -f "$source_path" ]]; then
+            # Pads the destination sequence name cleanly for FFmpeg (001, 002...)
+            local dest_name=$(printf "seq_%03d.png" $count)
+            cp "$source_path" "${staging_dir}/${dest_name}"
+            ((count++))
+            ((copied++))
+        else
+            print "Warning: Missing frame $source_path (Skipping)"
+        fi
+    done
+
+    # Fail gracefully if no files were actually found/copied
+    if [[ $copied -eq 0 ]]; then
+        print "Error: No matching frames found in $src_dir. Aborting."
+        rm -rf "$staging_dir"
+        return 1
+    fi
+
+    print "Successfully staged $copied frames."
+
+    # 4. Run FFmpeg
+    print "Encoding video (Universal H.264 / CRF 18)..."
+    ffmpeg -framerate 30 -i "${staging_dir}/seq_%03d.png" \
+           -c:v libx264 \
+           -crf 18 \
+           -pix_fmt yuv420p \
+           -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
+           -movflags faststart \
+           "$output_name"
+
+    # 5. Cleanup
+    print "Cleaning up temporary files..."
+    rm -rf "$staging_dir"
+    print "Done! Video saved as: $output_name"
+}
+
 goto() {
   if [ "$1" = "." ]; then
     pwd >> "$HOME/.config/goto"
