@@ -3,20 +3,24 @@
 BLENDER_DIR="{{ .blender.blender_dir }}"
 GENERIC_STARTUP="$HOME/.config/blender/scripts/startup"
 
-# Ensure our generic directory paths exist
+# Ensure our generic repository source directory path exists
 mkdir -p "$GENERIC_STARTUP"
 
-# Loop through any version-specific folders Steam/Blender has initialized (e.g., 4.2, 4.3)
+# Loop through any version-specific folders Steam/Blender has initialized
 for version_dir in "$BLENDER_DIR"/[0-9].*; do
     if [ -d "$version_dir" ]; then
-        # Create the local internal scripts path inside the version folder
-        mkdir -p "$version_dir/scripts"
+        TARGET_STARTUP_DIR="$version_dir/scripts/startup"
         
-        # Symlink the version-agnostic 'startup' folder into the version directory
-        if [ ! -L "$version_dir/scripts/startup" ]; then
-            rm -rf "$version_dir/scripts/startup" # Clean up existing default folder
-            ln -s "$GENERIC_STARTUP" "$version_dir/scripts/startup"
-            echo "🔗 Linked generic startup scripts into Blender version: $(basename "$version_dir")"
+        # Ensure the native startup folder exists safely
+        mkdir -p "$TARGET_STARTUP_DIR"
+        
+        # Create a targeted symlink for JUST our chezmoi folder inside it
+        if [ ! -L "$TARGET_STARTUP_DIR/chezmoi" ]; then
+            # Clean up if a legacy broken symlink or accidental file exists there
+            rm -f "$TARGET_STARTUP_DIR/chezmoi" 
+            
+            ln -s "$GENERIC_STARTUP" "$TARGET_STARTUP_DIR/chezmoi"
+            echo "🔗 Safely nested chezmoi startup tracking into: $TARGET_STARTUP_DIR/chezmoi"
         fi
     fi
 done
