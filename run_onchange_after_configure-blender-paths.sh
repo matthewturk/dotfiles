@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo "Hello!"
 BLENDER_DIR="$HOME/.config/blender"
 GENERIC_STARTUP="$BLENDER_DIR/scripts/startup"
 
