@@ -14,3 +14,4 @@
     type = "git-repo"
     url = "https://github.com/matthewturk/blender-config"
     refreshPeriod = "168h"
+    template = true
