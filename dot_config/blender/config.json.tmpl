@@ -1,5 +1,5 @@
 {
-  "interface_scale": {{ if eq .chezmoi.hostname "hex" }} 1.0 {{ else }} 1.25 {{ end }},
+  "interface_scale": {{ .blender.ui_scale }},
   "render_device_type": "{{ .blender.device }}",
   "theme": "Deep Grey",
   "asset_libraries": [
