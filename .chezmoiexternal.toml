@@ -15,3 +15,7 @@
     url = "https://github.com/matthewturk/blender-config"
     refreshPeriod = "168h"
     template = true
+[".local/bin/statusline.sh"]
+    type = "file"
+    url = "https://gist.githubusercontent.com/robkooper/925c5fed58472c0b3bce2e2e62c3d0e8/raw/4b26517693a5aab26d7630ba026134bf706988b6/statusline.sh"
+    refreshPeriod = "168h"
