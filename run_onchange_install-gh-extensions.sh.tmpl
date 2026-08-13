@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# List of desired extensions
+extensions=(
+    matthewturk/gh-notifications
+    dlvhdr/gh-dash
+    gizmo385/gh-lazy
+    jackchuka/gh-md
+    agynio/gh-pr-review
+    rethab/gh-project
+    dlvhdr/gh-prs
+    cli/gh-webhook
+)
+
+for ext in "${extensions[@]}"; do
+    # Only install if not already installed
+    if ! gh extension list | grep -q "$ext"; then
+        echo "Installing gh extension: $ext"
+        gh extension install "$ext"
+    fi
+done
