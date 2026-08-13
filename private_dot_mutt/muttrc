@@ -77,6 +77,9 @@ set imap_idle
 set smart_wrap="yes"
 alternative_order text/plain
 auto_view text/html
+# Pipe the current email body to urlscan
+macro pager U "<pipe-entry>urlscan<enter>" "Open urlscan to navigate links"
+macro index U "<pipe-entry>urlscan<enter>" "Open urlscan to navigate links"
 
 bind    index   G   imap-fetch-mail
 bind    index   g   noop
