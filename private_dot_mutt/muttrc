@@ -12,6 +12,11 @@ set certificate_file = "/etc/ssl/certs/ca-certificates.crt"
 set mailcap_path = "~/.mutt/mailcap"
 set tmpdir = "~/.mutt/tmp"
 set spoolfile = "+Inbox"
+# Lightning-fast local search (Sender, Recipient, Subject only)
+set simple_search="~f %s | ~t %s | ~s %s"
+# Quick macro to do a deep server-side body search with 'S'
+macro index S "<limit>=b " "Server-side body search"
+unset mail_check_stats
 
 set wait_key = no
 set mbox_type = Maildir
@@ -49,6 +54,20 @@ set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)
 #source ~/.mutt/monokai.muttrc
 source ~/.mutt/ayu-dark-256.neomuttrc
 
+# Some overrides of colors for getting my attention
+# Highlight unread messages vividly
+color index brightyellow default "~N"
+color index brightyellow default "~O"
+
+# Highlight messages sent directly to YOU (not a mailing list or CC)
+color index brightmagenta default "!~p"
+
+# Highlight flagged/starred messages (for items needing action today)
+color index brightred default "~F"
+
+# Dim read/archived messages so they fade into the background
+color index color240 default "~R !~F"
+
 # Server name: smtp.office365.com
 # Port: 587
 # Encryption method: STARTTLS
@@ -75,11 +94,17 @@ set imap_idle
 #set imap_deflate="yes"
 
 set smart_wrap="yes"
-alternative_order text/plain
+alternative_order text/plain text/enriched text/html
 auto_view text/html
 # Pipe the current email body to urlscan
-macro pager U "<pipe-entry>urlscan<enter>" "Open urlscan to navigate links"
-macro index U "<pipe-entry>urlscan<enter>" "Open urlscan to navigate links"
+macro pager B "<pipe-entry>urlscan<enter>" "Open urlscan to navigate links"
+macro index B "<pipe-entry>urlscan<enter>" "Open urlscan to navigate links"
+
+# Some focus improvements, I think...
+
+# Automatically collapse all threads when opening a folder
+set collapse_unread = no       # Keep threads with unread messages expanded
+set uncollapse_jump = yes      # Jump to unread message when uncollapsing
 
 bind    index   G   imap-fetch-mail
 bind    index   g   noop
@@ -115,7 +140,8 @@ set mailcap_path = ~/.mutt/mailcap
 #       '%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s'
 #
 # We replace the date field '%{%b %d}', giving:
-set index_format='%4C %Z %<[y?%<[m?%<[d?%[%H:%M ]&%[%a %d]>&%[%b %d]>&%[%m/%y ]> %-15.15L (%?l?%4l&%4c?) %s'
+#set index_format='%4C %Z %<[y?%<[m?%<[d?%[%H:%M ]&%[%a %d]>&%[%b %d]>&%[%m/%y ]> %-15.15L (%?l?%4l&%4c?) %s'
+set index_format='%4C %Z %<[y?%<[m?%<[d?%[%H:%M ]&%[%a %d]>&%[%b %d]>&%[%m/%y ]> %-20.20F (%?l?%4l&%4c?) %s'
 # Test  Date Range  Format String  Example
 # --------------------------------------------
 # %[d   Today       %[%H:%M ]      12:34
