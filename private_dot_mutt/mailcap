@@ -1,8 +1,8 @@
-# HTML
-#text/html; w3m -I %{charset} -T text/html -cols 80 -o display_link_number=1; copiousoutput;
-# 1. Automatic inline rendering in the NeoMutt pager (uses Lynx)
+# 1. Manual/Interactive viewing (Opens Chrome when launching attachment explicitly)
+text/html; google-chrome %s; test=test -n "$DISPLAY"; nametemplate=%s.html
+
+# 2. Automatic inline rendering for the NeoMutt pager (Uses Lynx)
 text/html; lynx -dump -force_html -width=${COLUMNS:-80} %s; copiousoutput;
 
-# 2. Manual viewing when opening the attachment explicitly (opens Chrome)
-text/html; google-chrome %s; test=test -n "$DISPLAY"
+# Plain text
 text/plain; nvim %s
