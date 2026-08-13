@@ -99,6 +99,7 @@ auto_view text/html
 # Pipe the current email body to urlscan
 macro pager B "<pipe-entry>urlscan<enter>" "Open urlscan to navigate links"
 macro index B "<pipe-entry>urlscan<enter>" "Open urlscan to navigate links"
+macro pager V "<view-attachments><search>text/html<enter><view-mailcap><exit>" "Open HTML part in external browser"
 
 # Some focus improvements, I think...
 
