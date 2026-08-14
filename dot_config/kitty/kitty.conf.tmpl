@@ -1,3 +1,4 @@
+# chezmoi:template:left-delimiter="[[" right-delimiter="]]"
 # vim:fileencoding=utf-8:foldmethod=marker{{{}}}{{{}}}
 
 # BEGIN_KITTY_FONTS
@@ -958,7 +959,7 @@ font_size 14.0
 #: Fade the text in inactive windows by the specified amount (a number
 #: between zero and one, with zero being fully faded).
 
-hide_window_decorations {{ .hideKittyDecorations | default "no" }}
+hide_window_decorations [[ .hideKittyDecorations | default "no" ]]
 
 #: Hide the window decorations (title-bar and window borders) with
 #: yes. On macOS, titlebar-only and titlebar-and-corners can be used
