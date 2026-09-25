@@ -75,7 +75,7 @@ qa() {
   # 'sed' replaces " with \"
   local escaped_input=$(echo "$input" | sed 's/"/\\"/g')
   # Execute the command with the properly escaped JSON
-  obsidian quickadd:run id=23d47dc0-1cf9-40d6-9041-80ddeefa85c7 vars="{\"entry_content\": \"$escaped_input\"}"
+  obsidian quickadd:run id=23d47dc0-1cf9-40d6-9041-80ddeefa85c7 vars="{\"entry_content\": \"$escaped_input\"}" | jq .
 
 }
 

@@ -15,7 +15,8 @@
     "node_arrange",
     "node_wrangler",
     "csv_importer",
-    "Quick_Asset_Saver"
+    "Quick_Asset_Saver",
+    "math_art"
   ],
   "input": {
       "ndof_translation_sensitivity": 2.0,
@@ -37,5 +38,8 @@
       "ndof_panz_invert_axis": true,
       "ndof_fly_helicopter": false,
       "ndof_lock_camera_pan_zoom": true
+  ],
+  "system": {
+    "gpu_backend": "{{ .blender.display_device}}"
   }
 }
