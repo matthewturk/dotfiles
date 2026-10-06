@@ -1,4 +1,12 @@
 {
+  "statusLine": {
+    "type": "command",
+    "command": "~/.local/bin/statusline.sh",
+    "padding": 2
+  },
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true
+  },
   "theme": "dark",
   "agentPushNotifEnabled": true,
   "attribution": {
