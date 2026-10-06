@@ -1,6 +1,6 @@
 {
   "theme": "dark",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
   "attribution": {
     "commit": "",
     "pr": ""
