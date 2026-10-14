@@ -1,4 +1,5 @@
 #!/bin/bash
+# blender-config-hash: {{ include (joinPath .chezmoi.homeDir ".config/blender/config.json") | sha256sum }}
 
 
 BLENDER_DIR="{{ .blender.blender_dir }}"
