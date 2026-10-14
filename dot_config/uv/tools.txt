@@ -1,5 +1,5 @@
 black
 ipython
-jupyter
+jupyter-core
 jupyterlab
 ruff
