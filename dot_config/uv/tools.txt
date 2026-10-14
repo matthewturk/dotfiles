@@ -1,4 +1,4 @@
 black
 ipython
-jupyter-lab
+jupyterlab
 ruff
