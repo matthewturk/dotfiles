@@ -17,7 +17,6 @@ export PAGER="less"
 export LESS="-r"
 export EDITOR="vim"
 
-export CONDA_BASE=$HOME/pyforge/
 export GOPATH=$HOME/Development/go
 export TWEEGO_PATH=$HOME/Documents/twine/story-formats/
 
@@ -554,7 +553,6 @@ antigen bundle command-not-found
 
 # add some useful ones
 antigen bundle lpass
-antigen bundle conda-env
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -569,30 +567,9 @@ antigen apply
 
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-ZSH_THEME_CONDA_PREFIX='conda:%F{green}'
-ZSH_THEME_CONDA_SUFFIX='%f'
-RPROMPT='$(conda_prompt_info)'
-
 ### End zsh stuff
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# >>> mamba/conda initialize >>>
-export MAMBA_EXE="$HOME/pyforge/bin/mamba";
-export MAMBA_ROOT_PREFIX="$HOME/pyforge";
-__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__mamba_setup"
-else
-    alias mamba="$MAMBA_EXE"
-fi
-unset __mamba_setup
-
-# This ensures 'conda' works immediately alongside mamba
-if [ -f "$HOME/pyforge/etc/profile.d/conda.sh" ]; then
-    . "$HOME/pyforge/etc/profile.d/conda.sh"
-fi
-# <<< mamba/conda initialize <<<
 
 # Wasmer
 export WASMER_DIR="/home/mturk/.wasmer"
