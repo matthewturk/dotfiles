@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# tools.txt hash: {{ include "dot_config/uv/tools.txt" | sha256sum }}
+
+set -euo pipefail
+
+if ! command -v uv &> /dev/null; then
+    echo "uv is not installed; skipping tool setup."
+    exit 0
+fi
+
+TOOLS_FILE="{{ .chezmoi.homeDir }}/.config/uv/tools.txt"
+
+if [ -f "$TOOLS_FILE" ]; then
+    echo "Syncing global uv tools..."
+    while IFS= read -r tool || [ -n "$tool" ]; do
+        # Ignore empty lines and comments
+        [[ -z "$tool" || "$tool" =~ ^# ]] && continue
+        
+        echo "Installing/updating $tool..."
+        uv tool install --upgrade "$tool"
+    done < "$TOOLS_FILE"
+fi
