@@ -281,3 +281,6 @@ bindsym $mod+Shift+w exec xterm -name "lecture_studio" -title "Lecture-Capture-S
 for_window [instance="lecture_studio"] floating enable, sticky enable, border pixel 2, resize set 600 400, move position 20 20
 
 bindsym $mod+Shift+slash exec --no-startup-id ~/.local/bin/i3-keys.sh
+
+exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY XDG_CURRENT_DESKTOP=i3
+exec --no-startup-id systemctl --user import-environment DISPLAY XAUTHORITY XDG_CURRENT_DESKTOP
