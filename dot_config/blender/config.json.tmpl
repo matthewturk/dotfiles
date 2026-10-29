@@ -1,12 +1,18 @@
 {
   "interface_scale": {{ .blender.ui_scale }},
   "render_device_type": "{{ .blender.device }}",
+  "polars_runtime": "{{ get .blender "polars_runtime" }}",
   "theme": "Deep Grey",
   "asset_libraries": [
     {
       "name": "Personal Assets",
       "path": "{{ .chezmoi.homeDir }}/blender-assets/",
-      "import_method": "LINK" 
+      "import_method": "LINK"
+    },
+    {
+      "name": "AVL Assets",
+      "path": "{{ .chezmoi.homeDir }}/avl-blender-assets/",
+      "import_method": "LINK"
     }
   ],
   "extensions": [
@@ -16,7 +22,12 @@
     "node_wrangler",
     "csv_importer",
     "Quick_Asset_Saver",
-    "math_art"
+    "math_art",
+    "script_runner",
+    "avl_geoviz"
+  ],
+  "extension_repositories": [
+    "https://matthewturk.github.io/avl-blender-extensions/index.json"
   ],
   "system": {
     "gpu_backend": "{{ .blender.display_device}}"
