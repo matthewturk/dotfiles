@@ -1,0 +1,319 @@
+#!/usr/bin/env bash
+# sbs3d-encode: turn left/right image sequences into a side-by-side 3D MP4
+# that YouTube recognizes as stereoscopic 3D (non-spherical, left-right).
+#
+# How it works: the frames are hstacked and piped as raw video inside Matroska
+# tagged StereoMode=left_right. ffmpeg turns that tag into stereo-3D stream
+# side data, carries it through the (single) encode, and the MP4 muxer writes
+# it as an 'st3d' box (stereo_mode=2) when run with -strict unofficial. That is
+# byte-for-byte the same box Google's spatial-media injector writes with
+#   spatialmedia -i -2 -s left-right -p none in.mp4 out.mp4
+set -euo pipefail
+
+VERSION=1.0
+PROG=$(basename "$0")
+
+# ---- output helpers --------------------------------------------------------
+if [[ -t 2 && -z ${NO_COLOR:-} ]]; then
+  C_RED=$'\e[31m' C_YEL=$'\e[33m' C_GRN=$'\e[32m' C_DIM=$'\e[2m' C_BOLD=$'\e[1m' C_OFF=$'\e[0m'
+else
+  C_RED= C_YEL= C_GRN= C_DIM= C_BOLD= C_OFF=
+fi
+die()  { printf '%s%s: error:%s %s\n' "$C_RED" "$PROG" "$C_OFF" "$*" >&2; exit 1; }
+warn() { printf '%s%s: warning:%s %s\n' "$C_YEL" "$PROG" "$C_OFF" "$*" >&2; }
+info() { printf '%s%s:%s %s\n' "$C_BOLD" "$PROG" "$C_OFF" "$*" >&2; }
+ok()   { printf '%s%s: %s%s\n' "$C_GRN" "$PROG" "$*" "$C_OFF" >&2; }
+
+usage() {
+  cat <<EOF
+$PROG $VERSION: encode left/right frame sequences into a YouTube-ready 3D MP4
+
+Usage:
+  $PROG [options] FRAMES [OUTPUT.mp4]
+  $PROG --check FILE.mp4 [FILE.mp4 ...]
+
+FRAMES names the frame sequence, in any of these forms:
+  /data/frames/frame3                     prefix
+  /data/frames/frame3_                    prefix with trailing underscore
+  /data/frames/frame3_0001_L.png          any one frame of the sequence
+Frames must be named PREFIX_NNNN_L.EXT and PREFIX_NNNN_R.EXT, numbered without
+gaps (any start number, any fixed zero-padding width).
+
+OUTPUT defaults to PREFIX_3d.mp4 next to the frames. It must be .mp4 or .mov:
+YouTube ignores the Matroska StereoMode tag, so .mkv will not show as 3D.
+
+Encoding options:
+  -r, --fps FPS          frame rate, e.g. 24, 30, 30000/1001 (default: 24)
+  -q, --quality N        lossy encode at quality N, lower = better/bigger
+                         (-cq for NVENC, -crf for libx264/libx265; 19 is
+                         good for viewing). Default: lossless, every frame
+                         bit-exact after RGB->4:2:0, ~1 GB/min at 3840x1080
+  -e, --encoder ENC      h264_nvenc (default), hevc_nvenc, libx264, libx265;
+                         NVENC falls back to libx264/libx265 if the GPU is unusable
+  -a, --audio FILE       mux in an audio track (AAC 256k, trimmed to the video)
+  -x, --ext EXT          frame image extension (default: png, or taken from FRAMES)
+
+Safety and other options:
+  -f, --force            overwrite OUTPUT if it already exists (default: refuse)
+  -n, --dry-run          check the frames and print the ffmpeg commands only
+  -c, --check            don't encode; check that existing file(s) carry
+                         YouTube's left-right 3D metadata
+  -h, --help             show this help
+  -V, --version          show the version
+
+Examples:
+  $PROG /data/frames/frame3 /data/moviestest.mp4
+  $PROG -r 30 -a soundtrack.wav /data/frames/frame3_0001_L.png
+  $PROG --check /data/moviestest.mp4
+
+The encode writes to a hidden temporary file next to OUTPUT; it is renamed into
+place only after ffmpeg succeeds and the 3D metadata, size and frame count have
+been verified. Ctrl-C removes the temporary file. Set NO_COLOR=1 to disable color.
+EOF
+}
+
+# ---- option parsing (short and long, options may appear anywhere) ---------
+fps=24 quality="" encoder=h264_nvenc audio="" ext="" force=0 dryrun=0 check=0
+args=()
+need_arg() { [[ $# -ge 2 && -n $2 ]] || die "option $1 needs a value (see --help)"; }
+while (( $# )); do
+  opt=$1
+  # split --opt=value
+  if [[ $opt == --*=* ]]; then set -- "${opt%%=*}" "${opt#*=}" "${@:2}"; opt=$1; fi
+  case $opt in
+    -r|--fps)      need_arg "$@"; fps=$2; shift 2 ;;
+    -q|--quality)  need_arg "$@"; quality=$2; shift 2 ;;
+    -e|--encoder)  need_arg "$@"; encoder=$2; shift 2 ;;
+    -a|--audio)    need_arg "$@"; audio=$2; shift 2 ;;
+    -x|--ext)      need_arg "$@"; ext=${2#.}; shift 2 ;;
+    -f|--force)    force=1; shift ;;
+    -n|--dry-run)  dryrun=1; shift ;;
+    -c|--check)    check=1; shift ;;
+    -h|--help)     usage; exit 0 ;;
+    -V|--version)  echo "$PROG $VERSION"; exit 0 ;;
+    --)            shift; args+=("$@"); break ;;
+    -?*)           die "unknown option '$opt' (see --help)" ;;
+    *)             args+=("$1"); shift ;;
+  esac
+done
+
+for tool in ffmpeg ffprobe; do
+  command -v "$tool" >/dev/null || die "$tool not found in PATH"
+done
+
+# ---- verification (used after encoding and by --check) -------------------
+# verify FILE [WIDTH HEIGHT FRAMES]; prints a reason and returns 1 on failure.
+verify() {
+  local file=$1 probe ow oh on
+  probe=$(ffprobe -v error -select_streams v:0 -count_packets \
+    -show_entries stream=codec_name,width,height,nb_read_packets:stream_side_data=side_data_type,type \
+    -of default=nw=1 "$file" 2>&1) || { echo "not a readable video (incomplete, still being written, or not an MP4?)"; return 1; }
+  get() { sed -n "s/^$1=//p" <<<"$probe" | head -1; }
+  ow=$(get width) oh=$(get height) on=$(get nb_read_packets)
+  [[ -n $ow ]] || { echo "no video stream"; return 1; }
+  if [[ $# -ge 4 ]]; then
+    [[ $ow == "$2" && $oh == "$3" ]] || { echo "size is ${ow}x${oh}, expected ${2}x${3}"; return 1; }
+    [[ $on == "$4" ]] || { echo "has $on frames, expected $4"; return 1; }
+  fi
+  if ! grep -qx 'side_data_type=Stereo 3D' <<<"$probe"; then
+    echo "no stereo 3D (st3d) metadata; YouTube will treat it as 2D"; return 1
+  fi
+  grep -qx 'type=side by side' <<<"$probe" || {
+    echo "stereo 3D metadata is not left-right ($(get type))"; return 1; }
+  # Belt and braces: the raw st3d box (size 13, version 0, mode 2 = left-right).
+  if command -v python3 >/dev/null; then
+    python3 -I - "$file" <<'PY' || { echo "st3d box not found or not left-right"; return 1; }
+import mmap, sys
+with open(sys.argv[1], 'rb') as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as m:
+    i = m.find(b'st3d')
+    sys.exit(0 if i >= 4 and m[i-4:i+9] == bytes.fromhex('0000000d737433640000000002') else 1)
+PY
+  fi
+  echo "${ow}x${oh}, $on frames, $(get codec_name), left-right 3D metadata OK"
+}
+
+if (( check )); then
+  (( ${#args[@]} )) || die "--check needs at least one file"
+  rc=0
+  for f in "${args[@]}"; do
+    [[ -r $f ]] || { warn "$f: not readable"; rc=1; continue; }
+    if msg=$(verify "$f"); then ok "$f: $msg"; else warn "$f: $msg"; rc=1; fi
+  done
+  exit $rc
+fi
+
+# ---- validate arguments -------------------------------------------------
+case ${#args[@]} in
+  1|2) ;;
+  0) usage >&2; exit 2 ;;
+  *) die "too many arguments: ${args[*]} (see --help)" ;;
+esac
+frames=${args[0]}
+
+[[ $fps =~ ^[0-9]+(\.[0-9]+|/[0-9]+)?$ && ! $fps =~ ^0+(\.0*)?(/|$) ]] || die "bad frame rate '$fps'"
+if [[ -n $quality ]]; then
+  [[ $quality =~ ^[0-9]+$ ]] || die "quality must be a whole number, got '$quality'"
+  (( 10#$quality <= 51 )) || die "quality must be 0-51, got $quality"
+fi
+case $encoder in
+  h264_nvenc|hevc_nvenc|libx264|libx265) ;;
+  *) die "unsupported encoder '$encoder' (use h264_nvenc, hevc_nvenc, libx264, libx265)" ;;
+esac
+[[ -z $audio || -r $audio ]] || die "audio file not readable: $audio"
+
+# Work out the prefix (and maybe the extension) from FRAMES.
+if [[ $frames =~ ^(.*)_[0-9]+_[LR]\.([A-Za-z0-9]+)$ ]]; then
+  prefix=${BASH_REMATCH[1]}
+  [[ -z $ext ]] && ext=${BASH_REMATCH[2]}
+else
+  prefix=${frames%_}
+fi
+ext=${ext:-png}
+framedir=$(dirname -- "$prefix") base=$(basename -- "$prefix")
+[[ -d $framedir ]] || die "frame directory does not exist: $framedir"
+
+output=${args[1]:-${prefix}_3d.mp4}
+case ${output,,} in
+  *.mp4|*.mov) ;;
+  *.mkv|*.webm) die "output must be .mp4 or .mov; YouTube ignores the Matroska StereoMode tag" ;;
+  *) die "output '$output' must end in .mp4 or .mov" ;;
+esac
+outdir=$(dirname -- "$output")
+[[ -d $outdir ]] || die "output directory does not exist: $outdir"
+[[ -w $outdir ]] || die "output directory is not writable: $outdir"
+[[ -d $output ]] && die "output '$output' is a directory"
+if [[ -e $output ]] && (( ! force )); then
+  die "'$output' already exists; pick another name or add --force to overwrite it"
+fi
+
+# ---- discover the frame sequence ----------------------------------------
+frame_numbers() {  # $1 = L or R; prints frame numbers sorted numerically
+  local f n
+  shopt -s nullglob
+  for f in "$framedir/${base}_"*"_$1.$ext"; do
+    n=${f##*/${base}_}; n=${n%_$1.$ext}
+    [[ $n =~ ^[0-9]+$ ]] && printf '%s\n' "$n"
+  done | sort -n
+}
+mapfile -t lnums < <(frame_numbers L)
+mapfile -t rnums < <(frame_numbers R)
+(( ${#lnums[@]} > 0 )) || die "no left-eye frames found matching $framedir/${base}_NNNN_L.$ext"
+(( ${#rnums[@]} > 0 )) || die "no right-eye frames found matching $framedir/${base}_NNNN_R.$ext"
+
+if [[ "${lnums[*]}" != "${rnums[*]}" ]]; then
+  unpaired=$(comm -3 <(printf '%s\n' "${lnums[@]}" | sort) <(printf '%s\n' "${rnums[@]}" | sort) \
+             | tr -d '\t' | head -5 | tr '\n' ' ')
+  die "left and right frames don't pair up (${#lnums[@]} L vs ${#rnums[@]} R); unpaired frame numbers include: $unpaired"
+fi
+
+width=${#lnums[0]}
+for n in "${lnums[@]}"; do
+  (( ${#n} == width )) || die "frame numbers mix zero-padding widths ('${lnums[0]}' vs '$n'); rename them to a fixed width"
+done
+start=$((10#${lnums[0]}))
+count=${#lnums[@]}
+last=$((10#${lnums[count-1]}))
+if (( last - start + 1 != count )); then
+  prev=$start
+  for n in "${lnums[@]:1}"; do
+    n=$((10#$n))
+    (( n == prev + 1 )) || die "frame $((prev + 1)) is missing (sequence jumps from $prev to $n); ffmpeg would stop there"
+    prev=$n
+  done
+fi
+
+lpat="$framedir/${base}_%0${width}d_L.$ext"
+rpat="$framedir/${base}_%0${width}d_R.$ext"
+lfirst=$(printf "$lpat" "$start") rfirst=$(printf "$rpat" "$start")
+
+dims() { ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x "$1"; }
+ldim=$(dims "$lfirst") && [[ -n $ldim ]] || die "can't read image $lfirst"
+rdim=$(dims "$rfirst") && [[ -n $rdim ]] || die "can't read image $rfirst"
+[[ $ldim == "$rdim" ]] || die "left and right frames differ in size ($ldim vs $rdim)"
+fw=${ldim%x*} fh=${ldim#*x}
+(( fh % 2 == 0 && fw % 2 == 0 )) || die "frame size ${fw}x${fh} has an odd dimension; 4:2:0 video needs even sizes"
+ow=$((fw * 2))
+
+# ---- pick the encoder ----------------------------------------------------
+nvenc_ok() {  # quick probe so a missing/busy GPU doesn't fail mid-run
+  ffmpeg -hide_banner -loglevel error -f lavfi -i color=black:s=256x256:d=0.1 \
+    -c:v "$1" -f null - >/dev/null 2>&1
+}
+if [[ $encoder == *_nvenc ]] && ! nvenc_ok "$encoder"; then
+  fallback=libx264; [[ $encoder == hevc_nvenc ]] && fallback=libx265
+  warn "$encoder is not usable on this machine; falling back to $fallback (slower)"
+  encoder=$fallback
+fi
+if [[ -z $quality ]]; then
+  case $encoder in
+    *_nvenc) enc_opts=(-c:v "$encoder" -tune lossless -preset p7) ;;
+    libx264) enc_opts=(-c:v libx264 -qp 0 -preset slow) ;;
+    libx265) enc_opts=(-c:v libx265 -x265-params lossless=1 -preset slow) ;;
+  esac
+  qdesc="lossless"
+elif [[ $encoder == *_nvenc ]]; then
+  enc_opts=(-c:v "$encoder" -cq "$quality" -preset slow -b:v 0) qdesc="-cq $quality"
+else
+  enc_opts=(-c:v "$encoder" -crf "$quality" -preset slow) qdesc="-crf $quality"
+fi
+[[ $encoder == hevc_nvenc || $encoder == libx265 ]] && enc_opts+=(-tag:v hvc1)
+
+tmp="$outdir/.$(basename -- "$output").partial.$$.${output##*.}"
+
+producer=(ffmpeg -hide_banner -loglevel error -nostdin -nostats
+  -framerate "$fps" -start_number "$start" -i "$lpat"
+  -framerate "$fps" -start_number "$start" -i "$rpat"
+  -filter_complex "[0:v][1:v]hstack,scale=out_color_matrix=bt709:out_range=tv,format=yuv420p[v]"
+  -map "[v]" -frames:v "$count" -c:v rawvideo
+  -metadata:s:v:0 stereo_mode=left_right -f matroska -)
+consumer=(ffmpeg -hide_banner -loglevel warning -stats -y -i -)
+[[ -n $audio ]] && consumer+=(-i "$audio")
+consumer+=(-map 0:v:0)
+[[ -n $audio ]] && consumer+=(-map 1:a:0 -c:a aac -b:a 256k -shortest)
+consumer+=("${enc_opts[@]}" -pix_fmt yuv420p
+  -colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_range tv
+  -strict unofficial -movflags +faststart "$tmp")
+
+info "frames:  $count pairs, ${base}_$(printf "%0${width}d" "$start") .. ${base}_$(printf "%0${width}d" "$last") (${fw}x${fh} .$ext)"
+info "video:   ${ow}x${fh} side-by-side @ $fps fps, $encoder $qdesc${audio:+, audio: $audio}"
+info "output:  $output$( [[ -e $output ]] && (( force )) && echo " ${C_YEL}(exists; will overwrite)${C_OFF}")"
+
+if (( dryrun )); then
+  show() { printf '  %s' "$C_DIM"; printf '%q ' "$@"; printf '%s\n' "$C_OFF"; }
+  info "dry run; would run:"
+  show "${producer[@]}"; echo '    |'; show "${consumer[@]}"
+  info "then verify and rename to $output"
+  exit 0
+fi
+
+# ---- encode --------------------------------------------------------------
+cleanup() { rm -f -- "$tmp"; }
+trap cleanup EXIT
+trap 'echo >&2; die "interrupted; no output written"' INT TERM HUP
+
+SECONDS=0
+if ! "${producer[@]}" | "${consumer[@]}"; then
+  die "ffmpeg failed (see messages above); nothing written to $output"
+fi
+
+# ---- verify and put in place --------------------------------------------
+info "verifying..."
+msg=$(verify "$tmp" "$ow" "$fh" "$count") || die "verification failed: $msg; nothing written to $output"
+
+if (( force )); then
+  mv -f -- "$tmp" "$output"
+else
+  # Don't clobber a file that appeared while we were encoding. ln refuses
+  # atomically if the name is taken, unlike a check-then-mv.
+  if ! ln -- "$tmp" "$output" 2>/dev/null; then
+    alt="${output%.*}.$(date +%Y%m%d-%H%M%S).${output##*.}"
+    ln -- "$tmp" "$alt" 2>/dev/null \
+      || { trap - EXIT; die "could not move result into place; it is still at '$tmp'"; }
+    warn "'$output' appeared during the encode, so it was left alone; result saved as '$alt'"
+    output=$alt
+  fi
+  rm -f -- "$tmp"
+fi
+trap - EXIT
+size=$(du -h -- "$output" | cut -f1)
+ok "done in $((SECONDS / 60))m$((SECONDS % 60))s: $output ($size; $msg)"
