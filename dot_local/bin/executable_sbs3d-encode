@@ -10,7 +10,7 @@
 #   spatialmedia -i -2 -s left-right -p none in.mp4 out.mp4
 set -euo pipefail
 
-VERSION=1.0
+VERSION=1.1
 PROG=$(basename "$0")
 
 # ---- output helpers --------------------------------------------------------
@@ -44,12 +44,19 @@ YouTube ignores the Matroska StereoMode tag, so .mkv will not show as 3D.
 
 Encoding options:
   -r, --fps FPS          frame rate, e.g. 24, 30, 30000/1001 (default: 24)
-  -q, --quality N        lossy encode at quality N, lower = better/bigger
-                         (-cq for NVENC, -crf for libx264/libx265; 19 is
-                         good for viewing). Default: lossless, every frame
-                         bit-exact after RGB->4:2:0, ~1 GB/min at 3840x1080
-  -e, --encoder ENC      h264_nvenc (default), hevc_nvenc, libx264, libx265;
-                         NVENC falls back to libx264/libx265 if the GPU is unusable
+  -q, --quality N        CRF (or NVENC -cq); lower = better/bigger. Default 12:
+                         visually lossless, far above what YouTube keeps
+  -L, --lossless         mathematically lossless (bit-exact after RGB->4:2:0),
+                         ~1 GB/min at 3840x1080. For archiving, NOT for YouTube:
+                         it needs the High 4:4:4 Predictive profile and NVENC,
+                         which can't write the frame-packing SEI
+  -e, --encoder ENC      libx264 (default), h264_nvenc, hevc_nvenc, libx265.
+                         Only libx264 writes the H.264 frame-packing SEI that
+                         YouTube also looks for; NVENC is faster but st3d-only
+
+The video is always flagged with a display aspect equal to ONE eye's aspect
+(e.g. 3840x1080 shown as 16:9, SAR 1:2), the "squeezed" full-width SBS layout
+YouTube expects; without it YouTube shows the frame stretched to 32:9.
   -a, --audio FILE       mux in an audio track (AAC 256k, trimmed to the video)
   -x, --ext EXT          frame image extension (default: png, or taken from FRAMES)
 
@@ -73,7 +80,7 @@ EOF
 }
 
 # ---- option parsing (short and long, options may appear anywhere) ---------
-fps=24 quality="" encoder=h264_nvenc audio="" ext="" force=0 dryrun=0 check=0
+fps=24 quality=12 lossless=0 encoder=libx264 audio="" ext="" force=0 dryrun=0 check=0
 args=()
 need_arg() { [[ $# -ge 2 && -n $2 ]] || die "option $1 needs a value (see --help)"; }
 while (( $# )); do
@@ -83,6 +90,7 @@ while (( $# )); do
   case $opt in
     -r|--fps)      need_arg "$@"; fps=$2; shift 2 ;;
     -q|--quality)  need_arg "$@"; quality=$2; shift 2 ;;
+    -L|--lossless) lossless=1; shift ;;
     -e|--encoder)  need_arg "$@"; encoder=$2; shift 2 ;;
     -a|--audio)    need_arg "$@"; audio=$2; shift 2 ;;
     -x|--ext)      need_arg "$@"; ext=${2#.}; shift 2 ;;
@@ -106,7 +114,7 @@ done
 verify() {
   local file=$1 probe ow oh on
   probe=$(ffprobe -v error -select_streams v:0 -count_packets \
-    -show_entries stream=codec_name,width,height,nb_read_packets:stream_side_data=side_data_type,type \
+    -show_entries stream=codec_name,profile,width,height,display_aspect_ratio,nb_read_packets:stream_side_data=side_data_type,type \
     -of default=nw=1 "$file" 2>&1) || { echo "not a readable video (incomplete, still being written, or not an MP4?)"; return 1; }
   get() { sed -n "s/^$1=//p" <<<"$probe" | head -1; }
   ow=$(get width) oh=$(get height) on=$(get nb_read_packets)
@@ -129,7 +137,29 @@ with open(sys.argv[1], 'rb') as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_R
     sys.exit(0 if i >= 4 and m[i-4:i+9] == bytes.fromhex('0000000d737433640000000002') else 1)
 PY
   fi
-  echo "${ow}x${oh}, $on frames, $(get codec_name), left-right 3D metadata OK"
+  # Display aspect: a full-width SBS frame shown at its raw shape (e.g. 32:9)
+  # is what makes YouTube stretch it. Each eye should come out near 4:3..2.4:1.
+  local dar num den
+  dar=$(get display_aspect_ratio); num=${dar%%:*} den=${dar##*:}
+  if [[ $num =~ ^[0-9]+$ && $den =~ ^[0-9]+$ && $den -gt 0 ]] && (( num * 10 > den * 24 )); then
+    echo "display aspect is $dar, so YouTube will show it stretched; it should be one eye's aspect (e.g. 16:9)"; return 1
+  fi
+  if [[ $# -ge 6 && $dar != "$5:$6" ]]; then
+    echo "display aspect is $dar, expected $5:$6"; return 1
+  fi
+  # Frame-packing arrangement SEI (payload type 45) in the first H.264 frame,
+  # written by libx264; a second 3D signal YouTube documents. (ffprobe's frame
+  # side data can't be used here: it also reflects the container's st3d.)
+  local sei=n/a
+  if [[ $(get codec_name) == h264 ]]; then
+    sei=no
+    ffmpeg -hide_banner -nostdin -v trace -i "$file" -map 0:v:0 -c copy \
+      -bsf:v trace_headers -frames:v 1 -f null - 2>&1 \
+      | grep -Eq 'last_payload_type_byte .*= 45$' && sei=yes
+  fi
+  local prof; prof=$(get profile)
+  [[ $prof == *4:4:4* ]] && echo "WARNING: profile '$prof' may not be accepted by YouTube's 3D processing" >&2
+  echo "${ow}x${oh} shown as $dar, $on frames, $(get codec_name) $prof, st3d left-right OK, frame-packing SEI: $sei"
 }
 
 if (( check )); then
@@ -244,7 +274,7 @@ if [[ $encoder == *_nvenc ]] && ! nvenc_ok "$encoder"; then
   warn "$encoder is not usable on this machine; falling back to $fallback (slower)"
   encoder=$fallback
 fi
-if [[ -z $quality ]]; then
+if (( lossless )); then
   case $encoder in
     *_nvenc) enc_opts=(-c:v "$encoder" -tune lossless -preset p7) ;;
     libx264) enc_opts=(-c:v libx264 -qp 0 -preset slow) ;;
@@ -256,6 +286,17 @@ elif [[ $encoder == *_nvenc ]]; then
 else
   enc_opts=(-c:v "$encoder" -crf "$quality" -preset slow) qdesc="-crf $quality"
 fi
+# H.264 frame-packing arrangement SEI, type 3 = side-by-side (libx264 only).
+if [[ $encoder == libx264 ]]; then
+  enc_opts+=(-x264-params frame-packing=3)
+else
+  warn "$encoder can't write the H.264 frame-packing SEI; relying on the st3d box alone"
+fi
+(( lossless )) && warn "lossless output uses the High 4:4:4 Predictive profile, which YouTube may not process as 3D; use it for archiving"
+# Display aspect = one eye's aspect, so YouTube doesn't stretch the doubled frame.
+g() { local a=$1 b=$2 t; while (( b )); do t=$((a % b)); a=$b; b=$t; done; echo "$a"; }
+gcd=$(g "$fw" "$fh"); dar_w=$((fw / gcd)) dar_h=$((fh / gcd))
+enc_opts+=(-aspect "$dar_w:$dar_h")
 [[ $encoder == hevc_nvenc || $encoder == libx265 ]] && enc_opts+=(-tag:v hvc1)
 
 tmp="$outdir/.$(basename -- "$output").partial.$$.${output##*.}"
@@ -275,7 +316,7 @@ consumer+=("${enc_opts[@]}" -pix_fmt yuv420p
   -strict unofficial -movflags +faststart "$tmp")
 
 info "frames:  $count pairs, ${base}_$(printf "%0${width}d" "$start") .. ${base}_$(printf "%0${width}d" "$last") (${fw}x${fh} .$ext)"
-info "video:   ${ow}x${fh} side-by-side @ $fps fps, $encoder $qdesc${audio:+, audio: $audio}"
+info "video:   ${ow}x${fh} side-by-side shown as $dar_w:$dar_h @ $fps fps, $encoder $qdesc${audio:+, audio: $audio}"
 info "output:  $output$( [[ -e $output ]] && (( force )) && echo " ${C_YEL}(exists; will overwrite)${C_OFF}")"
 
 if (( dryrun )); then
@@ -298,7 +339,7 @@ fi
 
 # ---- verify and put in place --------------------------------------------
 info "verifying..."
-msg=$(verify "$tmp" "$ow" "$fh" "$count") || die "verification failed: $msg; nothing written to $output"
+msg=$(verify "$tmp" "$ow" "$fh" "$count" "$dar_w" "$dar_h") || die "verification failed: $msg; nothing written to $output"
 
 if (( force )); then
   mv -f -- "$tmp" "$output"
