@@ -13,5 +13,6 @@
     "commit": "",
     "pr": "",
     "sessionUrl": false
-  }
+  },
+  "preferredNotifChannel": "notifications_disabled"
 }
